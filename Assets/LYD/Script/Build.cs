@@ -6,15 +6,18 @@ using UnityEngine;
 public class Build : MonoBehaviour
 {
 
-   /* public enum State
+   public enum State
     {
         Add,
         Remove
-    }*/
-    //public State state;
+    }
+    public State state;
 
     static public GameObject furniture;
     static public GameObject previewObject;
+
+    public GameObject removeImage;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -24,8 +27,8 @@ public class Build : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-       // if(state == State.Add)
-        //{
+       if(state == State.Add)
+       {
             //마우스 왼쪽 버튼을 클릭하면
             if (Input.GetMouseButtonDown(0))
             {
@@ -33,17 +36,39 @@ public class Build : MonoBehaviour
                 //*wall.transform.position = transform.position;
 
             }
-        //}
-
-       /* if(state == State.Remove)
+       }
+       
+       
+        if(state == State.Remove)
         {
-            //remove 버튼(UI)을 누른다.
             //ray를 쏜다.
-            //ray 에 맞은 오브젝트가 사라진다.
-        }*/
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity))
+            {
+                //마우스 왼쪽 버튼을 클릭했을때
+                if(Input.GetMouseButtonDown(0))
+                {
+                    //ray 에 맞은 오브젝트가 사라진다.
+                    Destroy(furniture);
+
+                }
+
+
+            }
+        }
        
 
-    } 
+    }
+
+    //remove 버튼(UI)을 누른다.
+
+    public void OnObjectRemove()
+    {
+        state = State.Remove;
+        //상태를 제거상태로 바꾼다.
+        
+    }
     
 
 
