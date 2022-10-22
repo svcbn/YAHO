@@ -58,12 +58,8 @@ public class UIManager : MonoBehaviour
         //게임오브젝트 타입대로 생성 
         //1. 게임오브젝트 타입을 가지고온다. (lamp인지, wall인지 (0, 1)
         int a = (int)info.type;
-        GameObject loadObj = Instantiate(loadObjs[a]);
         //2. 그거에 맞는 오브젝트를 생성한다. (배열에다가 0값, 1값을 넣어준다.)
-            /*if(loadObj.name.Contains("Lamp"))
-        {
-            GameObject 
-        }*/
+        GameObject loadObj = Instantiate(loadObjs[a]);
         loadObj.transform.position = info.position;
         loadObj.transform.localScale = info.scale;
         loadObj.transform.eulerAngles = info.angle;
@@ -96,10 +92,10 @@ public class UIManager : MonoBehaviour
             objectInfo.scale = child.transform.localScale;
             objectInfo.angle = child.transform.eulerAngles;
             
+            //3. 정보를 리스트에 추가 (근데 이러고 안빼면 그대로 있는것이 아닌가?)
             objInfoList.Add(objectInfo);
 
         }
-        //3. 정보를 리스트에 추가 (근데 이러고 안빼면 그대로 있는것이 아닌가?)
         //위치, 크기, 회전, 오브젝트 종류
         ArrayObjectInfo arrayData = new ArrayObjectInfo();
         arrayData.data = objInfoList;

@@ -4,6 +4,9 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 //배치된 거 삭제하기
+//중복 배치 불가능
+//1. 
+//2. ray를 쏴서 마우스를 클릭했을 때  
 public class Build : MonoBehaviour
 {
     //previewObject 에서 사용하기 위해 싱글톤으로 생성하기
@@ -66,7 +69,7 @@ public class Build : MonoBehaviour
 
                 if (!EventSystem.current.currentSelectedGameObject) //
                 {
-                    //
+                    //오브젝트 생성
                     GameObject objectClone = Instantiate(furniture, previewObject.transform.position, previewObject.transform.rotation);
                     //furnitureParent 나의 부모는 누구다.라고 선언/ 이를 위해 부모의 transform을 우선 찾아준다. 
                     objectClone.transform.parent = furnitureParent.transform;
@@ -75,6 +78,8 @@ public class Build : MonoBehaviour
                     prevObject.placeOb = false;
                     state = State.Idle;
                     //*wall.transform.position = transform.position;
+
+                    
                 }
 
             }
