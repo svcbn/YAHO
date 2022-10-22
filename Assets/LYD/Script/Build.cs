@@ -12,6 +12,8 @@ public class Build : MonoBehaviour
     //previewObject 에서 사용하기 위해 싱글톤으로 생성하기
     public static Build instance;
 
+    public bool canBuild = true;
+
     GameObject place;
     public enum State
     {
@@ -70,14 +72,19 @@ public class Build : MonoBehaviour
                 if (!EventSystem.current.currentSelectedGameObject) //
                 {
                     //오브젝트 생성
-                    GameObject objectClone = Instantiate(furniture, previewObject.transform.position, previewObject.transform.rotation);
+                    if (canBuild)
+                    {
+                        GameObject objectClone = Instantiate(furniture, previewObject.transform.position, previewObject.transform.rotation);
+
                     //furnitureParent 나의 부모는 누구다.라고 선언/ 이를 위해 부모의 transform을 우선 찾아준다. 
                     objectClone.transform.parent = furnitureParent.transform;
                     previewkindFur.Add(objectClone);
                     objectClone.tag = "Furniture";
-                    prevObject.placeOb = false;
-                    state = State.Idle;
-                    //*wall.transform.position = transform.position;
+                        prevObject.placeOb = false;
+                        state = State.Idle;
+                        //*wall.transform.position = transform.position;
+                    }
+                   
 
                     
                 }

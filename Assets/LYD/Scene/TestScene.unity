@@ -781,7 +781,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 675029558}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -823,7 +823,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 675029558}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 4300002, guid: 644ca2c8cea2cc048a53171df65697fa, type: 3}
 --- !u!1 &740974707
 GameObject:
   m_ObjectHideFlags: 0
@@ -1125,6 +1125,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47b06cf66c3156d4ab154e64d70c6707, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canBuild: 1
   state: 0
   furniture: {fileID: 0}
   previewObject: {fileID: 0}

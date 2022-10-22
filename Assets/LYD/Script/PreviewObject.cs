@@ -5,11 +5,14 @@ using UnityEngine;
 
 public class PreviewObject : MonoBehaviour
 {
-    public GameObject wall;
+    [HideInInspector]
     public GameObject lamp;
+    public GameObject wall;
 
+    
     public GameObject previewWall;
     public GameObject previewLamp;
+    
 
     Build build;
 
@@ -59,8 +62,23 @@ public class PreviewObject : MonoBehaviour
             {
                 preview.transform.position = new Vector3(hit.point.x, hit.point.y + preview.transform.localScale.y / 2, hit.point.z);
             }
-        }
 
+            //만약 태그가 가구이면
+            if(hit.transform.tag.Contains("Furniture"))
+            {
+
+                preview.GetComponentInChildren<Renderer>().material.color = new Color(1,0,0,0.5f);
+                build.canBuild = false;
+                
+
+                  
+            }
+            else { preview.GetComponentInChildren<Renderer>().material.color = new Color(0, 1, 0, 0.5f);
+
+                build.canBuild = true;
+            }
+
+        }
 
         if (Input.GetMouseButtonDown(1))
         {
@@ -68,6 +86,7 @@ public class PreviewObject : MonoBehaviour
         }
     }
 
+    
 
 
     public void Wall()
@@ -78,6 +97,7 @@ public class PreviewObject : MonoBehaviour
         preview.SetActive(true);
         previewLamp.SetActive(false);
         build.furniture = wall;
+        build.canBuild = true;
 
         // placeOb = false;
     }
@@ -85,12 +105,13 @@ public class PreviewObject : MonoBehaviour
     public void Lamp()
     {
         build.state = Build.State.Add;
-
         placeOb = true;
         preview = previewLamp;
         preview.SetActive(true);
         previewWall.SetActive(false);
         build.furniture = lamp;
+        build.canBuild = true;
+
         // placeOb = false;
 
 
