@@ -13,7 +13,10 @@ public class ObjectInfo
     public enum Type //eunm을 사용하면 string, int 다 사용가능함.
     {
         Lamp,
-        Wall
+        Wall,
+        Postit,
+        Plant,
+        Carculator
     }
     public Type type;
     //위치
@@ -88,6 +91,19 @@ public class UIManager : MonoBehaviour
             {
                 objectInfo.type = ObjectInfo.Type.Wall;
             }
+            else if (child.name.Contains("Postit"))
+            {
+                objectInfo.type = ObjectInfo.Type.Postit;
+            }
+            else if (child.name.Contains("Plant"))
+            {
+                objectInfo.type = ObjectInfo.Type.Plant;
+            }
+            else if (child.name.Contains("Carculator"))
+            {
+                objectInfo.type = ObjectInfo.Type.Carculator;
+            }
+
             objectInfo.position = child.transform.position;
             objectInfo.scale = child.transform.localScale;
             objectInfo.angle = child.transform.eulerAngles;

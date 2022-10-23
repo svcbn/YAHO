@@ -5,13 +5,20 @@ using UnityEngine;
 
 public class PreviewObject : MonoBehaviour
 {
-    [HideInInspector]
+    //[HideInInspector]
     public GameObject lamp;
     public GameObject wall;
+    public GameObject postIt;
+    public GameObject plant;
+    public GameObject calculator;
 
     
     public GameObject previewWall;
     public GameObject previewLamp;
+    public GameObject previewPostIt;
+    public GameObject previewPlant;
+    public GameObject previewCarculator;
+
     
 
     Build build;
@@ -96,6 +103,9 @@ public class PreviewObject : MonoBehaviour
         preview = previewWall;
         preview.SetActive(true);
         previewLamp.SetActive(false);
+        previewPostIt.SetActive(false);
+        previewPlant.SetActive(false);
+        previewCarculator.SetActive(false);
         build.furniture = wall;
         build.canBuild = true;
 
@@ -109,12 +119,57 @@ public class PreviewObject : MonoBehaviour
         preview = previewLamp;
         preview.SetActive(true);
         previewWall.SetActive(false);
+        previewPostIt.SetActive(false);
+        previewPlant.SetActive(false);
+        previewCarculator.SetActive(false);
         build.furniture = lamp;
         build.canBuild = true;
 
         // placeOb = false;
 
 
+    }
+
+    public void PostIt()
+    {
+        build.state = Build.State.Add;
+        placeOb = true;
+        preview = previewPostIt;
+        preview.SetActive(true);
+        previewWall.SetActive(false);
+        previewLamp.SetActive(false);
+        previewPlant.SetActive(false);
+        previewCarculator.SetActive(false);
+        build.furniture = postIt;
+        build.canBuild = true;
+    }
+
+    public void Plant()
+    {
+        build.state = Build.State.Add;
+        placeOb = true;
+        preview = previewPlant;
+        preview.SetActive(true);
+        previewWall.SetActive(false);
+        previewLamp.SetActive(false);
+        previewPostIt.SetActive(false);
+        previewCarculator.SetActive(false);
+        build.furniture = plant;
+        build.canBuild = true;
+    }
+
+    public void Carculator()
+    {
+        build.state = Build.State.Add;
+        placeOb = true;
+        preview = previewCarculator;
+        preview.SetActive(true);
+        previewWall.SetActive(false);
+        previewLamp.SetActive(false);
+        previewPostIt.SetActive(false);
+        previewPlant.SetActive(false);
+        build.furniture = calculator;
+        build.canBuild = true;
     }
 }
 
