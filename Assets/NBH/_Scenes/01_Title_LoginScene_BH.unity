@@ -2206,10 +2206,32 @@ MonoBehaviour:
   inputID: {fileID: 586158619}
   inputPW: {fileID: 437930883}
   btnLogIn: {fileID: 1078179116}
-  btnFindPW: {fileID: 1192901904}
   btnFindID: {fileID: 2140533484}
+  btnFindPW: {fileID: 1192901904}
   btnSignUp: {fileID: 1296978050}
+  panelFindID: {fileID: 1222895242}
+  inputFindIDName: {fileID: 769838250}
+  inputFindIDEmail: {fileID: 385770327}
+  btnFindIDSubmit: {fileID: 535244167}
+  btnFindIDReturn: {fileID: 1476906972}
+  panelFindPW: {fileID: 1245766036}
+  inputFindPWID: {fileID: 1922780771}
+  inputFindPWName: {fileID: 1005613686}
+  inputFindPWEmail: {fileID: 1950623995}
+  btnFindPWSubmit: {fileID: 989494835}
+  btnFindPWReturn: {fileID: 1359525195}
   panelSignUp: {fileID: 1998699536}
+  inputSignUpName: {fileID: 2004499790}
+  inputSignUpID: {fileID: 1842629044}
+  btnSignUpIDCheck: {fileID: 338257962}
+  txtSignUpID: {fileID: 1325113153}
+  inputSignUpPW: {fileID: 971662436}
+  txtSignUpPWCheck: {fileID: 1167145642}
+  inputSignUpPWCorrect: {fileID: 2064087686}
+  txtSignUpPWCorrect: {fileID: 1861347402}
+  inputSignUpEmail: {fileID: 427267314}
+  btnSignUpSubmit: {fileID: 273791693}
+  btnSignUpReturn: {fileID: 552288169}
 --- !u!1 &673950914
 GameObject:
   m_ObjectHideFlags: 0
@@ -3955,11 +3977,11 @@ RectTransform:
   - {fileID: 586158618}
   - {fileID: 437930882}
   - {fileID: 1078179115}
-  - {fileID: 1192901903}
   - {fileID: 2140533483}
+  - {fileID: 1192901903}
   - {fileID: 1296978049}
-  - {fileID: 1245766037}
   - {fileID: 1222895243}
+  - {fileID: 1245766037}
   - {fileID: 1998699537}
   m_Father: {fileID: 0}
   m_RootOrder: 2
@@ -4002,11 +4024,11 @@ RectTransform:
   m_Children:
   - {fileID: 2020583636}
   m_Father: {fileID: 1176916553}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -196.1, y: -292.2}
+  m_AnchoredPosition: {x: -9.2, y: -292.2}
   m_SizeDelta: {x: 107.5929, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1192901904
@@ -4126,7 +4148,7 @@ RectTransform:
   - {fileID: 535244166}
   - {fileID: 1476906971}
   m_Father: {fileID: 1176916553}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -4207,7 +4229,7 @@ RectTransform:
   - {fileID: 989494834}
   - {fileID: 1359525194}
   m_Father: {fileID: 1176916553}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -6833,11 +6855,11 @@ RectTransform:
   m_Children:
   - {fileID: 585490631}
   m_Father: {fileID: 1176916553}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -5.9, y: -292.2}
+  m_AnchoredPosition: {x: -201, y: -292.2}
   m_SizeDelta: {x: 107.5929, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2140533484
