@@ -8,12 +8,14 @@ using System.IO;
 [System.Serializable]
 public class ObjectInfo
 {
+
+    
     //벽인지, 램프인지, / (세분화가 나눠지려나???)
     //public int type;
     public enum Type //eunm을 사용하면 string, int 다 사용가능함.
     {
         Lamp,
-        Wall,
+        Frame,
         Postit,
         Plant,
         Carculator
@@ -63,6 +65,9 @@ public class UIManager : MonoBehaviour
         int a = (int)info.type;
         //2. 그거에 맞는 오브젝트를 생성한다. (배열에다가 0값, 1값을 넣어준다.)
         GameObject loadObj = Instantiate(loadObjs[a]);
+        GameObject c = GameObject.Find("FurnitureParent");
+        loadObj.transform.parent = c.transform;
+        loadObj.tag = "Furniture";
         loadObj.transform.position = info.position;
         loadObj.transform.localScale = info.scale;
         loadObj.transform.eulerAngles = info.angle;
@@ -87,9 +92,9 @@ public class UIManager : MonoBehaviour
             {
                 objectInfo.type = ObjectInfo.Type.Lamp;
             }
-            else if(child.name.Contains("Wall"))
+            else if(child.name.Contains("Frame"))
             {
-                objectInfo.type = ObjectInfo.Type.Wall;
+                objectInfo.type = ObjectInfo.Type.Frame;
             }
             else if (child.name.Contains("Postit"))
             {

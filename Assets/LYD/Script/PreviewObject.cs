@@ -7,13 +7,13 @@ public class PreviewObject : MonoBehaviour
 {
     //[HideInInspector]
     public GameObject lamp;
-    public GameObject wall;
+    public GameObject frame;
     public GameObject postIt;
     public GameObject plant;
     public GameObject calculator;
 
     
-    public GameObject previewWall;
+    public GameObject PreviewFrame;
     public GameObject previewLamp;
     public GameObject previewPostIt;
     public GameObject previewPlant;
@@ -100,13 +100,13 @@ public class PreviewObject : MonoBehaviour
     {
         build.state = Build.State.Add;
         placeOb = true;
-        preview = previewWall;
+        preview = PreviewFrame;
         preview.SetActive(true);
         previewLamp.SetActive(false);
         previewPostIt.SetActive(false);
         previewPlant.SetActive(false);
         previewCarculator.SetActive(false);
-        build.furniture = wall;
+        build.furniture = frame;
         build.canBuild = true;
 
         // placeOb = false;
@@ -118,7 +118,7 @@ public class PreviewObject : MonoBehaviour
         placeOb = true;
         preview = previewLamp;
         preview.SetActive(true);
-        previewWall.SetActive(false);
+        PreviewFrame.SetActive(false);
         previewPostIt.SetActive(false);
         previewPlant.SetActive(false);
         previewCarculator.SetActive(false);
@@ -136,7 +136,7 @@ public class PreviewObject : MonoBehaviour
         placeOb = true;
         preview = previewPostIt;
         preview.SetActive(true);
-        previewWall.SetActive(false);
+        PreviewFrame.SetActive(false);
         previewLamp.SetActive(false);
         previewPlant.SetActive(false);
         previewCarculator.SetActive(false);
@@ -150,7 +150,7 @@ public class PreviewObject : MonoBehaviour
         placeOb = true;
         preview = previewPlant;
         preview.SetActive(true);
-        previewWall.SetActive(false);
+        PreviewFrame.SetActive(false);
         previewLamp.SetActive(false);
         previewPostIt.SetActive(false);
         previewCarculator.SetActive(false);
@@ -164,7 +164,7 @@ public class PreviewObject : MonoBehaviour
         placeOb = true;
         preview = previewCarculator;
         preview.SetActive(true);
-        previewWall.SetActive(false);
+        PreviewFrame.SetActive(false);
         previewLamp.SetActive(false);
         previewPostIt.SetActive(false);
         previewPlant.SetActive(false);
