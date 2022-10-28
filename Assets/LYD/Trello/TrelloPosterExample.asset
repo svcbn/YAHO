@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41c7f888198b7824c971f28883c2a36d, type: 3}
+  m_Name: TrelloPosterExample
+  m_EditorClassIdentifier: 
+  key: 54387b62ebcd333434d78ebc023baefc
+  token: ca7703272e711a73476264962b1c983cbc8734de0c4237912e52fe148c9b9844
+  boardId: 63589621f8210a014e470160
+  cardLists:
+  - name: To Do
+    id: 63589621f8210a014e470167
+  - name: Doing
+    id: 63589621f8210a014e470168
+  - name: Done
+    id: 63589621f8210a014e470169
+  cardLabels: []

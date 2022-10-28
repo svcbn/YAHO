@@ -71,19 +71,60 @@ public class PreviewObject : MonoBehaviour
             }
 
             //만약 태그가 가구이면
-            if(hit.transform.tag.Contains("Furniture"))
+            if (hit.transform.tag.Contains("Furniture"))
             {
 
-                preview.GetComponentInChildren<Renderer>().material.color = new Color(1,0,0,0.5f);
-                build.canBuild = false;
                 
+                preview.GetComponentInChildren<Renderer>().material.color = new Color(1,0,0,0.5f); //빨강
+                build.canBuild = false;
 
-                  
+
+                /*//박스 콜라이더가 있으면 
+                if(hit.transform.GetComponent<BoxCollider>())
+                {
+                    //1. preview에 달려있는 아이들을 찾는다.
+                    Transform[] previewChildList = preview.GetComponentsInChildren<Transform>();
+                    if (previewChildList != null)
+                    {
+                        for (int i = 0; i < previewChildList.Length; i++)
+                        {
+                            previewChildList[i].GetComponent<Material>().color = Color.red;
+                            build.canBuild = false;
+
+
+
+
+                        }
+                    }
+                }
+                else
+                {
+                    //1. preview에 달려있는 아이들을 찾는다.
+                    Transform[] previewChildList = preview.GetComponentsInChildren<Transform>();
+                    if (previewChildList != null)
+                    {
+                        for (int i = 0; i < previewChildList.Length; i++)
+                        {
+                            previewChildList[i].GetComponent<Material>().color = Color.green;
+                            build.canBuild = true;
+
+
+
+
+                        }
+                    }
+                }*/
+
+
             }
-            else { preview.GetComponentInChildren<Renderer>().material.color = new Color(0, 1, 0, 0.5f);
-
+            else
+            {
+                preview.GetComponentInChildren<Renderer>().material.color = new Color(0, 1,0.5f, 0.5f); //초록
                 build.canBuild = true;
+
+
             }
+
 
         }
 
