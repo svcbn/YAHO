@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 2027091048364880668}
   - component: {fileID: 2027091048364880669}
   - component: {fileID: 2027091048364880670}
+  - component: {fileID: 5228936290126010395}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -143,6 +144,20 @@ MonoBehaviour:
   AutoCreateRecorderIfNotFound: 0
   UsePrimaryRecorder: 1
   SetupDebugSpeaker: 1
+--- !u!114 &5228936290126010395
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2027091048364880671}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 986901d7f73f06b419832f80295456b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cam: {fileID: 2027091048395210568}
+  speaker: {fileID: 8772028841214371628}
 --- !u!1 &2027091048395210568
 GameObject:
   m_ObjectHideFlags: 0
@@ -161,7 +176,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2027091048395210563
 Transform:
   m_ObjectHideFlags: 0

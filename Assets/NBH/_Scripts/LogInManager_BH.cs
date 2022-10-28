@@ -35,7 +35,6 @@ public class LogInManager_BH : MonoBehaviourPunCallbacks
 
     #endregion
 
-
     // 아이디 찾기 패널
     [HideInInspector]
     public GameObject panelFindID;
