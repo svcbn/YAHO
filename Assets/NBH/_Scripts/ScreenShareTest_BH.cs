@@ -18,6 +18,9 @@ public class ScreenShareTest_BH : MonoBehaviourPun, IPunObservable
     // Start is called before the first frame update
     void Start()
     {
+        PhotonNetwork.SendRate = 30;
+        PhotonNetwork.SerializationRate = 30;
+
         copiedMesh = gameObject.GetComponent<MeshRenderer>();
     }
 
@@ -26,15 +29,17 @@ public class ScreenShareTest_BH : MonoBehaviourPun, IPunObservable
 
     void Update()
     {
-        if (PhotonNetwork.IsMasterClient)
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            ScreenShare();
+            if (PhotonNetwork.IsMasterClient)
+            {
+                ScreenShare();
+            }
+            else
+            {
+                ByteToTexture2D(recieveTexture);
+            }
         }
-        else
-        {
-            ByteToTexture2D(recieveTexture);
-        }
-
 
         //copiedMesh.material = sharedMesh.material;
         //copiedMesh.material.mainTexture = originMesh;
