@@ -1,0 +1,5 @@
+[uWC::Log][2022-10-28 02:59:24] Start
+[uWC::Err][2022-10-28 02:59:45] WindowManager::UpdateWindowHandleList() => EnumDisplayMonitors() failed with error code: 1400
+[uWC::Err][2022-10-28 02:59:45] WindowManager::UpdateWindowHandleList() => EnumDisplayMonitors() failed with error code: 1400
+[uWC::Err][2022-10-28 02:59:46] WindowsGraphicsCapture::DestroyPoolAndSession() - Session threw an std exception: bad allocation
+C::Err][2022-10-28 02:59:45] WindowManager::UpdateWindowHandleList() => EnumDisplayMonitors() failed with error code: 1400
