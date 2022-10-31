@@ -5543,7 +5543,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 3974af31da5d0e24da4398295dd1dc67, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -7940,6 +7940,8 @@ MonoBehaviour:
   APIToken: ca7703272e711a73476264962b1c983cbc8734de0c4237912e52fe148c9b9844
   boardid_text: {fileID: 2320521004585867113, guid: 35c19e85285f0e34f93b279596f44579, type: 3}
   cardid_text: {fileID: 1163671904493438373, guid: 43fcab9af69cd4e47b3e46cd1196a973, type: 3}
+  description: {fileID: 0}
+  descDisplay: {fileID: 0}
   boardList_content: {fileID: 1584783418}
   cardid_content: {fileID: 0}
 --- !u!4 &1237371968
