@@ -703,10 +703,11 @@ MonoBehaviour:
   boardid: 63589621f8210a014e470160
   APIKey: 54387b62ebcd333434d78ebc023baefc
   APIToken: ca7703272e711a73476264962b1c983cbc8734de0c4237912e52fe148c9b9844
-  idLists:
-  - 63589621f8210a014e470167
-  - 63589621f8210a014e470168
-  - 63589621f8210a014e470169
+  boardid_text: {fileID: 0}
+  cardid_text: {fileID: 0}
+  descText: {fileID: 0}
+  boardList_content: {fileID: 0}
+  cardid_content: {fileID: 0}
 --- !u!4 &1356895832
 Transform:
   m_ObjectHideFlags: 0
@@ -836,7 +837,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1221425417629000, guid: 2e54aaac82c38b14089f01c5d163786e, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4540121249075240, guid: 2e54aaac82c38b14089f01c5d163786e, type: 3}
       propertyPath: m_RootOrder

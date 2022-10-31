@@ -29,7 +29,10 @@ public class TrelloUI : MonoBehaviour
 	private Texture2D screenshot;
 	private bool noLabels = false;
 
-	public GetTest getTest ;
+	//public GetTest getTest ;
+
+	//postCard 넘겨주는 버튼 눌렀을 때 
+	//public bool newValue = true;
 
 	private void Start()
 	{
@@ -63,7 +66,11 @@ public class TrelloUI : MonoBehaviour
 			
 
         }*/
-		StartCoroutine(trelloPoster.PostCard(new TrelloCard(cardName.text, cardDesc.text, TrelloCardPositions[cardPosition.value], trelloPoster.TrelloCardListOptions[cardList.value].Id, noLabels ? null : trelloPoster.TrelloCardLabelOptions[cardLabel.value].Id, includeScreenshot.isOn ? screenshot.EncodeToPNG() : null)));
+		
+        
+			StartCoroutine(trelloPoster.PostCard(new TrelloCard(cardName.text, cardDesc.text, TrelloCardPositions[cardPosition.value], trelloPoster.TrelloCardListOptions[cardList.value].Id, noLabels ? null : trelloPoster.TrelloCardLabelOptions[cardLabel.value].Id, includeScreenshot.isOn ? screenshot.EncodeToPNG() : null)));
+
+        
 	}
 
 	private List<Dropdown.OptionData> GetDropdownOptions(TrelloCardOption[] cardOptions)

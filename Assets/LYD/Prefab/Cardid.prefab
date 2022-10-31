@@ -12,9 +12,10 @@ GameObject:
   - component: {fileID: 2144334586090248385}
   - component: {fileID: 4297977449361915763}
   - component: {fileID: 9057574504915210018}
+  - component: {fileID: 3688094435073803331}
   m_Layer: 5
   m_Name: Cardid
-  m_TagString: Untagged
+  m_TagString: Cardid
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -121,7 +122,34 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 4297977449361915763}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3688094435073803331}
+        m_TargetAssemblyTypeName: Desc, Assembly-CSharp
+        m_MethodName: OnDescDisplay
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &3688094435073803331
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1163671904493438373}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3dd6332172c273544b16d820876acddc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  descDisplay: {fileID: 0}
+  cardTitle: 
+  desc: 
 --- !u!1 &8967698018882761103
 GameObject:
   m_ObjectHideFlags: 0
