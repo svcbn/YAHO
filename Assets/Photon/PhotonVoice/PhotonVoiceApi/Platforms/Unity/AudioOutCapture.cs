@@ -11,7 +11,7 @@ namespace Photon.Voice.Unity
         {
             if (OnAudioFrame != null)
             {
-                OnAudioFrame(frame, channels);
+                
             }
         }
     }
