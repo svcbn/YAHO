@@ -10167,13 +10167,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c150c011a6544b4b8054bba7ee5e5ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  searchTiming_: 2
+  searchTiming_: 1
   type_: 0
   altTabWindow_: 1
   createChildWindows_: 1
   childWindowPrefab: {fileID: 0}
   childWindowZDistance: 0.02
-  partialWindowTitle_: 
+  partialWindowTitle_: Chrome
   desktopIndex_: 0
   captureMode: 3
   capturePriority: -1
@@ -10243,7 +10243,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1758066537}
   m_LocalRotation: {x: 0, y: 0.2840153, z: 0, w: 0.95881975}
-  m_LocalPosition: {x: -3.66, y: 2.06, z: 22.72}
+  m_LocalPosition: {x: -3.85, y: 2.06, z: 22.843}
   m_LocalScale: {x: 1.92, y: 1.08, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -12217,7 +12217,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37f43be3dcef461f9ee3aa85dd4204bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startOnAwake: 1
+  startOnAwake: 0
   returnInterimResults: 1
   enableDebugLogging: 1
   onStartListening:
@@ -12280,8 +12280,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  _microphoneName: "\uB9C8\uC774\uD06C \uBC30\uC5F4 (\uB514\uC9C0\uD138 \uB9C8\uC774\uD06C\uC6A9
-    \uC778\uD154\xAE \uC2A4\uB9C8\uD2B8 \uC0AC\uC6B4\uB4DC \uAE30\uC220)"
+  _microphoneName: Headset Microphone (Realtek(R) Audio)
   triggerEnd: 0
   endMassage: 
   text: {fileID: 0}
