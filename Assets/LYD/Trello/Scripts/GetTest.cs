@@ -169,7 +169,7 @@ public class GetTest : MonoBehaviour
             print($"에러: {req.error}");
         }
 
-        //값 받아오는것이 성공하면
+        //값 받아오는것이 성공하면 (만약 삭제할때 받고)
         if (req.result == UnityWebRequest.Result.Success)
         {
             //for(int i = 0; i < idLists.Length; i++)

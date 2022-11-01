@@ -46,6 +46,7 @@ public class Desc : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //바꾸고 싶은 텍스트를 가져와준다.
         cardNameText = descDisplay.transform.GetChild(0).GetComponent<Text>();
         descText = descDisplay.transform.GetChild(2).GetComponent<Text>();
 
