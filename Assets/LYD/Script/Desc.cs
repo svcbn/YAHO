@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class Desc : MonoBehaviour
 {
      //desc 화면 넣는 변수
-    public GameObject descDisplay;
+    GameObject descDisplay;
 
     
 
@@ -24,9 +24,14 @@ public class Desc : MonoBehaviour
     {
         cardTitle = s1;
         desc = s2;
-
         descDisplay = go;
     }
+
+   /* public void Getdisplay(GameObject go)
+    {
+        descDisplay = go;
+
+    }*/
 
     //cardid 중 버튼을 클릭하면 DescDisplay이미지가 떠야한다.
     //CardNameText에는 cardTitle값이 들어가야된다. (변수선언해서 넣어주고)
@@ -52,6 +57,11 @@ public class Desc : MonoBehaviour
 
     }
 
+   /* public void OffDescDisplay()
+    {
+        descDisplay.SetActive(false);
+
+    }*/
     // Update is called once per frame
     void Update()
     {

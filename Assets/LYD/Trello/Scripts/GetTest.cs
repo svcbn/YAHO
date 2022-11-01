@@ -77,6 +77,7 @@ public class GetTest : MonoBehaviour
     void Start()
     {
 
+
         //PUT / 1 / cards /635a08e900b3d1048058223a?idList =63589621f8210a014e470168
 
         //'https://api.trello.com/1/boards/63589621f8210a014e470160/cards?key=54387b62ebcd333434d78ebc023baefc&token=ca7703272e711a73476264962b1c983cbc8734de0c4237912e52fe148c9b9844'
@@ -102,6 +103,7 @@ public class GetTest : MonoBehaviour
     // 즉, 트렐로에 있는 화면구성들이 화면에 똑같이 띄어질수있도록 
     public void OnBtnTrello()
     {
+        
         //화면구성 on
         scrollview_Boardlist.SetActive(true);
         //엑스버튼 on
@@ -423,14 +425,15 @@ public class GetTest : MonoBehaviour
     {
         descDisplay.SetActive(true);
         //카드하나하나 지역변수로 만들어서 
-        string card1 = saveData
     }
-
+*/
     public void DescDisplayXBtn()
     {
         descDisplay.SetActive(false);
 
-    }*/
+    }
+
+
     // Update is called once per frame
     void Update()
     {
