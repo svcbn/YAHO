@@ -7,133 +7,106 @@ using UnityEngine.SceneManagement;
 
 public class LogInManager_BH : MonoBehaviourPunCallbacks
 {
+    [Header("Main")]
     #region 메인화면 component
 
     // 아이디 InputField
-    [HideInInspector]
     public InputField inputID;
 
     // 비밀번호 IF
-    [HideInInspector]
     public InputField inputPW;
 
     // 로그인 버튼
-    [HideInInspector]
     public Button btnLogIn;
 
     // 아이디 찾기 버튼
-    [HideInInspector]
     public Button btnFindID;
 
     // 비밀번호 찾기 버튼
-    [HideInInspector]
     public Button btnFindPW;
 
     // 회원가입 버튼
-    [HideInInspector]
     public Button btnSignUp;
 
     #endregion
 
+    [Header("FindID")]
     // 아이디 찾기 패널
-    [HideInInspector]
     public GameObject panelFindID;
     #region 아이디 찾기 component
 
     // 아이디 찾기 이름
-    [HideInInspector]
     public InputField inputFindIDName;
 
-    // 아이디 찾기 이메일 
-    [HideInInspector]
+    // 아이디 찾기 이메일
     public InputField inputFindIDEmail;
 
     // 아이디 찾기 버튼
-    [HideInInspector]
     public Button btnFindIDSubmit;
     
     // 아이디 찾기 돌아가기
-    [HideInInspector]
     public Button btnFindIDReturn;
 
     #endregion
 
-
+    [Header("FindPW")]
     // 비밀번호 찾기 패널
-    [HideInInspector]
     public GameObject panelFindPW;
     #region 비밀번호 찾기 component
 
     // 비밀번호 찾기 아이디
-    [HideInInspector]
     public InputField inputFindPWID;
 
     // 비밀번호 찾기 이름
-    [HideInInspector]
     public InputField inputFindPWName;
 
     // 비밀번호 찾기 이메일
-    [HideInInspector]
     public InputField inputFindPWEmail;
 
     // 비밀번호 찾기 버튼
-    [HideInInspector]
     public Button btnFindPWSubmit;
 
     // 비밀번호 찾기 돌아가기
-    [HideInInspector]
     public Button btnFindPWReturn;
 
     #endregion
 
-
-    [HideInInspector]
+    [Header("SignUp")]
     // 회원가입 패널
     public GameObject panelSignUp;
     #region 회원가입 component
 
     // 회원가입 이름
-    [HideInInspector]
     public InputField inputSignUpName;
 
     // 회원가입 아이디
-    [HideInInspector]
     public InputField inputSignUpID;
 
     // 회원가입 아이디 검사 버튼
-    [HideInInspector]
     public Button btnSignUpIDCheck;
 
     // 회원가입 아이디 검사 텍스트
-    [HideInInspector]
     public Text txtSignUpID;
 
     // 회원가입 비밀번호
-    [HideInInspector]
     public InputField inputSignUpPW;
 
     // 회원가입 비밀번호 검사 텍스트
-    [HideInInspector]
     public Text txtSignUpPWCheck;
 
     // 회원가입 비밀번호 확인
-    [HideInInspector]
     public InputField inputSignUpPWCorrect;
 
     // 회원가입 비밀번호 확인 텍스트
-    [HideInInspector]
     public Text txtSignUpPWCorrect;
 
     // 회원가입 이메일
-    [HideInInspector]
     public InputField inputSignUpEmail;
 
     // 회원가입 버튼
-    [HideInInspector]
     public Button btnSignUpSubmit;
 
     // 회원가입 돌아가기 버튼
-    [HideInInspector]
     public Button btnSignUpReturn;
 
     #endregion
