@@ -12,17 +12,17 @@ public class RecordTest_BH : MonoBehaviour
     void StartRecordMicrophone()
     {
 
-        recordClip = Microphone.Start(Microphone.devices[2], true, 100, 44100);
+        recordClip = Microphone.Start(Microphone.devices[0], true, 100, 44100);
     }
 
     void StopRecordMicrophone()
     {
-        int lastTime = Microphone.GetPosition(null);
+        int lastTime = Microphone.GetPosition(Microphone.devices[0]);
 
         if (lastTime == 0) return;
         else
         {
-            Microphone.End(Microphone.devices[2]);
+            Microphone.End(Microphone.devices[0]);
 
             float[] samples = new float[recordClip.samples];
 

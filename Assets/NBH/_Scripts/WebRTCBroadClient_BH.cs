@@ -7,34 +7,36 @@ using UnityEngine.Events;
 using System.Linq;
 using System;
 using Photon.Pun;
+using Data;
 using Player = Photon.Realtime.Player;
 
 public class WebRTCBroadClient_BH : MonoBehaviourPun, IOnPhotonViewOwnerChange
 {
-    Camera cam;
-    AudioClip clip;
-    MeshRenderer receiveImage;
-    AudioSource receiveAudio;
-    AudioClip audioclipStereoSample;
+    [SerializeField] private Camera cam;
+    [SerializeField] private AudioClip clip;
 
-    RTCPeerConnection peerConnection;
-    List<RTCRtpSender> rtpSenders = new List<RTCRtpSender>();
+    [SerializeField] private MeshRenderer receiveImage;
+    [SerializeField] private AudioSource receiveAudio;
+    [SerializeField] private AudioClip audioclipStereoSample;
+
+    private RTCPeerConnection peerConnection;
+    private List<RTCRtpSender> rtpSenders = new List<RTCRtpSender>();
     public VideoStreamTrack videoStreamTrack;
-    AudioStreamTrack audioStreamTrack;
-    MediaStream receiveAudioStream, receiveVideoStream;
-    DelegateOnIceConnectionChange onIceConnectionChange;
-    DelegateOnIceCandidate onIceCandidate;
-    DelegateOnTrack onTrack;
-    DelegateOnNegotiationNeeded onNegotiationNeeded;
+    private AudioStreamTrack audioStreamTrack;
+    private MediaStream receiveAudioStream, receiveVideoStream;
+    private DelegateOnIceConnectionChange onIceConnectionChange;
+    private DelegateOnIceCandidate onIceCandidate;
+    private DelegateOnTrack onTrack;
+    private DelegateOnNegotiationNeeded onNegotiationNeeded;
 
-    RTCDataChannel sendMessageChannel;
-    RTCDataChannel receiveMessageChannel;
+    private RTCDataChannel sendMessageChannel;
+    private RTCDataChannel receiveMessageChannel;
 
     public Texture2D errorImage;
 
     Dictionary<string, RTCPeerConnection> peerConnections = new Dictionary<string, RTCPeerConnection>();
 
-    MediaStream sourceStream;
+    private MediaStream sourceStream;
     public string ownerID;
 
     public UnityEvent<WebRTCBroadClient_BH> onDestroy;

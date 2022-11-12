@@ -3,18 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.WebRTC;
 
-public static class NetworkSetting
+namespace Data
 {
-    public static RTCConfiguration rtcConfiguration = new RTCConfiguration
+    public static class NetworkSetting
     {
-        iceServers = new RTCIceServer[]
+        public static RTCConfiguration rtcConfiguration = new RTCConfiguration
         {
-            new RTCIceServer
+            iceServers = new RTCIceServer[]
             {
-                urls = new string[] {"stun:stun.l.google.com:19302"}
+                new RTCIceServer
+                {
+                    urls = new string[] {"stun:stun.l.google.com:19302"}
+                }
             }
-        }
-    };
-
-    
+        };
+    }
 }
