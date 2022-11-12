@@ -6,6 +6,14 @@ TagManager:
   tags:
   - Furniture
   - Cardid
+  - Doing
+  - Complete
+  - Overdue
+  - Request
+  - Hold
+  - Cancel
+  - DI
+  - Feedback
   layers:
   - Default
   - TransparentFX

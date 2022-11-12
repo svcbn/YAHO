@@ -1,3 +1,4 @@
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -92,7 +93,6 @@ public class GetTest : MonoBehaviour
         //-> To do, Doing, Done이 출력된다.
         StartCoroutine(GetCardData(url2));*/
         //여기서 나오는 아이디값 (url2에서 나오는 id값을 idLists에 넣어줘야한다. ) 
-
     }
 
 
