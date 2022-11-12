@@ -42,6 +42,13 @@ MonoBehaviour:
   - CantHearYou
   - ChangeColour
   - HeresWhy
+  - AddTracks
+  - CreateAnswer
+  - CreateAnswerInit
+  - OnIceCandidateReceive
+  - ReceiveAnswer
+  - ReceiveAnswerInit
+  - RemoteDisconnect
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0

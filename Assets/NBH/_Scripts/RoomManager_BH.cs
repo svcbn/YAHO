@@ -6,6 +6,7 @@ using Photon.Pun;
 public class RoomManager_BH : MonoBehaviourPunCallbacks
 {
     public Transform testPos;
+    public Transform projectorPos;
 
     // Start is called before the first frame update
     void Start()
@@ -16,6 +17,8 @@ public class RoomManager_BH : MonoBehaviourPunCallbacks
 
         //플레이어를 생성한다.
         PhotonNetwork.Instantiate("Player", testPos.position, testPos.rotation);
+
+        PhotonNetwork.InstantiateRoomObject("Projector", projectorPos.position, projectorPos.rotation);
     }
 
     // Update is called once per frame

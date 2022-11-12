@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "com.oshoham.unity-google-cloud-streaming-speech-to-text": "https://github.com/oshoham/UnityGoogleStreamingSpeechToText.git",
+    "com.github.homuler.mediapipe": "file:C:/Users/HP/Downloads/com.github.homuler.mediapipe-0.10.1/package",
     "com.unity.2d.sprite": "1.0.0",
     "com.unity.2d.tilemap": "1.0.0",
     "com.unity.collab-proxy": "1.17.1",
