@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class RoomManager_BH : MonoBehaviourPunCallbacks
 {
-    public Transform testPos;
+    public Transform[] spawnPos;
     public Transform projectorPos;
 
     public Button btnCallUI;
@@ -30,7 +30,7 @@ public class RoomManager_BH : MonoBehaviourPunCallbacks
         PhotonNetwork.SendRate = 60;
 
         //플레이어를 생성한다.
-        PhotonNetwork.Instantiate("Player", testPos.position, testPos.rotation);
+        PhotonNetwork.Instantiate("Player", spawnPos[PhotonNetwork.CurrentRoom.PlayerCount-1].position, spawnPos[PhotonNetwork.CurrentRoom.PlayerCount-1].rotation);
 
         //PhotonNetwork.InstantiateRoomObject("Projector", projectorPos.position, projectorPos.rotation);
 
