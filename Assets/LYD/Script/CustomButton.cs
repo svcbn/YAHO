@@ -24,6 +24,9 @@ public class CustomButton : MonoBehaviour
 
     public GameObject dayReport;
 
+    public GameObject btnEnd;
+    public GameObject BlackImage;
+
     
 
 
@@ -129,5 +132,9 @@ public class CustomButton : MonoBehaviour
         dayReport.SetActive(true);
     }
 
+    public void OnBtnEnd()
+    {
+        BlackImage.SetActive(true);
+    }
     
 }
