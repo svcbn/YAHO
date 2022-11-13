@@ -24,6 +24,9 @@ public class Board_UI_Manager : MonoBehaviour
     public Transform cardContent;
     public Transform meTagContent;
 
+    //cardPlay안에 있는 Tramsform content를 가져와야함. 
+    public Transform cardPlayTagContent;
+
     //보드프리팹을 넣는다.
     public GameObject cardObject;
 
@@ -255,6 +258,11 @@ public class Board_UI_Manager : MonoBehaviour
             
             Transform parentTag = go.transform.Find("Scroll View/Viewport/Content");
             GameObject meTag = Instantiate(doing, parentTag);
+            //enumTagType 만들어서 데이터리스트에 넣어보기!!!
+            //jsonTestClass.dataList2[jsonTestClass.dataList2.Count - 1].tagType
+            MemoUI m = new MemoUI();
+            m.cardTag = Instantiate(doing, cardPlayTagContent);
+            m.Set2(m.cardTag);
 
         }
         if (jsonTestClass.type.name.Contains("Complete"))
@@ -262,6 +270,8 @@ public class Board_UI_Manager : MonoBehaviour
             Transform parentTag = go.transform.Find("Scroll View/Viewport/Content");
 
             GameObject meTag = Instantiate(complete, parentTag);
+            memoUI.cardTag = Instantiate(complete, cardPlayTagContent);
+            memoUI.Set2(memoUI.cardTag);
 
         }
         if (jsonTestClass.type.name.Contains("Overdue"))
@@ -269,6 +279,8 @@ public class Board_UI_Manager : MonoBehaviour
             Transform parentTag = go.transform.Find("Scroll View/Viewport/Content");
 
             GameObject meTag = Instantiate(overdue, parentTag);
+            memoUI.cardTag = Instantiate(overdue, cardPlayTagContent);
+            memoUI.Set2(memoUI.cardTag);
 
         }
         if (jsonTestClass.type.name.Contains("Request"))
@@ -276,6 +288,8 @@ public class Board_UI_Manager : MonoBehaviour
             Transform parentTag = go.transform.Find("Scroll View/Viewport/Content");
 
             GameObject meTag = Instantiate(request, parentTag);
+            memoUI.cardTag = Instantiate(request, cardPlayTagContent);
+            memoUI.Set2(memoUI.cardTag);
 
         }
         if (jsonTestClass.type.name.Contains("Hold"))
@@ -283,6 +297,8 @@ public class Board_UI_Manager : MonoBehaviour
             Transform parentTag = go.transform.Find("Scroll View/Viewport/Content");
 
             GameObject meTag = Instantiate(hold, parentTag);
+            memoUI.cardTag = Instantiate(hold, cardPlayTagContent);
+            memoUI.Set2(memoUI.cardTag);
 
         }
         if (jsonTestClass.type.name.Contains("Cancel"))
@@ -290,6 +306,8 @@ public class Board_UI_Manager : MonoBehaviour
             Transform parentTag = go.transform.Find("Scroll View/Viewport/Content");
 
             GameObject meTag = Instantiate(cancel, parentTag);
+            memoUI.cardTag = Instantiate(cancel, cardPlayTagContent);
+            memoUI.Set2(memoUI.cardTag);
 
         }
         if (jsonTestClass.type.name.Contains("DI"))
@@ -297,6 +315,8 @@ public class Board_UI_Manager : MonoBehaviour
             Transform parentTag = go.transform.Find("Scroll View/Viewport/Content");
 
             GameObject meTag = Instantiate(di, parentTag);
+            memoUI.cardTag = Instantiate(di, cardPlayTagContent);
+            memoUI.Set2(memoUI.cardTag);
 
         }
         if (jsonTestClass.type.name.Contains("Feedback"))
@@ -304,6 +324,8 @@ public class Board_UI_Manager : MonoBehaviour
             Transform parentTag = go.transform.Find("Scroll View/Viewport/Content");
 
             GameObject meTag = Instantiate(feedback, parentTag);
+            memoUI.cardTag = Instantiate(feedback, cardPlayTagContent);
+            memoUI.Set2(memoUI.cardTag);
 
         }
 
@@ -327,7 +349,6 @@ public class Board_UI_Manager : MonoBehaviour
             GameObject go = Instantiate(cardObject, cardContent); //부모를 꼭 잡으시오
             //생성한 카드오브젝트를 하나에 게임오브젝트 리스트로 넣어주기 <아얘 안변하는 전역변수 / 리스트> 
             
-            
             cardTexts = go.GetComponentInChildren<Text>();
             cardTexts.text = jsonTestClass.dataList2[i].cardName;
             memoUI = go.GetComponent<MemoUI>();
@@ -336,7 +357,85 @@ public class Board_UI_Manager : MonoBehaviour
             memoUI.Set1(cardDisplay);
              memoUI.memoText.text = jsonTestClass.dataList2[i].desc;
             memoUI.Set(cardTexts.text, memoUI.memoText.text);
+
+           /* if (jsonTestClass.type.name.Contains("Doing"))
+            {
+
+                Transform parentTag = go.transform.Find("Scroll View/Viewport/Content");
+                GameObject meTag = Instantiate(doing, parentTag);
+                //enumTagType 만들어서 데이터리스트에 넣어보기!!!
+                //memoUI.type. = jsonTestClass.dataList2[jsonTestClass.dataList2.Count - 1].tagType;
+                memoUI.cardTag = Instantiate(doing, cardPlayTagContent);
+                memoUI.Set2(memoUI.cardTag);
+
+            }
+            if (jsonTestClass.type.name.Contains("Complete"))
+            {
+                Transform parentTag = go.transform.Find("Scroll View/Viewport/Content");
+
+                GameObject meTag = Instantiate(complete, parentTag);
+                memoUI.cardTag = Instantiate(complete, cardPlayTagContent);
+                memoUI.Set2(memoUI.cardTag);
+
+            }
+            if (jsonTestClass.type.name.Contains("Overdue"))
+            {
+                Transform parentTag = go.transform.Find("Scroll View/Viewport/Content");
+
+                GameObject meTag = Instantiate(overdue, parentTag);
+                memoUI.cardTag = Instantiate(overdue, cardPlayTagContent);
+                memoUI.Set2(memoUI.cardTag);
+
+            }
+            if (jsonTestClass.type.name.Contains("Request"))
+            {
+                Transform parentTag = go.transform.Find("Scroll View/Viewport/Content");
+
+                GameObject meTag = Instantiate(request, parentTag);
+                memoUI.cardTag = Instantiate(request, cardPlayTagContent);
+                memoUI.Set2(memoUI.cardTag);
+
+            }
+            if (jsonTestClass.type.name.Contains("Hold"))
+            {
+                Transform parentTag = go.transform.Find("Scroll View/Viewport/Content");
+
+                GameObject meTag = Instantiate(hold, parentTag);
+                memoUI.cardTag = Instantiate(hold, cardPlayTagContent);
+                memoUI.Set2(memoUI.cardTag);
+
+            }
+            if (jsonTestClass.type.name.Contains("Cancel"))
+            {
+                Transform parentTag = go.transform.Find("Scroll View/Viewport/Content");
+
+                GameObject meTag = Instantiate(cancel, parentTag);
+                memoUI.cardTag = Instantiate(cancel, cardPlayTagContent);
+                memoUI.Set2(memoUI.cardTag);
+
+            }
+            if (jsonTestClass.type.name.Contains("DI"))
+            {
+                Transform parentTag = go.transform.Find("Scroll View/Viewport/Content");
+
+                GameObject meTag = Instantiate(di, parentTag);
+                memoUI.cardTag = Instantiate(di, cardPlayTagContent);
+                memoUI.Set2(memoUI.cardTag);
+
+            }
+            if (jsonTestClass.type.name.Contains("Feedback"))
+            {
+                Transform parentTag = go.transform.Find("Scroll View/Viewport/Content");
+
+                GameObject meTag = Instantiate(feedback, parentTag);
+                memoUI.cardTag = Instantiate(feedback, cardPlayTagContent);
+                memoUI.Set2(memoUI.cardTag);
+
+            }*/
+
             idx.Add(go);
+
+
             //삭제버튼 누를 때 제이슨에 담았던 데이터들도 접근해서 삭제해주기!
             //내가 해주고 싶은 것: 카드 프리팹에 숫자를 넣어주는 것! 
             //idx 스크립트는 카드스크립트마다 생성이 되는 거니까 

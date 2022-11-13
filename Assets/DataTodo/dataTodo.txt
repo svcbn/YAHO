@@ -1,39 +1,29 @@
 {
     "data2": [
         {
-            "cardName": "안녕하세요",
-            "desc": "감사합니다",
-            "tagType": 0
+            "cardName": "ㅎㅎㅎㅎ",
+            "desc": "ㅎㅎㅎ",
+            "tagType": 1
         },
         {
-            "cardName": "하하하하하하하하하하하하하하하하",
-            "desc": "가나다라마바사아자차카타파하아야어여오요우유으이",
+            "cardName": "ㅎㅎ",
+            "desc": "ㅎㅎㅎㅎ",
+            "tagType": 1
+        },
+        {
+            "cardName": "ㄹㄹㄹㄹ",
+            "desc": "ㄹㄹㄹㄹㄹ",
             "tagType": 5
         },
         {
-            "cardName": "ㅇㅇㅇㅇ",
-            "desc": "ㅇㅇㅇㅇㅇㅇ",
-            "tagType": 2
-        },
-        {
-            "cardName": "ㅌ",
-            "desc": "ㅌ",
-            "tagType": 1
-        },
-        {
             "cardName": "ㅎㅎㅎ",
-            "desc": "ㅎㅎㅎㅎㅎㅎ",
-            "tagType": 1
-        },
-        {
-            "cardName": "일이삼사오육칠",
-            "desc": "일이삼사오육칠팔구십십일십이십삼십사십오십육",
+            "desc": "ㅎㅎ",
             "tagType": 0
         },
         {
-            "cardName": "dkdkdk",
-            "desc": "eeedddddddddddddddddddddddddddddddddddddd",
-            "tagType": 2
+            "cardName": "ㅎㅎㅎ",
+            "desc": "ㅎㅎㅎ",
+            "tagType": 0
         }
     ]
 }

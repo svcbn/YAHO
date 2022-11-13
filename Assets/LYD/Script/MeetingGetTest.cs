@@ -9,8 +9,10 @@ public class Meeting
     public List<string> keyword;
     public string summary;
     public string transcript;
+    public string teamMember;
     //?팀원
-    //이미지는 어떻게 받을지 public byte[] graph;
+    //이미지는 어떻게 받을지
+    public byte[] graph;
 }
 
 public enum MeetingRequestType

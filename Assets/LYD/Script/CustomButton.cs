@@ -15,11 +15,16 @@ public class CustomButton : MonoBehaviour
     public GameObject taskBtn;
     public GameObject enterBtn;
     public GameObject meetingHistoryBtn;
+    public GameObject exitBtn;
 
     public GameObject me;
-
+    public GameObject meXBtn;
 
     public GameObject meetingImage;
+
+    public GameObject dayReport;
+
+    
 
 
     //메뉴 버튼을 눌러을때 커스텀 백그라운드랑 task버튼이랑 입장 버튼이 떠야한다.
@@ -58,6 +63,7 @@ public class CustomButton : MonoBehaviour
         taskBtn.SetActive(false);
         enterBtn.SetActive(false);
         meetingHistoryBtn.SetActive(false);
+        exitBtn.SetActive(false);
     }
 
     public void CustomXBtn()
@@ -67,6 +73,7 @@ public class CustomButton : MonoBehaviour
         taskBtn.SetActive(true);
         enterBtn.SetActive(true);
         meetingHistoryBtn.SetActive(true);
+        exitBtn.SetActive(true);
 
     }
 
@@ -81,6 +88,7 @@ public class CustomButton : MonoBehaviour
             taskBtn.SetActive(true);
             enterBtn.SetActive(true);
             meetingHistoryBtn.SetActive(true);
+            exitBtn.SetActive(true);
 
         }
         else
@@ -89,6 +97,7 @@ public class CustomButton : MonoBehaviour
             taskBtn.SetActive(false);
             enterBtn.SetActive(false);
             meetingHistoryBtn.SetActive(false);
+            exitBtn.SetActive(false);
 
         }
     }
@@ -109,5 +118,16 @@ public class CustomButton : MonoBehaviour
         meetingImage.SetActive(false);
     }
     
+    public void MeXBtn()
+    {
+        me.SetActive(false);
+    }
+
+    //BTN EXIT을 누르면 DAYReport 이미지가 켜진다. 
+    public void OnDayReport()
+    {
+        dayReport.SetActive(true);
+    }
+
     
 }
