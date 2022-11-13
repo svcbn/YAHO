@@ -8,6 +8,7 @@ using System.IO;
 public class RecordTest_BH : MonoBehaviour
 {
     AudioClip recordClip;
+    STTTest_BH sTT;
 
     void StartRecordMicrophone()
     {
@@ -46,6 +47,8 @@ public class RecordTest_BH : MonoBehaviour
         {
             print(Microphone.devices[i]);
         }
+
+        sTT = GetComponent<STTTest_BH>();
     }
 
     // Update is called once per frame
@@ -62,13 +65,15 @@ public class RecordTest_BH : MonoBehaviour
             print("녹음끝");
             StopRecordMicrophone();
             SavWav.Save("test", recordClip);
+            sTT.SendWav();
+
         }
 
-        if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            byte[] data = File.ReadAllBytes("C:\\Users\\HP\\Desktop\\4차프로젝트\\WAV\\test.wav");
+        //if (Input.GetKeyDown(KeyCode.Alpha3))
+        //{
+        //    byte[] data = File.ReadAllBytes("C:\\Users\\HP\\Desktop\\4차프로젝트\\WAV\\test.wav");
            
-            File.WriteAllBytes(Application.dataPath + "/b.wav", data);
-        }
+        //    File.WriteAllBytes(Application.dataPath + "/b.wav", data);
+        //}
     }
 }

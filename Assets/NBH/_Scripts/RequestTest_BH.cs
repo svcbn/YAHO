@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Networking;
+using Photon.Pun;
 
 public enum RequestType
 {
@@ -11,11 +12,13 @@ public enum RequestType
     PUT
 }
 
+[System.Serializable]
 public class MeetingData
 {
     public string date;
-    public List<ConversationData> scripts = new List<ConversationData>();
+    public int count;
 }
+
 
 [System.Serializable]
 public class ConversationData
@@ -54,7 +57,6 @@ public class HttpRequester : MonoBehaviour
 public class RequestTest_BH : MonoBehaviour
 {
     public InputField inputProjectName;
-    public InputField inputCoWorkers;
     public InputField inputScheduleStart;
     public InputField inputScheduleEnd;
     public InputField inputProjectGoal;
@@ -69,10 +71,13 @@ public class RequestTest_BH : MonoBehaviour
     string _endDate = "2022-12-13";
     List<int> _projectMemberList = new List<int>() {1,2,3 };
 
+    public List<ConversationData> scripts = new List<ConversationData>();
+
+
     // Start is called before the first frame update
     void Start()
     {
-        //inputProjectName.onValueChanged.AddListener(ProjectName);
+        #region Listener
         inputProjectName.onEndEdit.AddListener(ProjectName);
         inputProjectName.onSubmit.AddListener(ProjectName);
 
@@ -80,19 +85,17 @@ public class RequestTest_BH : MonoBehaviour
         //inputCoWorkers.onEndEdit.AddListener(CoWorkers);
         //inputCoWorkers.onSubmit.AddListener(CoWorkers);
 
-        //inputScheduleStart.onValueChanged.AddListener(StartDate);
         inputScheduleStart.onEndEdit.AddListener(StartDate);
         inputScheduleStart.onSubmit.AddListener(StartDate);
 
-        //inputScheduleEnd.onValueChanged.AddListener(EndDate);
         inputScheduleEnd.onEndEdit.AddListener(EndDate);
         inputScheduleEnd.onSubmit.AddListener(EndDate);
 
-        //inputProjectGoal.onValueChanged.AddListener(ProjectGoal);
         inputProjectGoal.onEndEdit.AddListener(ProjectGoal);
         inputProjectGoal.onSubmit.AddListener(ProjectGoal);
 
         btnPush.onClick.AddListener(onBtnPushClicked);
+        #endregion
     }
 
     public void ProjectName(string s)
@@ -139,40 +142,44 @@ public class RequestTest_BH : MonoBehaviour
 
     }
 
-    public void SignInAI()
+    public void AddMeetingData()
+    {
+        ConversationData conversation = new ConversationData();
+
+        conversation.name = PhotonNetwork.NickName;
+        conversation.time = System.DateTime.Now.ToString("HH:mm:ss");   
+        conversation.text = stt.temp;
+        scripts.Add(conversation);
+        
+    }
+
+    public void PostStartMeeting()
+    {
+        HttpRequester requester = new HttpRequester();
+        MeetingData data = new MeetingData();
+        data.date = System.DateTime.Now.ToString("yyyy-MM-dd");
+        data.count = PhotonNetwork.CurrentRoom.PlayerCount;
+
+        ///user , POST, 완료되었을 때 호출되는 함수
+        requester.url = "http://15.165.47.243:9090/";
+        requester.requestType = RequestType.POST;
+        requester.postData = JsonUtility.ToJson(data, true);
+
+        requester.onComplete = OnCompleteSignIn;
+
+        //HttpManager에게 요청
+        SendRequest(requester);
+    }
+
+
+    public void PostEndMeeting()
     {
         HttpRequester requester = new HttpRequester();
 
         ///user , POST, 완료되었을 때 호출되는 함수
-        //requester.url = "127.0.0.55:8880/upload"; // rapa3
-        requester.url = "http://192.168.0.17:9090"; // rapa7
+        requester.url = "http://15.165.47.243:9090/";
         requester.requestType = RequestType.POST;
-
-        MeetingData meeting = new MeetingData();
-        ConversationData conversation = new ConversationData();
-
-        conversation.time = System.DateTime.Now.ToString("HH:mm:ss");
-        conversation.name = "한나";
-        conversation.text = "안드레아, 미팅에 관한 정보 받았어요?";
-
-        meeting.scripts.Add(conversation);
-        meeting.date = System.DateTime.Now.ToString("yyyy-MM-dd");
-
-        requester.postData = JsonUtility.ToJson(meeting, true);
-
-
-
-        //post data 셋팅
-        //ProjectData data = new ProjectData();
-        //data.projectName = _projectName;
-        //data.projectSubject = _projectSubject;
-        //data.representativeMemberNo = _representativeMemberNo;
-        //data.startDate = _startDate;
-        //data.endDate = _endDate;
-        //data.projectMemberList = _projectMemberList;
-
-        //requester.postData = JsonUtility.ToJson(data, true);
-        //print(requester.postData);
+        requester.postData = JsonUtility.ToJson(scripts, true);
 
         requester.onComplete = OnCompleteSignIn;
 
@@ -277,9 +284,6 @@ public class RequestTest_BH : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Alpha5))
-        {
-            SignInAI();
-        }
+        
     }
 }
