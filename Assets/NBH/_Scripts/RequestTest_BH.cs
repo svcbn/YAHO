@@ -5,13 +5,6 @@ using UnityEngine.UI;
 using UnityEngine.Networking;
 using Photon.Pun;
 
-public enum RequestType
-{
-    POST,
-    GET,
-    PUT
-}
-
 [System.Serializable]
 public class MeetingData
 {
@@ -45,14 +38,7 @@ public class ProjectData
     public List<int> projectMemberList;
 }
  
-public class HttpRequester : MonoBehaviour
-{
-    public string url;
-    public RequestType requestType;
 
-    public string postData;
-    public System.Action<DownloadHandler> onComplete;
-}
 
 public class RequestTest_BH : MonoBehaviour
 {
@@ -194,7 +180,7 @@ public class RequestTest_BH : MonoBehaviour
         HttpRequester requester = new HttpRequester();
 
         ///user , POST, 완료되었을 때 호출되는 함수
-        requester.url = "http://192.168.0.13:8001/projects";
+        requester.url = "http://192.168.0.105:8001/projects";
         requester.requestType = RequestType.POST;
 
         //post data 셋팅

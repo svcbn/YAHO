@@ -5,8 +5,20 @@ using Photon.Pun;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
+public class MemberData
+{
+    public string memberId;
+    public string memberPw;
+    public string name;
+    public string phone;
+    public string email;
+    public string address;
+}
+
 public class LogInManager_BH : MonoBehaviourPunCallbacks
 {
+    WebRequester_BH webRequester;
+
     [Header("Main")]
     #region 메인화면 component
 
@@ -103,6 +115,12 @@ public class LogInManager_BH : MonoBehaviourPunCallbacks
     // 회원가입 이메일
     public InputField inputSignUpEmail;
 
+    // 회원가입 핸드폰번호
+    public InputField inputSignUpPhone;
+
+    // 회원가입 주소
+    public InputField inputSignUpAdress;
+
     // 회원가입 버튼
     public Button btnSignUpSubmit;
 
@@ -111,6 +129,19 @@ public class LogInManager_BH : MonoBehaviourPunCallbacks
 
     #endregion
 
+
+    string _memberId;
+    string _memberPw;
+    string _memberPwCheck;
+    string _name;
+    string _phone;
+    string _email;
+    string _address;
+
+    private void Awake()
+    {
+        webRequester = GetComponent<WebRequester_BH>();
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -146,24 +177,29 @@ public class LogInManager_BH : MonoBehaviourPunCallbacks
         btnFindPWReturn.onClick.AddListener(OnbtnFindPWReturnClicked);
 
         // 회원가입 아이디 검사 버튼
-        //btnSignUpIDCheck.onClick.AddListener();
+        btnSignUpIDCheck.onClick.AddListener(OnbtnSignUpIDCheckClicked);
 
         // 회원가입 제출 버튼
-        //btnSignUpSubmit.onClick.AddListener();
+        btnSignUpSubmit.onClick.AddListener(OnbtnSignUpSubmitClicked);
 
         // 회원가입 에서 돌아가기
         btnSignUpReturn.onClick.AddListener(OnbtnSignUpReturnClicked);
+        #endregion
 
 
+        #region InputField Listener
+
+        inputSignUpID.onEndEdit.AddListener(OnEndEditInputSignUpID);
+        inputSignUpPW.onEndEdit.AddListener(OnEndEditInputSignUpPW);
+        inputSignUpPWCorrect.onEndEdit.AddListener(OnEndEditInputSignUpPWCorrect);
+        inputSignUpName.onEndEdit.AddListener(OnEndEditInputSignUpName);
+        inputSignUpPhone.onEndEdit.AddListener(OnEndEditInputSignUpPhone);
+        inputSignUpEmail.onEndEdit.AddListener(OnEndEditInputSignUpEmail);
+        inputSignUpAdress.onEndEdit.AddListener(OnEndEditInputSignUpAdress);
 
         #endregion
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     #region 버튼들
 
@@ -227,7 +263,92 @@ public class LogInManager_BH : MonoBehaviourPunCallbacks
         panelSignUp.SetActive(false);
     }
 
+    void OnbtnSignUpSubmitClicked()
+    {
+        SignIn();
+    }
+
+    void OnbtnSignUpIDCheckClicked()
+    {
+        IdCheck();
+    }
+
+
     #endregion
+
+    #region 인풋필드
+    void OnEndEditInputSignUpID(string s)
+    {
+        _memberId = s;
+    }
+
+    void OnEndEditInputSignUpPW(string s)
+    {
+        _memberPw = s;
+    }
+
+    void OnEndEditInputSignUpPWCorrect(string s)
+    {
+        _memberPwCheck = s;
+    }
+
+    void OnEndEditInputSignUpName(string s)
+    {
+        _name = s;
+    }
+
+    void OnEndEditInputSignUpPhone(string s)
+    {
+        _phone = s;
+    }
+
+    void OnEndEditInputSignUpEmail(string s)
+    {
+        _email = s;
+    }
+
+    void OnEndEditInputSignUpAdress(string s)
+    {
+        _address = s;
+    }
+
+    #endregion
+
+    void SignIn()
+    {
+        HttpRequester requester = new HttpRequester();
+        MemberData data = new MemberData();
+        data.memberId = _memberId;
+        data.memberPw = _memberPw;
+        data.name = _name;
+        data.phone = _phone;
+        data.email = _email;
+        data.address = _address;
+
+        requester.url = "http://43.201.58.81:8088/members";
+        requester.requestType = RequestType.POST;
+
+        requester.postData = JsonUtility.ToJson(data, true);
+
+        requester.onComplete = webRequester.OnCompleteSignIn;
+
+        webRequester.SendRequest(requester);
+    }
+
+    void IdCheck()
+    {
+        HttpRequester requester = new HttpRequester();
+        string Id = _memberId;       
+
+        requester.url = "http://43.201.58.81:8088/members/checkId/" + Id;
+        requester.requestType = RequestType.POST;
+
+        requester.postData = null;
+
+        requester.onComplete = webRequester.OnCompleteSignIn;
+
+        webRequester.SendRequest(requester);
+    }
 
     // 마스터 서버에 접속 성공,  아직 로비를 만들거나 진입할 수 없는 상태
     public override void OnConnected()
@@ -257,4 +378,7 @@ public class LogInManager_BH : MonoBehaviourPunCallbacks
         print("로비 접속 성공");
         PhotonNetwork.LoadLevel(1);
     }
+
+
+
 }
