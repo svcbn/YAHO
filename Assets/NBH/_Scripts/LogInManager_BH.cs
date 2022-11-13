@@ -255,6 +255,6 @@ public class LogInManager_BH : MonoBehaviourPunCallbacks
     {
         base.OnJoinedLobby();
         print("로비 접속 성공");
-        PhotonNetwork.LoadLevel("02_MyDesk_BH 1");
+        PhotonNetwork.LoadLevel(1);
     }
 }

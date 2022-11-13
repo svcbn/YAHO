@@ -6,33 +6,40 @@ using System.Threading;
 using System.Text;
 
 
+
 public class STTTest_BH : MonoBehaviour
 {
+    
+    RequestTest_BH request;
 
     bool isLoading = false;
-    string meetingMinutes = "";
+
     public string temp = "";
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        request = GetComponent<RequestTest_BH>();
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha4))
-        {
-            Thread thread = new Thread(Run);
-            thread.Start();
-        }
+        
         if(isLoading)
         {
             Debug.Log("변환 완료");
             isLoading = false;
-            WriteMeeting();
+            request.AddMeetingData();
+
         }
+    }
+
+    public void SendWav()
+    {
+        Thread thread = new Thread(Run);
+        thread.Start();
     }
 
     public void End()
@@ -49,10 +56,5 @@ public class STTTest_BH : MonoBehaviour
 
     }
 
-    void WriteMeeting()
-    {
-        string realTime = System.DateTime.Now.ToString("HH:mm:ss");
-        meetingMinutes += realTime + " " + Photon.Pun.PhotonNetwork.NickName + " : " + temp + "\n";
-        print(meetingMinutes);
-    }
+    
 }

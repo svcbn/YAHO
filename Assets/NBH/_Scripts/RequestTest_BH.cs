@@ -12,11 +12,13 @@ public enum RequestType
     PUT
 }
 
+[System.Serializable]
 public class MeetingData
 {
     public string date;
-    public List<ConversationData> scripts = new List<ConversationData>();
+    public int count;
 }
+
 
 [System.Serializable]
 public class ConversationData
@@ -55,7 +57,6 @@ public class HttpRequester : MonoBehaviour
 public class RequestTest_BH : MonoBehaviour
 {
     public InputField inputProjectName;
-    public InputField inputCoWorkers;
     public InputField inputScheduleStart;
     public InputField inputScheduleEnd;
     public InputField inputProjectGoal;
@@ -69,6 +70,9 @@ public class RequestTest_BH : MonoBehaviour
     string _startDate = "2022-12-12";
     string _endDate = "2022-12-13";
     List<int> _projectMemberList = new List<int>() {1,2,3 };
+
+    public List<ConversationData> scripts = new List<ConversationData>();
+
 
     // Start is called before the first frame update
     void Start()
@@ -92,9 +96,6 @@ public class RequestTest_BH : MonoBehaviour
 
         btnPush.onClick.AddListener(onBtnPushClicked);
         #endregion
-
-        meeting.date = System.DateTime.Now.ToString("yyyy-MM-dd");
-        conversation.name = PhotonNetwork.NickName;
     }
 
     public void ProjectName(string s)
@@ -141,36 +142,44 @@ public class RequestTest_BH : MonoBehaviour
 
     }
 
-    public HttpRequester requester = new HttpRequester();
-    public MeetingData meeting = new MeetingData();
-    public ConversationData conversation = new ConversationData();
-
     public void AddMeetingData()
     {
+        ConversationData conversation = new ConversationData();
+
+        conversation.name = PhotonNetwork.NickName;
         conversation.time = System.DateTime.Now.ToString("HH:mm:ss");   
-        conversation.text = "안드레아, 미팅에 관한 정보 받았어요?";
-        meeting.scripts.Add(conversation);
+        conversation.text = stt.temp;
+        scripts.Add(conversation);
+        
     }
 
-    public void PostAI()
+    public void PostStartMeeting()
     {
+        HttpRequester requester = new HttpRequester();
+        MeetingData data = new MeetingData();
+        data.date = System.DateTime.Now.ToString("yyyy-MM-dd");
+        data.count = PhotonNetwork.CurrentRoom.PlayerCount;
+
         ///user , POST, 완료되었을 때 호출되는 함수
         requester.url = "http://15.165.47.243:9090/";
         requester.requestType = RequestType.POST;
+        requester.postData = JsonUtility.ToJson(data, true);
 
-        requester.postData = JsonUtility.ToJson(meeting, true);
+        requester.onComplete = OnCompleteSignIn;
 
-        //post data 셋팅
-        //ProjectData data = new ProjectData();
-        //data.projectName = _projectName;
-        //data.projectSubject = _projectSubject;
-        //data.representativeMemberNo = _representativeMemberNo;
-        //data.startDate = _startDate;
-        //data.endDate = _endDate;
-        //data.projectMemberList = _projectMemberList;
+        //HttpManager에게 요청
+        SendRequest(requester);
+    }
 
-        //requester.postData = JsonUtility.ToJson(data, true);
-        //print(requester.postData);
+
+    public void PostEndMeeting()
+    {
+        HttpRequester requester = new HttpRequester();
+
+        ///user , POST, 완료되었을 때 호출되는 함수
+        requester.url = "http://15.165.47.243:9090/";
+        requester.requestType = RequestType.POST;
+        requester.postData = JsonUtility.ToJson(scripts, true);
 
         requester.onComplete = OnCompleteSignIn;
 

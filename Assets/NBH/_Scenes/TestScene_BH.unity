@@ -1149,11 +1149,7 @@ MonoBehaviour:
   inputProjectGoal: {fileID: 1014189662}
   btnPush: {fileID: 1070975850}
   stt: {fileID: 542778957}
-  requester: {fileID: 0}
-  conversation:
-    time: 
-    name: 
-    text: 
+  scripts: []
 --- !u!114 &542778960
 MonoBehaviour:
   m_ObjectHideFlags: 0

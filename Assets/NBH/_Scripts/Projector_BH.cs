@@ -5,7 +5,6 @@ using Photon.Pun;
 using uWindowCapture;
 using Unity.WebRTC;
 
-
 public class Projector_BH : MonoBehaviour
 {
     public WebRTCBroadClient_BH webRTCBroadClient;
