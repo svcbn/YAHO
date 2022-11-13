@@ -1,28 +1,13 @@
 {
     "data2": [
         {
-            "cardName": "ㅎㅎㅎㅎ",
-            "desc": "ㅎㅎㅎ",
-            "tagType": 1
+            "cardName": "Ui 작업",
+            "desc": "To-do list 구현",
+            "tagType": 6
         },
         {
-            "cardName": "ㅎㅎ",
-            "desc": "ㅎㅎㅎㅎ",
-            "tagType": 1
-        },
-        {
-            "cardName": "ㄹㄹㄹㄹ",
-            "desc": "ㄹㄹㄹㄹㄹ",
-            "tagType": 5
-        },
-        {
-            "cardName": "ㅎㅎㅎ",
-            "desc": "ㅎㅎ",
-            "tagType": 0
-        },
-        {
-            "cardName": "ㅎㅎㅎ",
-            "desc": "ㅎㅎㅎ",
+            "cardName": "카드 구현",
+            "desc": "Unity내에 카드를 버튼으로 구현",
             "tagType": 0
         }
     ]

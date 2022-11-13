@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Networking;
-public class Meeting
+public class MeetingHistoryData
 {
     public string date;
     public List<string> keyword;
     public string summary;
-    public string transcript;
-    public string teamMember;
+    public string transcripts;
+    //public Liststring teamMember;
     //?팀원
     //이미지는 어떻게 받을지
     public byte[] graph;
@@ -25,8 +25,8 @@ public class MeetingGetTest : MonoBehaviour
     public Text date;
     public Text keyword;
     public Text summary;
-    public Text transcrpit;
-
+    public Text transcripts;
+    public Text teamMember;
     // Start is called before the first frame update
     void Start()
     {
@@ -61,6 +61,15 @@ public class MeetingGetTest : MonoBehaviour
 
         if(req.result == UnityWebRequest.Result.Success)
         {
+            string readData = req.downloadHandler.text;
+            print($"읽은 값: {readData}");
+
+            MeetingHistoryData meetingHistoryData = JsonUtility.FromJson<MeetingHistoryData>(readData);
+            date.text = meetingHistoryData.date;
+            //keyword.text[] = meetingHistoryData.keyword;
+            summary.text = meetingHistoryData.summary;
+            transcripts.text = meetingHistoryData.transcripts;
+
 
         }
     }
