@@ -8,6 +8,7 @@ using System.IO;
 public class RecordTest_BH : MonoBehaviour
 {
     AudioClip recordClip;
+    RequestTest_BH request;
 
     void StartRecordMicrophone()
     {
@@ -46,6 +47,8 @@ public class RecordTest_BH : MonoBehaviour
         {
             print(Microphone.devices[i]);
         }
+
+        request = GetComponent<RequestTest_BH>();
     }
 
     // Update is called once per frame
@@ -62,6 +65,9 @@ public class RecordTest_BH : MonoBehaviour
             print("≥Ï¿Ω≥°");
             StopRecordMicrophone();
             SavWav.Save("test", recordClip);
+
+
+            request.AddMeetingData();
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha3))

@@ -51,10 +51,8 @@ public class STTTest_BH : MonoBehaviour
 
     void WriteMeeting()
     {
-        
         string realTime = System.DateTime.Now.ToString("HH:mm:ss");
-        meetingMinutes += realTime + " " + /*Photon.Pun.PhotonNetwork.NickName*/ "³ªº´ÇÑ" + " : " + temp + "\n";
+        meetingMinutes += realTime + " " + Photon.Pun.PhotonNetwork.NickName + " : " + temp + "\n";
         print(meetingMinutes);
-
     }
 }

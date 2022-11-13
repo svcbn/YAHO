@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Networking;
+using Photon.Pun;
 
 public enum RequestType
 {
@@ -72,7 +73,7 @@ public class RequestTest_BH : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //inputProjectName.onValueChanged.AddListener(ProjectName);
+        #region Listener
         inputProjectName.onEndEdit.AddListener(ProjectName);
         inputProjectName.onSubmit.AddListener(ProjectName);
 
@@ -80,19 +81,20 @@ public class RequestTest_BH : MonoBehaviour
         //inputCoWorkers.onEndEdit.AddListener(CoWorkers);
         //inputCoWorkers.onSubmit.AddListener(CoWorkers);
 
-        //inputScheduleStart.onValueChanged.AddListener(StartDate);
         inputScheduleStart.onEndEdit.AddListener(StartDate);
         inputScheduleStart.onSubmit.AddListener(StartDate);
 
-        //inputScheduleEnd.onValueChanged.AddListener(EndDate);
         inputScheduleEnd.onEndEdit.AddListener(EndDate);
         inputScheduleEnd.onSubmit.AddListener(EndDate);
 
-        //inputProjectGoal.onValueChanged.AddListener(ProjectGoal);
         inputProjectGoal.onEndEdit.AddListener(ProjectGoal);
         inputProjectGoal.onSubmit.AddListener(ProjectGoal);
 
         btnPush.onClick.AddListener(onBtnPushClicked);
+        #endregion
+
+        meeting.date = System.DateTime.Now.ToString("yyyy-MM-dd");
+        conversation.name = PhotonNetwork.NickName;
     }
 
     public void ProjectName(string s)
@@ -139,28 +141,24 @@ public class RequestTest_BH : MonoBehaviour
 
     }
 
-    public void SignInAI()
-    {
-        HttpRequester requester = new HttpRequester();
+    public HttpRequester requester = new HttpRequester();
+    public MeetingData meeting = new MeetingData();
+    public ConversationData conversation = new ConversationData();
 
+    public void AddMeetingData()
+    {
+        conversation.time = System.DateTime.Now.ToString("HH:mm:ss");   
+        conversation.text = "안드레아, 미팅에 관한 정보 받았어요?";
+        meeting.scripts.Add(conversation);
+    }
+
+    public void PostAI()
+    {
         ///user , POST, 완료되었을 때 호출되는 함수
-        //requester.url = "127.0.0.55:8880/upload"; // rapa3
-        requester.url = "http://192.168.0.17:9090"; // rapa7
+        requester.url = "http://15.165.47.243:9090/";
         requester.requestType = RequestType.POST;
 
-        MeetingData meeting = new MeetingData();
-        ConversationData conversation = new ConversationData();
-
-        conversation.time = System.DateTime.Now.ToString("HH:mm:ss");
-        conversation.name = "한나";
-        conversation.text = "안드레아, 미팅에 관한 정보 받았어요?";
-
-        meeting.scripts.Add(conversation);
-        meeting.date = System.DateTime.Now.ToString("yyyy-MM-dd");
-
         requester.postData = JsonUtility.ToJson(meeting, true);
-
-
 
         //post data 셋팅
         //ProjectData data = new ProjectData();
@@ -277,9 +275,6 @@ public class RequestTest_BH : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Alpha5))
-        {
-            SignInAI();
-        }
+        
     }
 }
