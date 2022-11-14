@@ -189,6 +189,7 @@ public class LogInManager_BH : MonoBehaviourPunCallbacks
 
         #region InputField Listener
 
+        inputID.onEndEdit.AddListener(OnEndEditInputID);
         inputSignUpID.onEndEdit.AddListener(OnEndEditInputSignUpID);
         inputSignUpPW.onEndEdit.AddListener(OnEndEditInputSignUpPW);
         inputSignUpPWCorrect.onEndEdit.AddListener(OnEndEditInputSignUpPWCorrect);
@@ -213,6 +214,8 @@ public class LogInManager_BH : MonoBehaviourPunCallbacks
 
         //NameServer 접속,(AppID, GameVersion, 지역)
         PhotonNetwork.ConnectUsingSettings();
+
+        PhotonNetwork.NickName = _name;
     }
 
     // 아이디 찾기 눌렀을때 호출
@@ -277,6 +280,11 @@ public class LogInManager_BH : MonoBehaviourPunCallbacks
     #endregion
 
     #region 인풋필드
+    void OnEndEditInputID(string s)
+    {
+        _name = s;
+    }
+
     void OnEndEditInputSignUpID(string s)
     {
         _memberId = s;

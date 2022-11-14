@@ -9,6 +9,11 @@
             "cardName": "카드 구현",
             "desc": "Unity내에 카드를 버튼으로 구현",
             "tagType": 0
+        },
+        {
+            "cardName": "로그인 연동",
+            "desc": "네트워크와 로그인 연동",
+            "tagType": 0
         }
     ]
 }

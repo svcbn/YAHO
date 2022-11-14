@@ -133,7 +133,7 @@ public class RequestTest_BH : MonoBehaviour
         ConversationData conversation = new ConversationData();
 
         conversation.name = PhotonNetwork.NickName;
-        conversation.time = System.DateTime.Now.ToString("HH:mm:ss");   
+        conversation.time = System.DateTime.Now.ToString("HH:mm:ss");
         conversation.text = stt.temp;
         scripts.Add(conversation);
         
@@ -147,7 +147,7 @@ public class RequestTest_BH : MonoBehaviour
         data.count = PhotonNetwork.CurrentRoom.PlayerCount;
 
         ///user , POST, 완료되었을 때 호출되는 함수
-        requester.url = "http://15.165.47.243:9090/";
+        requester.url = "http://15.165.47.243:9090/info";
         requester.requestType = RequestType.POST;
         requester.postData = JsonUtility.ToJson(data, true);
 
@@ -163,7 +163,7 @@ public class RequestTest_BH : MonoBehaviour
         HttpRequester requester = new HttpRequester();
 
         ///user , POST, 완료되었을 때 호출되는 함수
-        requester.url = "http://15.165.47.243:9090/";
+        requester.url = "http://15.165.47.243:9090/summarize";
         requester.requestType = RequestType.POST;
         requester.postData = JsonUtility.ToJson(scripts, true);
 
@@ -270,6 +270,13 @@ public class RequestTest_BH : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if(Input.GetKeyDown(KeyCode.Alpha0))
+        {
+            PostStartMeeting();
+        }
+        if(Input.GetKeyDown(KeyCode.Alpha9))
+        {
+            PostEndMeeting();
+        }
     }
 }
