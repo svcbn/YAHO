@@ -5,13 +5,6 @@ using UnityEngine.UI;
 using UnityEngine.Networking;
 using Photon.Pun;
 
-public enum RequestType
-{
-    POST,
-    GET,
-    PUT
-}
-
 [System.Serializable]
 public class MeetingData
 {
@@ -45,14 +38,7 @@ public class ProjectData
     public List<int> projectMemberList;
 }
  
-public class HttpRequester : MonoBehaviour
-{
-    public string url;
-    public RequestType requestType;
 
-    public string postData;
-    public System.Action<DownloadHandler> onComplete;
-}
 
 public class RequestTest_BH : MonoBehaviour
 {
@@ -147,7 +133,7 @@ public class RequestTest_BH : MonoBehaviour
         ConversationData conversation = new ConversationData();
 
         conversation.name = PhotonNetwork.NickName;
-        conversation.time = System.DateTime.Now.ToString("HH:mm:ss");   
+        conversation.time = System.DateTime.Now.ToString("HH:mm:ss");
         conversation.text = stt.temp;
         scripts.Add(conversation);
         
@@ -161,7 +147,7 @@ public class RequestTest_BH : MonoBehaviour
         data.count = PhotonNetwork.CurrentRoom.PlayerCount;
 
         ///user , POST, 완료되었을 때 호출되는 함수
-        requester.url = "http://15.165.47.243:9090/";
+        requester.url = "http://15.165.47.243:9090/info";
         requester.requestType = RequestType.POST;
         requester.postData = JsonUtility.ToJson(data, true);
 
@@ -177,7 +163,7 @@ public class RequestTest_BH : MonoBehaviour
         HttpRequester requester = new HttpRequester();
 
         ///user , POST, 완료되었을 때 호출되는 함수
-        requester.url = "http://15.165.47.243:9090/";
+        requester.url = "http://15.165.47.243:9090/summarize";
         requester.requestType = RequestType.POST;
         requester.postData = JsonUtility.ToJson(scripts, true);
 
@@ -194,7 +180,7 @@ public class RequestTest_BH : MonoBehaviour
         HttpRequester requester = new HttpRequester();
 
         ///user , POST, 완료되었을 때 호출되는 함수
-        requester.url = "http://192.168.0.13:8001/projects";
+        requester.url = "http://192.168.0.105:8001/projects";
         requester.requestType = RequestType.POST;
 
         //post data 셋팅
@@ -284,6 +270,13 @@ public class RequestTest_BH : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if(Input.GetKeyDown(KeyCode.Alpha0))
+        {
+            PostStartMeeting();
+        }
+        if(Input.GetKeyDown(KeyCode.Alpha9))
+        {
+            PostEndMeeting();
+        }
     }
 }
