@@ -4229,7 +4229,6 @@ MonoBehaviour:
   inputProjectGoal: {fileID: 1820235792}
   btnPush: {fileID: 1895779298}
   stt: {fileID: 529706189}
-  scripts: []
 --- !u!114 &529706189
 MonoBehaviour:
   m_ObjectHideFlags: 0

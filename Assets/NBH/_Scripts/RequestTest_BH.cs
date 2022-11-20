@@ -9,7 +9,7 @@ using Photon.Pun;
 public class MeetingData
 {
     public string date;
-    public int count;
+    public List<ConversationData> scripts;
 }
 
 
@@ -57,7 +57,7 @@ public class RequestTest_BH : MonoBehaviour
     string _endDate = "2022-12-13";
     List<int> _projectMemberList = new List<int>() {1,2,3 };
 
-    public List<ConversationData> scripts = new List<ConversationData>();
+    List<ConversationData> _scripts = new List<ConversationData>();
 
 
     // Start is called before the first frame update
@@ -135,37 +135,25 @@ public class RequestTest_BH : MonoBehaviour
         conversation.name = PhotonNetwork.NickName;
         conversation.time = System.DateTime.Now.ToString("HH:mm:ss");
         conversation.text = stt.temp;
-        scripts.Add(conversation);
+        _scripts.Add(conversation);
         
     }
 
-    public void PostStartMeeting()
+
+    public void PostMeeting()
     {
         HttpRequester requester = new HttpRequester();
-        MeetingData data = new MeetingData();
-        data.date = System.DateTime.Now.ToString("yyyy-MM-dd");
-        data.count = PhotonNetwork.CurrentRoom.PlayerCount;
+        MeetingData data = new MeetingData
+        {
+            date = System.DateTime.Now.ToString("yyyy-MM-dd"),
+            scripts = _scripts
+        };
 
         ///user , POST, 완료되었을 때 호출되는 함수
-        requester.url = "http://15.165.47.243:9090/info";
+        requester.url = "http://15.165.47.243:9090/";
         requester.requestType = RequestType.POST;
         requester.postData = JsonUtility.ToJson(data, true);
-
-        requester.onComplete = OnCompleteSignIn;
-
-        //HttpManager에게 요청
-        SendRequest(requester);
-    }
-
-
-    public void PostEndMeeting()
-    {
-        HttpRequester requester = new HttpRequester();
-
-        ///user , POST, 완료되었을 때 호출되는 함수
-        requester.url = "http://15.165.47.243:9090/summarize";
-        requester.requestType = RequestType.POST;
-        requester.postData = JsonUtility.ToJson(scripts, true);
+        Debug.Log(requester.postData);
 
         requester.onComplete = OnCompleteSignIn;
 
@@ -272,11 +260,8 @@ public class RequestTest_BH : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.Alpha0))
         {
-            PostStartMeeting();
+            PostMeeting();
         }
-        if(Input.GetKeyDown(KeyCode.Alpha9))
-        {
-            PostEndMeeting();
-        }
+        
     }
 }

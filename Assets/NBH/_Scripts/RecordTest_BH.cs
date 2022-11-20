@@ -69,6 +69,11 @@ public class RecordTest_BH : MonoBehaviour
 
         }
 
+        if(Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            sTT.SendWav();
+        }
+
         //if (Input.GetKeyDown(KeyCode.Alpha3))
         //{
         //    byte[] data = File.ReadAllBytes("C:\\Users\\HP\\Desktop\\4차프로젝트\\WAV\\test.wav");
