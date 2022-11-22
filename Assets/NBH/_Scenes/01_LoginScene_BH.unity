@@ -610,7 +610,6 @@ RectTransform:
   m_Children:
   - {fileID: 1949228205}
   - {fileID: 1519764182}
-  - {fileID: 913887367}
   - {fileID: 2121767447}
   - {fileID: 1617599285}
   m_Father: {fileID: 1998699537}
@@ -664,8 +663,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 227288795}
   m_TextComponent: {fileID: 1519764183}
   m_Placeholder: {fileID: 1949228206}
-  m_ContentType: 0
-  m_InputType: 0
+  m_ContentType: 7
+  m_InputType: 2
   m_AsteriskChar: 42
   m_KeyboardType: 0
   m_LineType: 0
@@ -820,7 +819,7 @@ GameObject:
   - component: {fileID: 321775594}
   - component: {fileID: 321775593}
   m_Layer: 5
-  m_Name: EndSignUpPanel
+  m_Name: NoticePanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -874,7 +873,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.6313726}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.9019608}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2443,19 +2442,22 @@ MonoBehaviour:
   inputSignUpID: {fileID: 1021293533}
   imageSignUpIDGood: {fileID: 1057807936}
   imageSignUpIDBad: {fileID: 948537728}
-  txtSignUpIDBad: {fileID: 884048146}
+  txtSignUpIDBad: {fileID: 884048144}
   inputSignUpPW: {fileID: 227288794}
+  imageSignUpPWGood: {fileID: 913887366}
+  imageSignUpPWBad: {fileID: 2121767446}
+  txtSignUpPWBad: {fileID: 1617599284}
   inputSignUpPWCheck: {fileID: 1025459887}
-  imageSignUpPWGood: {fileID: 1831634572}
-  imageSignUpPWBad: {fileID: 1733681756}
-  txtSignUpPWCheckBad: {fileID: 775296691}
+  imageSignUpPWCheckGood: {fileID: 1831634572}
+  imageSignUpPWCheckBad: {fileID: 1733681756}
+  txtSignUpPWCheckBad: {fileID: 775296689}
   inputSignUpName: {fileID: 1945424648}
   inputSignUpEmail: {fileID: 564589850}
   inputSignUpPhone: {fileID: 1018327603}
   inputSignUpAdress: {fileID: 119037759}
   btnSignUpSubmit: {fileID: 509466980}
   btnSignUpReturn: {fileID: 403710064}
-  panelEndSignUp: {fileID: 321775591}
+  panelNotice: {fileID: 321775591}
   btnEndSignUp: {fileID: 782212944}
 --- !u!114 &650524623
 MonoBehaviour:
@@ -2623,12 +2625,12 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: 39e76b91dd082c7409a403a357dc403b, type: 3}
-    m_FontSize: 50
+    m_FontSize: 40
     m_FontStyle: 1
     m_BestFit: 0
-    m_MinSize: 5
+    m_MinSize: 4
     m_MaxSize: 50
-    m_Alignment: 3
+    m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 0
     m_HorizontalOverflow: 1
@@ -3084,7 +3086,7 @@ GameObject:
   - component: {fileID: 775296692}
   - component: {fileID: 775296691}
   m_Layer: 5
-  m_Name: PWBadTxt
+  m_Name: PWCheckBadTxt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3621,15 +3623,15 @@ RectTransform:
   m_GameObject: {fileID: 913887366}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.15399858, y: 0.15399858, z: 0.15399858}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 227288793}
-  m_RootOrder: 2
+  m_Father: {fileID: 2121767447}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 118.00001, y: 0.8}
+  m_AnchoredPosition: {x: 0.0002670288, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &913887368
@@ -4329,13 +4331,13 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1021293534}
   m_TextComponent: {fileID: 1256268780}
   m_Placeholder: {fileID: 1041679115}
-  m_ContentType: 0
-  m_InputType: 0
+  m_ContentType: 9
+  m_InputType: 1
   m_AsteriskChar: 42
   m_KeyboardType: 0
   m_LineType: 0
   m_HideMobileInput: 0
-  m_CharacterValidation: 0
+  m_CharacterValidation: 3
   m_CharacterLimit: 0
   m_OnSubmit:
     m_PersistentCalls:
@@ -4479,8 +4481,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1025459888}
   m_TextComponent: {fileID: 139774013}
   m_Placeholder: {fileID: 1462099936}
-  m_ContentType: 0
-  m_InputType: 0
+  m_ContentType: 7
+  m_InputType: 2
   m_AsteriskChar: 42
   m_KeyboardType: 0
   m_LineType: 0
@@ -4795,7 +4797,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.9490197, g: 0.5254902, b: 0, a: 1}
+  m_Color: {r: 0.9490196, g: 0.52156866, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -6456,7 +6458,7 @@ RectTransform:
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 227288793}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -6496,7 +6498,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "\uC774\uBBF8 \uC0AC\uC6A9\uC911\uC778 ID\uC785\uB2C8\uB2E4!"
+  m_Text: "10 ~ 16 \uC790 \uC0AC\uC774\uB85C \uC785\uB825\uD558\uC138\uC694!"
 --- !u!222 &1617599287
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -6753,7 +6755,7 @@ GameObject:
   - component: {fileID: 1733681759}
   - component: {fileID: 1733681758}
   m_Layer: 5
-  m_Name: PWBad
+  m_Name: PWCheckBad
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6980,7 +6982,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "\uB85C\uADF8\uC778"
+  m_Text: "\uD655\uC778"
 --- !u!222 &1776272153
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -7001,7 +7003,7 @@ GameObject:
   - component: {fileID: 1831634575}
   - component: {fileID: 1831634574}
   m_Layer: 5
-  m_Name: PWGood
+  m_Name: PWCheckGood
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7123,7 +7125,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.56078434}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.9019608}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -7615,13 +7617,13 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1945424649}
   m_TextComponent: {fileID: 1596048509}
   m_Placeholder: {fileID: 1505209936}
-  m_ContentType: 0
-  m_InputType: 0
+  m_ContentType: 9
+  m_InputType: 1
   m_AsteriskChar: 42
   m_KeyboardType: 0
   m_LineType: 0
   m_HideMobileInput: 0
-  m_CharacterValidation: 0
+  m_CharacterValidation: 4
   m_CharacterLimit: 0
   m_OnSubmit:
     m_PersistentCalls:
@@ -7923,7 +7925,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1998699537
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7967,7 +7969,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.56078434}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.9019608}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -8528,9 +8530,10 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.15399858, y: 0.15399858, z: 0.15399858}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 913887367}
   m_Father: {fileID: 227288793}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}

@@ -10,7 +10,7 @@ public enum RequestType
     PUT
 }
 
-public class HttpRequester : MonoBehaviour
+public class HttpRequester
 {
     public string url;
     public RequestType requestType;
@@ -52,17 +52,19 @@ public class WebRequester_BH : MonoBehaviour
 
             //완료되었다고 requester.onComplete를 실행
             requester.onComplete(webRequest.downloadHandler);
-            webRequest.Dispose();
-        }
 
+        }
         //그렇지않다면
         else
         {
             //서버통신 실패
             print("통신 실패" + webRequest.result + "\n" + webRequest.error);
-            webRequest.Dispose();
 
         }
+
         yield return null;
+        webRequest.Dispose();
+
     }
+
 }

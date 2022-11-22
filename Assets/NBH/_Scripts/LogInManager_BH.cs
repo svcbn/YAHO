@@ -21,6 +21,19 @@ public class MemberData
     public string address;
 }
 
+public class GetJsonData
+{
+    public int status;
+    public string message;
+    public string data;
+}
+
+public class UserData
+{
+    public int memberNo;
+    public string name;
+}
+
 public class LogInManager_BH : MonoBehaviourPunCallbacks
 {
     WebRequester_BH webRequester;
@@ -114,26 +127,32 @@ public class LogInManager_BH : MonoBehaviourPunCallbacks
     public GameObject imageSignUpIDBad;
 
     // 회원가입 아이디 검사 실패 텍스트
-    public Text txtSignUpIDBad;
+    public GameObject txtSignUpIDBad;
 
     [Header(">PW")]
     // 회원가입 비밀번호
     public InputField inputSignUpPW;
 
-    // 회원가입 비밀번호 검사 텍스트
-    //public Text txtSignUpPWCheck;
+    // 회원가입 비밀번호 성공
+    public GameObject imageSignUpPWGood;
+
+    // 회원가입 비밀번호 실패
+    public GameObject imageSignUpPWBad;
+
+    // 회원가입 비밀번호 실패 텍스트
+    public GameObject txtSignUpPWBad;
 
     // 회원가입 비밀번호 확인
     public InputField inputSignUpPWCheck;
 
     // 회원가입 비밀번호 검사 성공
-    public GameObject imageSignUpPWGood;
+    public GameObject imageSignUpPWCheckGood;
 
     // 회원가입 비밀번호 검사 실패
-    public GameObject imageSignUpPWBad;
+    public GameObject imageSignUpPWCheckBad;
 
     // 회원가입 비밀번호 확인 텍스트
-    public Text txtSignUpPWCheckBad;
+    public GameObject txtSignUpPWCheckBad;
 
     [Header(">")]
     // 회원가입 이름
@@ -167,10 +186,11 @@ public class LogInManager_BH : MonoBehaviourPunCallbacks
 
     [Header("EndSignUp")]
     // 회원가입 완료 패널
-    public GameObject panelEndSignUp;
+    public GameObject panelNotice;
     // 회원가입 완료 버튼
     public Button btnEndSignUp;
 
+    int _memberNo;
 
     private void Awake()
     {
@@ -213,13 +233,14 @@ public class LogInManager_BH : MonoBehaviourPunCallbacks
         //btnSignUpIDCheck.onClick.AddListener(OnbtnSignUpIDCheckClicked);
 
         // 회원가입 제출 버튼
+
         btnSignUpSubmit.onClick.AddListener(OnbtnSignUpSubmitClicked);
 
         // 회원가입 에서 돌아가기
         btnSignUpReturn.onClick.AddListener(OnbtnSignUpReturnClicked);
 
         // 회원가입 완료 에서 로그인으로 돌아가기
-        btnEndSignUp.onClick.AddListener(OnBtnSignUpEndClicked);
+        btnEndSignUp.onClick.AddListener(OnBtnNoticeSubmitClicked);
         #endregion
 
 
@@ -305,19 +326,27 @@ public class LogInManager_BH : MonoBehaviourPunCallbacks
 
     void OnbtnSignUpSubmitClicked()
     {
-        SignUp();
-        //if ()
-        //{
-        StartCoroutine(WindowPopUp(panelEndSignUp));
-        //}
-
+        if (_memberId != null && signUpIdCheck && _memberPw != null && signUpPwCheck && _name != null && _email != null && _phone != null && _address != null)
+        {
+            SignUp();
+        }
+        else
+        {
+            panelNotice.GetComponentInChildren<Text>().text = "항목을 다시 확인해주세요!";
+            StartCoroutine(WindowPopUp(panelNotice));
+        }
     }
 
-    void OnBtnSignUpEndClicked()
+    bool signUpSuccess = false;
+    void OnBtnNoticeSubmitClicked()
     {
-        StartCoroutine(WindowClose(panelEndSignUp));
-        StartCoroutine(WindowClose(panelSignUp));
-        StartCoroutine(WindowPopUp(panelMain));
+        StartCoroutine(WindowClose(panelNotice));
+        if (signUpSuccess)
+        {
+            StartCoroutine(WindowClose(panelSignUp));
+            StartCoroutine(WindowPopUp(panelMain));
+            signUpSuccess = false;
+        }
     }
 
     #endregion
@@ -325,55 +354,112 @@ public class LogInManager_BH : MonoBehaviourPunCallbacks
     #region 인풋필드
     void OnEndEditInputID(string s)
     {
-        _logInMemberId = s;
+        if (s.Length > 0)
+        {
+            _logInMemberId = s;
+        }
     }
 
     void OnEndEditInputPW(string s)
     {
-        _logInMemberPw = s;
+        if (s.Length > 0)
+        {
+            _logInMemberPw = s;
+        }
     }
 
     void OnEndSubmitInputPW(string s)
     {
-        _logInMemberPw = s;
-        LogIn();
-
+        if (s.Length > 0)
+        {
+            _logInMemberPw = s;
+            LogIn();
+        }
     }
 
     void OnEndEditInputSignUpID(string s)
     {
-        _memberId = s;
-        IdCheck();
+        if (s.Length > 0)
+        {
+            _memberId = s;
+            IdCheck();
+        }
     }
 
     void OnEndEditInputSignUpPW(string s)
     {
-        _memberPw = s;
+        imageSignUpPWGood.SetActive(false);
+        imageSignUpPWBad.SetActive(false);
+        txtSignUpPWBad.SetActive(false);
+        if (s.Length > 0)
+        {
+            if (s.Length > 9 && s.Length < 17)
+            {
+                imageSignUpPWGood.SetActive(true);
+                _memberPw = s;
+            }
+            else
+            {
+                imageSignUpPWBad.SetActive(true);
+                txtSignUpPWBad.SetActive(true);
+            }
+        }
     }
 
+    bool signUpPwCheck = false;
     void OnEndEditInputSignUpPWCorrect(string s)
     {
-        _memberPwCheck = s;
+        imageSignUpPWCheckGood.SetActive(false);
+        imageSignUpPWCheckBad.SetActive(false);
+        txtSignUpPWCheckBad.SetActive(false);
+        if (s.Length > 0)
+        {
+            if (s == _memberPw)
+            {
+                imageSignUpPWCheckGood.SetActive(true);
+                _memberPwCheck = s;
+                signUpPwCheck = true;
+
+            }
+            else
+            {
+                imageSignUpPWCheckBad.SetActive(true);
+                txtSignUpPWCheckBad.SetActive(true);
+                signUpPwCheck = false;
+            }
+        }
     }
 
     void OnEndEditInputSignUpName(string s)
     {
-        _name = s;
+        if (s.Length > 0)
+        {
+            _name = s;
+        }
     }
 
     void OnEndEditInputSignUpPhone(string s)
     {
-        _phone = s;
+        if (s.Length > 0)
+        {
+            _phone = s;
+        }
     }
 
     void OnEndEditInputSignUpEmail(string s)
     {
-        _email = s;
+        if (s.Length > 0)
+        {
+            _email = s;
+        }
     }
 
     void OnEndEditInputSignUpAdress(string s)
     {
-        _address = s;
+        if (s.Length > 0)
+        {
+            _address = s;
+        }
     }
 
     #endregion
@@ -414,13 +500,17 @@ public class LogInManager_BH : MonoBehaviourPunCallbacks
     #region WebRequest
     void LogIn()
     {
-        // setting inspector 에서 해도 됨 
-        PhotonNetwork.GameVersion = "1";
+        HttpRequester requester = new HttpRequester();
+        SignInData data = new SignInData();
+        data.memberId = _logInMemberId;
+        data.memberPw = _logInMemberPw;
 
-        //NameServer 접속,(AppID, GameVersion, 지역)
-        PhotonNetwork.ConnectUsingSettings();
+        requester.url = "http://43.201.58.81:8088/members/login";
+        requester.requestType = RequestType.POST;
+        requester.postData = JsonUtility.ToJson(data);
+        requester.onComplete = OnCompleteSignIn;
 
-        PhotonNetwork.NickName = _name;
+        webRequester.SendRequest(requester);
     }
 
     void SignUp()
@@ -436,14 +526,13 @@ public class LogInManager_BH : MonoBehaviourPunCallbacks
 
         requester.url = "http://43.201.58.81:8088/members";
         requester.requestType = RequestType.POST;
-
-        requester.postData = JsonUtility.ToJson(data, true);
-
+        requester.postData = JsonUtility.ToJson(data);
         requester.onComplete = OnCompleteSignUp;
 
         webRequester.SendRequest(requester);
     }
 
+    bool signUpIdCheck = false;
     void IdCheck()
     {
         HttpRequester requester = new HttpRequester();
@@ -459,26 +548,111 @@ public class LogInManager_BH : MonoBehaviourPunCallbacks
         webRequester.SendRequest(requester);
     }
 
+    void Identify()
+    {
+        HttpRequester requester = new HttpRequester();
+        string Id = _logInMemberId;
+
+        requester.url = "http://43.201.58.81:8088/members/auth/" + Id;
+        requester.requestType = RequestType.GET;
+
+        requester.postData = null;
+
+        requester.onComplete = OnCompleteTest;
+
+        webRequester.SendRequest(requester);
+    }
+
     #endregion
 
     #region WebDownloadHandler
 
     public void OnCompleteSignIn(DownloadHandler handler)
     {
+        GetJsonData jsonData = JsonUtility.FromJson<GetJsonData>(handler.text);
+        if(jsonData.status == 400)
+        {
+            Debug.Log("로그인 실패");
+            panelNotice.GetComponentInChildren<Text>().text = "ID와 PW를 확인해주세요!";
+            StartCoroutine(WindowPopUp(panelNotice));
+        }
+        else if(jsonData.status == 200)
+        {
+            Identify();
+        }
+        else
+        {
+            Debug.Log("아무튼 실패");
 
+        }
     }
 
     public void OnCompleteSignUp(DownloadHandler handler)
     {
 
+        GetJsonData jsonData = JsonUtility.FromJson<GetJsonData>(handler.text);
+        if(jsonData.status == 400)
+        {
+            Debug.Log("회원가입 실패");
+            panelNotice.GetComponentInChildren<Text>().text = jsonData.message;
+            StartCoroutine(WindowPopUp(panelNotice));
+        }
+        else if(jsonData.status == 200 && signUpIdCheck && signUpPwCheck)
+        {
+            Debug.Log("회원가입 성공");
+            panelNotice.GetComponentInChildren<Text>().text = "회원가입 성공!";
+            StartCoroutine(WindowPopUp(panelNotice));
+            signUpSuccess = true;
+        }
+        else
+        {
+            Debug.Log("회원가입 실패");
+            panelNotice.GetComponentInChildren<Text>().text = "";
+            StartCoroutine(WindowPopUp(panelNotice));
+        }
+
     }
 
     public void OnCompleteIdCheck(DownloadHandler handler)
     {
+        imageSignUpIDGood.SetActive(false);
+        imageSignUpIDBad.SetActive(false);
+        txtSignUpIDBad.SetActive(false);
 
+        GetJsonData jsonData = JsonUtility.FromJson<GetJsonData>(handler.text);
+        if(jsonData.data == "true")
+        {
+            imageSignUpIDBad.SetActive(true);
+            txtSignUpIDBad.SetActive(true);
+            signUpIdCheck = false;
+
+        }
+        else
+        {
+            imageSignUpIDGood.SetActive(true);
+            signUpIdCheck = true;
+        }
+    }
+
+    public void OnCompleteTest(DownloadHandler handler)
+    {
+        UserData userData = JsonUtility.FromJson<UserData>(handler.text);
+
+        PhotonNetwork.NickName = userData.name;
+
+        ConnectMasterServer();
     }
 
     #endregion
+
+    public void ConnectMasterServer()
+    {
+        // setting inspector 에서 해도 됨 
+        PhotonNetwork.GameVersion = "1";
+
+        //NameServer 접속,(AppID, GameVersion, 지역)
+        PhotonNetwork.ConnectUsingSettings();
+    }
 
     // 마스터 서버에 접속 성공,  아직 로비를 만들거나 진입할 수 없는 상태
     public override void OnConnected()
@@ -492,9 +666,6 @@ public class LogInManager_BH : MonoBehaviourPunCallbacks
     {
         base.OnConnectedToMaster();
         print("마스터서버 접속 완료");
-
-        //닉네임 설정
-        PhotonNetwork.NickName = _name;
 
         //기본 로비 진입 
         PhotonNetwork.JoinLobby();

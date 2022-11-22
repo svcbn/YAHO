@@ -27,7 +27,7 @@ public class LogInSceneConversion_BH : MonoBehaviour
     {
         mat = new Material(panelMain.GetComponent<Image>().material);
         panelMain.GetComponent<Image>().material = mat;
-        mat.SetFloat("_BlurDistance", 0.0025f);
+        mat.SetFloat("_BlurDistance", 0.002f);
         mat.SetFloat("_CenterX", 0.5f);
         mat.SetFloat("_CenterY", 0.5f);
         mat.SetFloat("_DecayRadius", 2f);
