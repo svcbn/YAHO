@@ -11,6 +11,7 @@ public class SignInData
     public string memberPw;
 }
 
+[System.Serializable]
 public class MemberData
 {
     public string memberId;
@@ -28,10 +29,9 @@ public class GetJsonData
     public string data;
 }
 
-public class UserData
+public class GetUserData
 {
-    public int memberNo;
-    public string name;
+    public MemberData data;
 }
 
 public class LogInManager_BH : MonoBehaviourPunCallbacks
@@ -64,6 +64,9 @@ public class LogInManager_BH : MonoBehaviourPunCallbacks
     // 로그인용 정보
     string _logInMemberId;
     string _logInMemberPw;
+
+    // 로딩애니메이션
+    public GameObject imgLoading;
 
     #endregion
 
@@ -509,6 +512,7 @@ public class LogInManager_BH : MonoBehaviourPunCallbacks
         requester.requestType = RequestType.POST;
         requester.postData = JsonUtility.ToJson(data);
         requester.onComplete = OnCompleteSignIn;
+        requester.onFailed = OnFailedSignIn;
 
         webRequester.SendRequest(requester);
     }
@@ -541,8 +545,6 @@ public class LogInManager_BH : MonoBehaviourPunCallbacks
         requester.url = "http://43.201.58.81:8088/members/checkId/" + Id;
         requester.requestType = RequestType.GET;
 
-        requester.postData = null;
-
         requester.onComplete = OnCompleteIdCheck;
 
         webRequester.SendRequest(requester);
@@ -556,9 +558,7 @@ public class LogInManager_BH : MonoBehaviourPunCallbacks
         requester.url = "http://43.201.58.81:8088/members/auth/" + Id;
         requester.requestType = RequestType.GET;
 
-        requester.postData = null;
-
-        requester.onComplete = OnCompleteTest;
+        requester.onComplete = OnCompleteIdentify;
 
         webRequester.SendRequest(requester);
     }
@@ -570,21 +570,24 @@ public class LogInManager_BH : MonoBehaviourPunCallbacks
     public void OnCompleteSignIn(DownloadHandler handler)
     {
         GetJsonData jsonData = JsonUtility.FromJson<GetJsonData>(handler.text);
-        if(jsonData.status == 400)
-        {
-            Debug.Log("로그인 실패");
-            panelNotice.GetComponentInChildren<Text>().text = "ID와 PW를 확인해주세요!";
-            StartCoroutine(WindowPopUp(panelNotice));
-        }
-        else if(jsonData.status == 200)
+        
+        if(jsonData.status == 200)
         {
             Identify();
+            imgLoading.SetActive(true);
         }
         else
         {
-            Debug.Log("아무튼 실패");
-
+            Debug.Log("로그인 실패");
+            
         }
+    }
+
+    public void OnFailedSignIn()
+    {
+        Debug.Log("로그인 실패");
+        panelNotice.GetComponentInChildren<Text>().text = "ID와 PW를 확인해주세요!";
+        StartCoroutine(WindowPopUp(panelNotice));
     }
 
     public void OnCompleteSignUp(DownloadHandler handler)
@@ -634,12 +637,18 @@ public class LogInManager_BH : MonoBehaviourPunCallbacks
         }
     }
 
-    public void OnCompleteTest(DownloadHandler handler)
+    public void OnCompleteIdentify(DownloadHandler handler)
     {
-        UserData userData = JsonUtility.FromJson<UserData>(handler.text);
+        GetUserData userData = new GetUserData();
+        
+        userData = JsonUtility.FromJson<GetUserData>(handler.text);
 
-        PhotonNetwork.NickName = userData.name;
+        Debug.Log(userData);
+        PhotonNetwork.NickName = userData.data.name;
 
+        UserInformation_BH.instance.MemberId = userData.data.memberId;
+        UserInformation_BH.instance.Name = userData.data.name;
+        
         ConnectMasterServer();
     }
 

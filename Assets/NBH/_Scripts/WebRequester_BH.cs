@@ -16,6 +16,7 @@ public class HttpRequester
     public RequestType requestType;
     public string postData;
     public System.Action<DownloadHandler> onComplete;
+    public System.Action onFailed;
 }
 
 public class WebRequester_BH : MonoBehaviour
@@ -59,6 +60,8 @@ public class WebRequester_BH : MonoBehaviour
         {
             //서버통신 실패
             print("통신 실패" + webRequest.result + "\n" + webRequest.error);
+
+            requester.onFailed();
 
         }
 
