@@ -816,8 +816,9 @@ GameObject:
   m_Component:
   - component: {fileID: 286350625}
   - component: {fileID: 286350626}
+  - component: {fileID: 286350627}
   m_Layer: 0
-  m_Name: UserInfo
+  m_Name: DontDestroyManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -848,6 +849,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3917ce323706f9148a463693d11f0916, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _memberId: 
+  _name: 
+--- !u!114 &286350627
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 286350624}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db17e28cdcc818640848ee00c6c1edf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &321775591
@@ -2441,7 +2456,6 @@ GameObject:
   m_Component:
   - component: {fileID: 650524621}
   - component: {fileID: 650524622}
-  - component: {fileID: 650524623}
   - component: {fileID: 650524624}
   m_Layer: 0
   m_Name: LogInSceneManager
@@ -2504,18 +2518,6 @@ MonoBehaviour:
   btnSignUpReturn: {fileID: 403710064}
   panelNotice: {fileID: 321775591}
   btnEndSignUp: {fileID: 782212944}
---- !u!114 &650524623
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 650524620}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: db17e28cdcc818640848ee00c6c1edf9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &650524624
 MonoBehaviour:
   m_ObjectHideFlags: 0

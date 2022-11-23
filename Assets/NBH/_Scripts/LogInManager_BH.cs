@@ -36,8 +36,6 @@ public class GetUserData
 
 public class LogInManager_BH : MonoBehaviourPunCallbacks
 {
-    WebRequester_BH webRequester;
-
     [Header("Main")]
     // 메인패널
     public GameObject panelMain;
@@ -194,11 +192,6 @@ public class LogInManager_BH : MonoBehaviourPunCallbacks
     public Button btnEndSignUp;
 
     int _memberNo;
-
-    private void Awake()
-    {
-        webRequester = GetComponent<WebRequester_BH>();
-    }
 
     void Start()
     {
@@ -514,7 +507,7 @@ public class LogInManager_BH : MonoBehaviourPunCallbacks
         requester.onComplete = OnCompleteSignIn;
         requester.onFailed = OnFailedSignIn;
 
-        webRequester.SendRequest(requester);
+        WebRequester_BH.instance.SendRequest(requester);
     }
 
     void SignUp()
@@ -533,7 +526,7 @@ public class LogInManager_BH : MonoBehaviourPunCallbacks
         requester.postData = JsonUtility.ToJson(data);
         requester.onComplete = OnCompleteSignUp;
 
-        webRequester.SendRequest(requester);
+        WebRequester_BH.instance.SendRequest(requester);
     }
 
     bool signUpIdCheck = false;
@@ -547,7 +540,7 @@ public class LogInManager_BH : MonoBehaviourPunCallbacks
 
         requester.onComplete = OnCompleteIdCheck;
 
-        webRequester.SendRequest(requester);
+        WebRequester_BH.instance.SendRequest(requester);
     }
 
     void Identify()
@@ -560,7 +553,7 @@ public class LogInManager_BH : MonoBehaviourPunCallbacks
 
         requester.onComplete = OnCompleteIdentify;
 
-        webRequester.SendRequest(requester);
+        WebRequester_BH.instance.SendRequest(requester);
     }
 
     #endregion

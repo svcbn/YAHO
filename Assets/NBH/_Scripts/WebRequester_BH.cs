@@ -21,6 +21,22 @@ public class HttpRequester
 
 public class WebRequester_BH : MonoBehaviour
 {
+    public static WebRequester_BH instance;
+
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+
+        DontDestroyOnLoad(this);
+    }
+
     public void SendRequest(HttpRequester requester)
     {
         StartCoroutine(Send(requester));
