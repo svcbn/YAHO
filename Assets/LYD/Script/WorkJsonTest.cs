@@ -203,7 +203,7 @@ public class WorkJsonTest : MonoBehaviour
     {
         
 
-        //파일경로
+        /*//파일경로
         string path = UnityEngine.Application.dataPath + "/DataTodo/dataTodo.txt";
         //데이터를 불러온다.
         string jsonData2 = File.ReadAllText(path);
@@ -220,7 +220,7 @@ public class WorkJsonTest : MonoBehaviour
             print(info.cardName);
             print(info.desc);
             //print(arrayData2.data2.Count);
-        }
+        }*/
 
         descDisplay.SetActive(false);
     }

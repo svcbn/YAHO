@@ -14,22 +14,25 @@ public class CustomButton : MonoBehaviour
     public GameObject customBtn;
     public GameObject taskBtn;
     public GameObject enterBtn;
-    public GameObject meetingHistoryBtn;
+    
+
     public GameObject exitBtn;
 
     public GameObject me;
     public GameObject meXBtn;
 
-    public GameObject meetingImage;
+    //public GameObject meetingImage;
 
     public GameObject dayReport;
 
     public GameObject btnEnd;
     public GameObject BlackImage;
 
-    
+    public GameObject meetingHistoryBtn;
+    public GameObject meeting;
 
-
+    public GameObject image;
+    public GameObject menuImage1;
     //메뉴 버튼을 눌러을때 커스텀 백그라운드랑 task버튼이랑 입장 버튼이 떠야한다.
 
     public GameObject menu;
@@ -67,34 +70,39 @@ public class CustomButton : MonoBehaviour
         enterBtn.SetActive(false);
         meetingHistoryBtn.SetActive(false);
         exitBtn.SetActive(false);
+        customBtn.SetActive(false);
+
+        image.SetActive(false);
+        menuImage1.SetActive(false);
     }
 
     public void CustomXBtn()
     {
         customBackground.SetActive(false);
         menu.SetActive(true);
-        taskBtn.SetActive(true);
-        enterBtn.SetActive(true);
-        meetingHistoryBtn.SetActive(true);
-        exitBtn.SetActive(true);
+        
 
     }
 
     //메뉴버튼을 누를때 custom유아이, 입장버튼, task유아이가 떠야한다.
     public void OnMenu()
     {
-        count++;
+        // count++;
 
-        if (count % 2 != 0)
-        {
+        //if (count % 2 != 0)
+        //{4
+        image.SetActive(true);
+        menuImage1.SetActive(true);
             customBtn.SetActive(true);
             taskBtn.SetActive(true);
             enterBtn.SetActive(true);
             meetingHistoryBtn.SetActive(true);
             exitBtn.SetActive(true);
 
-        }
-        else
+        menu.SetActive(false);
+
+       // }
+        /*else
         {
             customBtn.SetActive(false);
             taskBtn.SetActive(false);
@@ -102,23 +110,58 @@ public class CustomButton : MonoBehaviour
             meetingHistoryBtn.SetActive(false);
             exitBtn.SetActive(false);
 
-        }
+        }*/
+    }
+    public void OnBackMenu()
+    {
+        image.SetActive(false);
+        menuImage1.SetActive(false);
+        customBtn.SetActive(false);
+        taskBtn.SetActive(false);
+        enterBtn.SetActive(false);
+        meetingHistoryBtn.SetActive(false);
+        exitBtn.SetActive(false);
+
+        menu.SetActive(true);
     }
 
+    //1..todo
     public void OnTaskBtn()
     {
         me.SetActive(true);
+
+        image.SetActive(false);
+        menuImage1.SetActive(false);
+        customBtn.SetActive(false);
+        taskBtn.SetActive(false);
+        enterBtn.SetActive(false);
+        meetingHistoryBtn.SetActive(false);
+        exitBtn.SetActive(false);
+
+        menu.SetActive(true);
+
     }
 
+    //회의록
    public void OnMeetingHistroy()
     {
-        meetingImage.SetActive(true);
+        meeting.SetActive(true);
+
+        image.SetActive(false);
+        menuImage1.SetActive(false);
+        customBtn.SetActive(false);
+        taskBtn.SetActive(false);
+        enterBtn.SetActive(false);
+        meetingHistoryBtn.SetActive(false);
+        exitBtn.SetActive(false);
+
+        menu.SetActive(true);
     }
 
     //엑스버튼 눌렀을 때 회의록이미지 꺼준다. 
     public void meetingImageBtnX()
     {
-        meetingImage.SetActive(false);
+        meeting.SetActive(false);
     }
     
     public void MeXBtn()
@@ -130,6 +173,16 @@ public class CustomButton : MonoBehaviour
     public void OnDayReport()
     {
         dayReport.SetActive(true);
+
+        image.SetActive(false);
+        menuImage1.SetActive(false);
+        customBtn.SetActive(false);
+        taskBtn.SetActive(false);
+        enterBtn.SetActive(false);
+        meetingHistoryBtn.SetActive(false);
+        exitBtn.SetActive(false);
+
+        menu.SetActive(true);
     }
 
     public void OnBtnEnd()
