@@ -28,13 +28,13 @@ public class WebRequester_BH : MonoBehaviour
         if (instance == null)
         {
             instance = this;
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
             Destroy(gameObject);
         }
 
-        DontDestroyOnLoad(this);
     }
 
     public void SendRequest(HttpRequester requester)

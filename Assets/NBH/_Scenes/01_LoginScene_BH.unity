@@ -818,7 +818,7 @@ GameObject:
   - component: {fileID: 286350626}
   - component: {fileID: 286350627}
   m_Layer: 0
-  m_Name: DontDestroyManager
+  m_Name: UserInfo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -853,6 +853,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _memberId: 
   _name: 
+  _accessToken: 
+  _memberNo: 0
 --- !u!114 &286350627
 MonoBehaviour:
   m_ObjectHideFlags: 0

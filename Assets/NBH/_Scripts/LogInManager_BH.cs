@@ -22,11 +22,27 @@ public class MemberData
     public string address;
 }
 
+[System.Serializable]
 public class GetJsonData
 {
     public int status;
     public string message;
     public string data;
+}
+
+[System.Serializable]
+public class LogInUserInfo : GetJsonData
+{
+    public new UserToken data;
+}
+
+[System.Serializable]
+public class UserToken
+{
+    public string grantType;
+    public string accessToken;
+    public int accessTokenExpiresIn;
+    public int memberNo;
 }
 
 public class GetUserData
@@ -496,6 +512,8 @@ public class LogInManager_BH : MonoBehaviourPunCallbacks
     #region WebRequest
     void LogIn()
     {
+        imgLoading.SetActive(true);
+
         HttpRequester requester = new HttpRequester();
         SignInData data = new SignInData();
         data.memberId = _logInMemberId;
@@ -543,12 +561,11 @@ public class LogInManager_BH : MonoBehaviourPunCallbacks
         WebRequester_BH.instance.SendRequest(requester);
     }
 
-    void Identify()
+    void Identify(int memberNo)
     {
         HttpRequester requester = new HttpRequester();
-        string Id = _logInMemberId;
 
-        requester.url = "http://43.201.58.81:8088/members/auth/" + Id;
+        requester.url = "http://43.201.58.81:8088/members/auth/" + memberNo;
         requester.requestType = RequestType.GET;
 
         requester.onComplete = OnCompleteIdentify;
@@ -562,22 +579,26 @@ public class LogInManager_BH : MonoBehaviourPunCallbacks
 
     public void OnCompleteSignIn(DownloadHandler handler)
     {
-        GetJsonData jsonData = JsonUtility.FromJson<GetJsonData>(handler.text);
+        LogInUserInfo jsonData = JsonUtility.FromJson<LogInUserInfo>(handler.text);
         
+
         if(jsonData.status == 200)
         {
-            Identify();
-            imgLoading.SetActive(true);
+            Identify(jsonData.data.memberNo);
+            UserInformation_BH.instance.MemberNo = jsonData.data.memberNo;
+            UserInformation_BH.instance.AccessToken = jsonData.data.accessToken;
         }
         else
         {
+            imgLoading.SetActive(false);
             Debug.Log("로그인 실패");
-            
         }
     }
 
     public void OnFailedSignIn()
     {
+        imgLoading.SetActive(false);
+
         Debug.Log("로그인 실패");
         panelNotice.GetComponentInChildren<Text>().text = "ID와 PW를 확인해주세요!";
         StartCoroutine(WindowPopUp(panelNotice));

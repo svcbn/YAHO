@@ -19,7 +19,7 @@ public class STTTest_BH : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        roomManager = GetComponent<RoomManager_BH>();
+        roomManager = GameObject.Find("RoomManager").GetComponent<RoomManager_BH>();
 
     }
 
