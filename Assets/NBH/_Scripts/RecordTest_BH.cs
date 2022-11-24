@@ -54,19 +54,24 @@ public class RecordTest_BH : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Alpha1))
+        if(Input.GetKeyDown(KeyCode.Space))
         {
             print("≥Ï¿ΩΩ√¿€");
             StartRecordMicrophone();
         }
 
-        if (Input.GetKeyDown(KeyCode.Alpha2))
+        if (Input.GetKeyUp(KeyCode.Space))
         {
             print("≥Ï¿Ω≥°");
             StopRecordMicrophone();
             SavWav.Save("test", recordClip);
             sTT.SendWav();
 
+        }
+
+        if(Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            sTT.SendWav();
         }
 
         //if (Input.GetKeyDown(KeyCode.Alpha3))

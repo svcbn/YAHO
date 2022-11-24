@@ -10,16 +10,33 @@ public enum RequestType
     PUT
 }
 
-public class HttpRequester : MonoBehaviour
+public class HttpRequester
 {
     public string url;
     public RequestType requestType;
     public string postData;
     public System.Action<DownloadHandler> onComplete;
+    public System.Action onFailed;
 }
 
 public class WebRequester_BH : MonoBehaviour
 {
+    public static WebRequester_BH instance;
+
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+
+        DontDestroyOnLoad(this);
+    }
+
     public void SendRequest(HttpRequester requester)
     {
         StartCoroutine(Send(requester));
@@ -52,23 +69,21 @@ public class WebRequester_BH : MonoBehaviour
 
             //완료되었다고 requester.onComplete를 실행
             requester.onComplete(webRequest.downloadHandler);
-            webRequest.Dispose();
-
 
         }
         //그렇지않다면
         else
         {
-            //서버통신 실패....ㅠ
+            //서버통신 실패
             print("통신 실패" + webRequest.result + "\n" + webRequest.error);
-            webRequest.Dispose();
+
+            requester.onFailed();
 
         }
+
         yield return null;
-    }
-
-    public void OnCompleteSignIn(DownloadHandler handler)
-    {
+        webRequest.Dispose();
 
     }
+
 }

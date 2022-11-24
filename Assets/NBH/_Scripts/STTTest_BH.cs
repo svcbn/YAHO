@@ -10,7 +10,7 @@ using System.Text;
 public class STTTest_BH : MonoBehaviour
 {
     
-    RequestTest_BH request;
+    RoomManager_BH roomManager;
 
     bool isLoading = false;
 
@@ -19,7 +19,7 @@ public class STTTest_BH : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        request = GetComponent<RequestTest_BH>();
+        roomManager = GetComponent<RoomManager_BH>();
 
     }
 
@@ -31,7 +31,7 @@ public class STTTest_BH : MonoBehaviour
         {
             Debug.Log("변환 완료");
             isLoading = false;
-            request.AddMeetingData();
+            roomManager.AddMeetingData();
 
         }
     }
