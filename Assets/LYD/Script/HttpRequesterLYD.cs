@@ -19,6 +19,22 @@ public class TodoListData
     public string content;
     //태그
     public int tagNo;
+
+    public int todolistNo;
+}
+
+//재원오빠가 보내주는대로 바꿔야함.
+public class CheckListData
+{
+    //프로젝트 번호
+    public int projectNo;
+    //멤버번호
+    public int memberNo;
+    //제목
+    public string title;
+    //체크번호
+    public int checklistNo;
+
 }
 
 public enum RequestTypeLYD
@@ -34,6 +50,12 @@ public class TodolistDataArray
     public List<TodoListData> data;
 }
 
+[Serializable]
+
+public class CheckListDatArray
+{
+    public List<CheckListData> data;
+}
 public class HttpRequesterLYD
 {
     //url

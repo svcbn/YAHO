@@ -21,7 +21,7 @@ public class HttpUIManagerLYD : MonoBehaviour
     public GameObject checkdis;
     public InputField InputcheckTitle;
     public GameObject checkObject;
-    public GameObject checkContent;
+    public Transform checkContent;
 
     //스크롤뷰에 생성될 프리팹(cardObject)와 그 위치(cardContent)를 넣어준다.
     public GameObject cardObject;
@@ -48,6 +48,7 @@ public class HttpUIManagerLYD : MonoBehaviour
 
     public Sprite frame32;
 
+    public int memNo = 1;
 
     //태그부분
     public GameObject btnDoing;
@@ -55,8 +56,12 @@ public class HttpUIManagerLYD : MonoBehaviour
     public GameObject image_tag;
     public GameObject preDoing;
     public GameObject preComplete;
+    public GameObject preIssues;
     public Transform empty_tag;
     public Sprite frame38;
+    public Sprite frame39;
+
+    
 
     string _title = "오늘 할 일";
     string _content = "무슨내용입니다.";
@@ -79,7 +84,7 @@ public class HttpUIManagerLYD : MonoBehaviour
 
         btnOk.onClick.AddListener(OnBtnOk);
         btnCancel.onClick.AddListener(OnBtnCancel);
-        
+        //병한오빠 스크립트.Find("UserInfo").getcomponent<스크립트>.memberNo(); ->멤버넘버찾기
         #endregion
     }
 
@@ -94,12 +99,7 @@ public class HttpUIManagerLYD : MonoBehaviour
    public void TagAdd()
    {
         image_tag.SetActive(true);
-        GameObject go = empty_tag.transform.GetChild(0).gameObject;
-        if (go != null)
-        {
-            Destroy(go);
-            num = 0;
-        }
+        
     }
 
     /*public void TagMinus()
@@ -116,7 +116,7 @@ public class HttpUIManagerLYD : MonoBehaviour
     public void Doing()
     {
         GameObject go = Instantiate(preDoing, empty_tag);
-        num = 0;
+        num = 1;
         image_tag.SetActive(false);
 
     }
@@ -124,9 +124,16 @@ public class HttpUIManagerLYD : MonoBehaviour
     public void Complete()
     {
         GameObject go = Instantiate(preComplete, empty_tag);
-        num = 1;
+        num = 2;
         image_tag.SetActive(false);
 
+    }
+
+    public void Issues()
+    {
+        GameObject go = Instantiate(preIssues, empty_tag);
+        num = 3;
+        image_tag.SetActive(false);
     }
 
     public void TagBtnX()
@@ -167,6 +174,13 @@ public class HttpUIManagerLYD : MonoBehaviour
             inputContent.text = "";
         }
         calenderT.text = "0000-00-00";
+        
+    }
+
+    //checkDis - 확인 버튼
+    public void OnCheckOk()
+    {
+        PostCheckList();
     }
 
     public void OnCheckBtnAdd()
@@ -178,6 +192,7 @@ public class HttpUIManagerLYD : MonoBehaviour
         }
     }
 
+    //겟버튼 
     public void OnCheckXBtn()
     {
         if(InputcheckTitle.text.Length < 1)
@@ -186,23 +201,37 @@ public class HttpUIManagerLYD : MonoBehaviour
         }
         else
         {
-
+            GetCheckList(memNo, int.Parse(pjNum[index]));
+            //함수발동
         }
         checkdis.SetActive(false);
     }
     public void OnTaskStart()
     {
-        GetProject(1, "Y");
+        GetProject(memNo, "Y");
     }
     public void OnBtnCancel()
     {
         if (inputTitle.text.Length < 1 || inputContent.text.Length < 1)
         {
-
+            GameObject go = empty_tag.transform.GetChild(0).gameObject;
+            print("5555555555555555 : " + go);
+            if (go != null)
+            {
+                Destroy(go);
+                num = 0;
+            }
         }
         else
         {
-            GetProject(1, "Y");
+            GetProject(memNo, "Y");
+            GameObject go = empty_tag.transform.GetChild(0).gameObject;
+            print("5555555555555555 : " + go);
+            if (go != null)
+            {
+                Destroy(go);
+                num = 0;
+            }
 
         }
         descdisplay.SetActive(false);
@@ -212,26 +241,7 @@ public class HttpUIManagerLYD : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //if(Input.GetKeyDown(KeyCode.Alpha0))
-        //{
-            //PostTodoList();
-        //}
-
-       /* if (Input.GetKeyDown(KeyCode.Z))
-        {
-            //여기서 멤버no  +프로젝트no 조회하도록 코드를 짜야한다.
-            //x키를 눌렀을 때 이어지도록
-            //취소버튼 누를 때 
-
-            GetTodolist(1, 1);
-
-        }
-
-        if (Input.GetKeyDown(KeyCode.X))
-        {
-            GetProject(1, "Y");
-
-        }*/
+        
 
         
     }
@@ -248,7 +258,7 @@ public class HttpUIManagerLYD : MonoBehaviour
         
         
         TodoListData data = new TodoListData();
-        data.memberNo = 1; //이부분은 (자기번호) 저장되어있는 부분을 보내야하는것이 아닌가?
+        data.memberNo = memNo; //이부분은 (자기번호) 저장되어있는 부분을 보내야하는것이 아닌가?
         data.projectNo = int.Parse(pjNum[index]);
         print("프젝넘버인덱스번호 : " + int.Parse(pjNum[index])); //이부분은 (병한오빠가 프젝명을 적으면 그걸로 갖고와서 하는것)
         data.dueDate = calenderT.text; //calender.ShowCalendar(target); 여기에 target이 안나옴// //내가 원하는 날짜 / 달력에서 체크한 부분 Text_Select_Data를 넣어주기  Text_Select_Data.text넣어줘야하는데 button클릭하고나서의 text값을 넣어줘야함.
@@ -371,13 +381,14 @@ public class HttpUIManagerLYD : MonoBehaviour
         _period2.text = endDate[index];
 
         //게시판 날리기 (게시판 안에 있는 카드를 날리기)
-        GetTodolist(1, int.Parse(pjNum[index]));//int.Parse(pjNum[index]));
+        GetTodolist(memNo, int.Parse(pjNum[index]));//int.Parse(pjNum[index]));
         print("11111111" + int.Parse(pjNum[index]));
+        GetCheckList(memNo, int.Parse(pjNum[index]));
         //이렇게되면 번호가 바뀔때마다 계속 생성이 됨. 그러면 어떻게해야할까?
         //-> 먼저 index는 0, 1만 나옴 0에는 첫번째 프로젝트 이름이, 1에는 2번째 프로젝트 이름 
         //->projectNo에 (1,2)는 잘 바뀌지만 2번 프로젝트에 아무런 to do list가 없으면 생성되지 않아햐한다.
         //버튼을 누를때마다 생성되는 것이 아니라 한번만 
-        
+
     }
 
     //getTodolist를 하기 위해서는 
@@ -401,6 +412,8 @@ public class HttpUIManagerLYD : MonoBehaviour
     public Button btn;
     public Text t;
     public string tagNum;
+
+    public int todoint;
     public void OnCompleteGetPost(DownloadHandler handler)
     {
         //제이슨 배열 안에 제이슨이 있을 때 원하는 값만 가져올 수 있도록
@@ -420,7 +433,7 @@ public class HttpUIManagerLYD : MonoBehaviour
             
             //1. 스크롤뷰 content안에 title button이 (cardObject)생성되야함. 
             GameObject go = Instantiate(cardObject, cardContent);
-           
+            go.transform.SetSiblingIndex(0);
             HttpManagerLYD.instance.Set(cardContent);
             go.GetComponentInChildren<Text>().text = j1["title"].ToString();
             _title = go.GetComponentInChildren<Text>().text;
@@ -430,13 +443,16 @@ public class HttpUIManagerLYD : MonoBehaviour
             btn = go.transform.GetChild(2).GetComponent<Button>();
             t = go.transform.GetChild(2).GetComponentInChildren<Text>();
 
+            memo = go.GetComponent<RealMemoUI>();
 
+
+            todoint = int.Parse(j1["todolistNo"].ToString());
             //string으로 태그 번호를 받아서 
             tagNum = j1["tagNo"]["tagNo"].ToString();
             //만약 태그 번호가 1번이면 btnImage.sprite = frame32;,  //2. 버튼 인터렉터블 꺼주기 + 카드 
             //이부분은 체크리스트에서 하기 
             
-            if(tagNum == "1")
+            if(tagNum == "2")
             {
                 btnImage.sprite = frame38;
                 t.text = "완료";
@@ -446,14 +462,19 @@ public class HttpUIManagerLYD : MonoBehaviour
                 //Button s = go.GetComponent<Button>();
                 //s.interactable = false;
             }
+
+            if(tagNum == "3")
+            {
+                btnImage.sprite = frame39;
+                t.text = "이슈";
+            }
             
             //inputContent.text = j1["content"].ToString();
             _content = j1["content"].ToString();
             
             calenderT.text = j1["dueDate"].ToString();
 
-            memo = go.GetComponent<RealMemoUI>();
-            memo.Set(_title, _content, calenderT.text, tagNum, descdisplay, btnImage, t, calender);//, btn);
+            memo.Set(_title, _content, calenderT.text, tagNum, descdisplay, btnImage, t, calender, todoint);//, btn);
 
             //타이틀이 8자리 이상이면 8자리 이후에 ...을 더해준다. 
             if (_title.Length > 8)
@@ -484,11 +505,56 @@ public class HttpUIManagerLYD : MonoBehaviour
         }
     }
 
+    
+    //번호찾는것. (getsiblingIndex)
+    //버튼 누르면 풋 함수 발동
+    /*public void TestPut(int a)
+    {
+        print("777777777777777777777" + a);
+    }*/
 
+     public void PutTeamTag(int a)
+     {
+         GameObject ss = GameObject.Find("HttpUIManager");
+         HttpRequesterLYD requesterLYD = new HttpRequesterLYD();
+
+         //url 바꾸기
+         requesterLYD.url = "http://43.201.58.81:8088/todolist";
+         requesterLYD.requestTypeLYD = RequestTypeLYD.PUT;
+
+         TodoListData data = new TodoListData();
+         data.memberNo = memNo; //이부분은 (자기번호) 저장되어있는 부분을 보내야하는것이 아닌가?
+                                //data.projectNo = int.Parse(ui.pjNum[idx]);
+                                //이렇게 index찾아지는지 먼저 확인해보기
+        data.todolistNo = a;
+         requesterLYD.todoList = JsonUtility.ToJson(data, true);
+         print(requesterLYD.todoList);
+
+         requesterLYD.onComplete = OnCompleteTeamTag;
+         HttpManagerLYD.instance.SendRequestLYD(requesterLYD);
+
+
+     }
+
+     public void OnCompleteTeamTag(DownloadHandler handler)
+     {
+         string s = "{\"data\":" + handler.text + "}";
+         print(s);
+
+         //data를 list<TodoListdata>에 넣기
+         TodolistDataArray array = JsonUtility.FromJson<TodolistDataArray>(s);
+         for (int i = 0; i < array.data.Count; i++)
+         {
+             print(array.data[i].memberNo + "\n" + array.data[i].projectNo + "\n" + array.data[i].dueDate + "\n" + array.data[i].title + "\n" + array.data[i].content + "\n" + array.data[i].tagNo);
+
+
+         }
+         print("조회완료");
+     }
     //여기서 부터 <회의록>
     public void OnGetMeeting()
     {
-        GetMeeting(1);
+        GetMeeting(memNo);
     }
     public void GetMeeting(int memberNum)
     {
@@ -610,22 +676,184 @@ public class HttpUIManagerLYD : MonoBehaviour
         }
     }
 
-   /* public void GetMeetingImage(int meetingNo)
+    /* public void GetMeetingImage(int meetingNo)
+     {
+         HttpRequesterLYD requesterLYD = new HttpRequesterLYD();
+
+         //post/1, get, 완료되었을 때 호출되는 함수
+         requesterLYD.url = $@"http://43.201.58.81:8088/meetings/{meetingNo}";
+         requesterLYD.requestTypeLYD = RequestTypeLYD.GET;
+         requesterLYD.onComplete = OnCompleteGetMeetingImageData;
+
+         HttpManagerLYD.instance.SendRequestLYD(requesterLYD);
+     }
+
+     public void OnCompleteGetMeetingImageData(DownloadHandler handler)
+     {
+
+     }
+ */
+
+    ////////////////////////////////////
+    //체크리스트 
+    public void PostCheckList()
     {
         HttpRequesterLYD requesterLYD = new HttpRequesterLYD();
 
-        //post/1, get, 완료되었을 때 호출되는 함수
-        requesterLYD.url = $@"http://43.201.58.81:8088/meetings/{meetingNo}";
-        requesterLYD.requestTypeLYD = RequestTypeLYD.GET;
-        requesterLYD.onComplete = OnCompleteGetMeetingImageData;
+        requesterLYD.url = "http://43.201.58.81:8088/checklist";
+        requesterLYD.requestTypeLYD = RequestTypeLYD.POST;
 
+
+        CheckListData data = new CheckListData();
+        data.memberNo = memNo; //이부분은 (자기번호) 저장되어있는 부분을 보내야하는것이 아닌가?
+        data.projectNo = int.Parse(pjNum[index]);
+        print("프젝넘버인덱스번호 : " + int.Parse(pjNum[index])); //이부분은 (병한오빠가 프젝명을 적으면 그걸로 갖고와서 하는것)
+        data.title = _checkTitle;//inputField 에 넣기
+        //data.checkNo =  //0,1 로 가게 하면 되는데, 체크리스트가 클릭되면 이제 1로 되면서 태그가 변경되는것으로 보내져야한다. 
+        requesterLYD.todoList = JsonUtility.ToJson(data, true);
+        print(requesterLYD.todoList);
+
+        requesterLYD.onComplete = OnCompleteCheckList;
+        print("11111111111111");
         HttpManagerLYD.instance.SendRequestLYD(requesterLYD);
     }
 
-    public void OnCompleteGetMeetingImageData(DownloadHandler handler)
+    public void OnCompleteCheckList(DownloadHandler handler)
     {
-        
+        string s = "{\"data\":" + handler.text + "}";
+        print(s);
+
+        //data를 list<TodoListdata>에 넣기
+        TodolistDataArray array = JsonUtility.FromJson<TodolistDataArray>(s);
+        for (int i = 0; i < array.data.Count; i++)
+        {
+            print(array.data[i].memberNo + "\n" + array.data[i].projectNo + "\n" + array.data[i].dueDate + "\n" + array.data[i].title + "\n" + array.data[i].content + "\n" + array.data[i].tagNo);
+
+
+        }
+        print("조회완료");
     }
+
+    //체크 겟
+    public Image btnImage1;
+    public Button btn1;
+    public int checkint;
+
+    public void GetCheckList(int memberNum, int projectNum)
+    {
+
+        HttpRequesterLYD requesterLYD = new HttpRequesterLYD();
+
+        //post/1, get, 완료되었을 때 호출되는 함수
+        requesterLYD.url = $@"http://43.201.58.81:8088/checklist?memberNo={memberNum}&projectNo={projectNum}";
+        requesterLYD.requestTypeLYD = RequestTypeLYD.GET;
+        requesterLYD.onComplete = OnCompleteGetCheckList;
+
+        HttpManagerLYD.instance.SendRequestLYD(requesterLYD);
+
+
+    }
+
+    public void OnCompleteGetCheckList(DownloadHandler handler)
+    {
+        //제이슨 배열 안에 제이슨이 있을 때 원하는 값만 가져올 수 있도록
+        JObject jobject = JObject.Parse(handler.text);
+        print("6666666666666666666666666" + jobject.ToString());
+
+        var jsonkey = jobject["data"];
+
+        //RemoveCard();
+        RemoveCheck();
+
+       foreach (var j1 in jsonkey)
+        {
+
+            //1. 스크롤뷰 content안에 title button이 (cardObject)생성되야함. 
+            GameObject go = Instantiate(checkObject, checkContent);
+            //a맨위로 올리기 
+            go.transform.SetSiblingIndex(0);
+            //HttpManagerLYD.instance.Set(cardContent);
+            go.GetComponentInChildren<Text>().text = j1["title"].ToString();
+            _title = go.GetComponentInChildren<Text>().text;
+
+            //체크박스
+            btnImage1 = go.transform.GetChild(1).GetComponent<Image>();
+            btn1 = go.transform.GetChild(1).GetComponent<Button>();
+
+            checkint = int.Parse(j1["checklistNo"].ToString());
+            CheckUI check = go.GetComponent<CheckUI>();
+
+
+            //만약 태그 번호가 1번이면 btnImage.sprite = frame32;,  //2. 버튼 인터렉터블 꺼주기 + 카드 
+            //이부분은 체크리스트에서 하기 
+
+            /*if (tagNum == "2")
+            {
+                btnImage.sprite = frame38;
+                t.text = "완료";
+                //inputTitle.interactable = false;
+
+                //btn.interactable = false;
+                //Button s = go.GetComponent<Button>();
+                //s.interactable = false;
+            }
+
+            if (tagNum == "3")
+            {
+                btnImage.sprite = frame39;
+                t.text = "이슈";
+            }
 */
+            //inputContent.text = j1["content"].ToString();
+
+
+            check.Set(btnImage1, btn1, checkint, checkContent);//, btn);
+
+           
+            // print(j1["projectNo"].ToString());
+            //  print(j1["tagNo"]["tagName"].ToString());
+
+        }
+
+    }
+
+    public void RemoveCheck()
+    {
+
+        Transform[] projectParent = checkContent.GetComponentsInChildren<Transform>();
+        if (projectParent != null)
+        {
+            for (int i = 1; i < projectParent.Length; i++)
+            {
+                if (projectParent[i] != transform)
+                    Destroy(projectParent[i].gameObject);
+            }
+        }
+    }
+
+    public void PutCheck(int a)
+    {
+        GameObject ss = GameObject.Find("HttpUIManager");
+        HttpRequesterLYD requesterLYD = new HttpRequesterLYD();
+
+        //url 바꾸기
+        requesterLYD.url = "http://43.201.58.81:8088/checklist";
+        requesterLYD.requestTypeLYD = RequestTypeLYD.PUT;
+
+        CheckListData data = new CheckListData();
+        data.memberNo = memNo; //이부분은 (자기번호) 저장되어있는 부분을 보내야하는것이 아닌가?
+                               //data.projectNo = int.Parse(ui.pjNum[idx]);
+                               //이렇게 index찾아지는지 먼저 확인해보기
+        data.checklistNo = a;
+
+        print("ssssssssssssssssssss : " + a);
+        requesterLYD.todoList = JsonUtility.ToJson(data, true);
+        print(requesterLYD.todoList);
+
+        requesterLYD.onComplete = OnCompleteTeamTag;
+        HttpManagerLYD.instance.SendRequestLYD(requesterLYD);
+
+    }
+
 
 }
