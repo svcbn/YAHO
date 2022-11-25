@@ -53,5 +53,7 @@ public class WebcamHandler_BH : MonoBehaviour
             //WebCamTexture.Destroy(textureWebCam);
             //textureWebCam = null;
         }
+
+
     }
 }

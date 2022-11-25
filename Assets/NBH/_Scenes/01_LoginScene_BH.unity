@@ -5880,7 +5880,7 @@ GameObject:
   - component: {fileID: 1473013413}
   - component: {fileID: 1473013415}
   m_Layer: 5
-  m_Name: Loading
+  m_Name: ImageLoading
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

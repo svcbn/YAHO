@@ -15,7 +15,8 @@ public static class SavWav
 			filename += ".wav";
 		}
 
-		var filepath = Path.Combine("C:\\Users\\HP\\Desktop\\4차프로젝트\\WAV", filename);
+		//var filepath = Path.Combine("C:\\Users\\HP\\Desktop\\4차프로젝트\\WAV", filename);
+		var filepath = Path.Combine(Application.streamingAssetsPath, filename);
 
 		Debug.Log(filepath);
 

@@ -60,7 +60,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _BlurDistance: 0.0025
+    - _BlurDistance: 0.002
     - _BumpScale: 1
     - _CenterNotBlur: 1
     - _CenterX: 0.5

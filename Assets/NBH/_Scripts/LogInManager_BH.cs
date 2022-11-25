@@ -543,6 +543,7 @@ public class LogInManager_BH : MonoBehaviourPunCallbacks
         requester.requestType = RequestType.POST;
         requester.postData = JsonUtility.ToJson(data);
         requester.onComplete = OnCompleteSignUp;
+        requester.onFailed = OnFailedSignUp;
 
         WebRequester_BH.instance.SendRequest(requester);
     }
@@ -628,6 +629,13 @@ public class LogInManager_BH : MonoBehaviourPunCallbacks
             StartCoroutine(WindowPopUp(panelNotice));
         }
 
+    }
+
+    public void OnFailedSignUp()
+    {
+        Debug.Log("회원가입 실패");
+        panelNotice.GetComponentInChildren<Text>().text = "실패";
+        StartCoroutine(WindowPopUp(panelNotice));
     }
 
     public void OnCompleteIdCheck(DownloadHandler handler)
