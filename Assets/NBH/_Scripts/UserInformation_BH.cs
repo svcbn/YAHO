@@ -25,6 +25,12 @@ public class UserInformation_BH : MonoBehaviour
     [SerializeField]
     private string _name;
 
+    [SerializeField]
+    private string _accessToken;
+
+    [SerializeField]
+    private int _memberNo;
+
     public string MemberId
     {
         get
@@ -47,5 +53,34 @@ public class UserInformation_BH : MonoBehaviour
         {
             _name = value;
         }
+    }
+
+    public string AccessToken
+    {
+        get
+        {
+            return _accessToken;
+        }
+        set
+        {
+            _accessToken = value;
+        }
+    }
+
+    public int MemberNo
+    {
+        get
+        {
+            return _memberNo;
+        }
+        set
+        {
+            _memberNo = value;
+        }
+    }
+
+    private void Start()
+    {
+        
     }
 }

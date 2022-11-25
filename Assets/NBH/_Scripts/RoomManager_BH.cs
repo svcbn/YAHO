@@ -42,36 +42,38 @@ public class ProjectData
     public List<int> projectMemberList;
 }
 
-
+[System.Serializable]
 public class RoomManager_BH : MonoBehaviourPunCallbacks
 {
-    #region ui Component
-
     public Transform[] spawnPos;
     public Transform projectorPos;
 
     public Button btnCallUI;
+    public GameObject btnExitRoom;
+    
+    [Header("MakeProject")]
+    #region 프로젝트 생성 component
 
     public GameObject btnMakeProject;
-    public GameObject btnProjectInfo;
-    public GameObject btnExitRoom;
-
     public GameObject panelMakeProject;
-    public GameObject panelProjectInfo;
 
     public Button btnMakeProjectSubmit;
     public Button btnMakeProjectClose;
-    public Button btnProjectInfoClose;
 
     public InputField inputProjectName;
     public InputField inputScheduleStart;
     public InputField inputScheduleEnd;
     public InputField inputProjectGoal;
     public Button btnPush;
-
     #endregion
 
-    STTTest_BH stt;
+    [Header("ProjectInfo")]
+    #region 프로젝트 정보 Component
+
+    public GameObject btnProjectInfo;
+    public GameObject panelProjectInfo;
+    public Button btnProjectInfoClose;
+    #endregion
 
     string _projectName; // = "pn";
     string _projectSubject; // = "ps";
@@ -79,6 +81,11 @@ public class RoomManager_BH : MonoBehaviourPunCallbacks
     string _startDate; // = "2022-12-12";
     string _endDate; // = "2022-12-13";
     List<int> _projectMemberList; // = new List<int>() {1,2,3 };
+
+
+
+    STTTest_BH stt;
+
 
     List<ConversationData> conversationList = new List<ConversationData>();
     string mergeText;
@@ -292,20 +299,27 @@ public class RoomManager_BH : MonoBehaviourPunCallbacks
     [PunRPC]
     public void RPCCollectMeetingData(string _mergeText)
     {
-        mergeText = _mergeText;
-        FromJsonMerge(mergeText);
+        FromJsonMerge(_mergeText);
     }
 
     void ToJsonConversion(List<ConversationData> conversationList)
     {
-        mergeText = JsonUtility.ToJson(conversationList);
+        IndivMeetingData data = new IndivMeetingData();
+        data.conversation = conversationList;
+        mergeText = JsonUtility.ToJson(data);
     }
 
     void FromJsonMerge(string mergeText)
     {
-        ConversationData mergeData = new ConversationData();
-        mergeData = JsonUtility.FromJson<ConversationData>(mergeText);
-        conversationList.Add(mergeData);
+        IndivMeetingData data = new IndivMeetingData();
+
+        data = JsonUtility.FromJson<IndivMeetingData>(mergeText);
+        foreach(ConversationData conversation in data.conversation)
+        {
+            conversationList.Add(conversation);
+        }
+        
+
     }
 
     // Update is called once per frame
@@ -317,11 +331,9 @@ public class RoomManager_BH : MonoBehaviourPunCallbacks
             {
                 ToJsonConversion(conversationList);
                 photonView.RPC("RPCCollectMeetingData", RpcTarget.MasterClient, mergeText);
+                
             }
-            else
-            {
-
-            }
+            
         }
     }
 
