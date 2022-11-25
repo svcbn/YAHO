@@ -61,9 +61,77 @@ public class MeetingGetTest : MonoBehaviour
 
         //meeting.SetActive(true);
         GetMeeting();
+        GetMeetingMember();
     }
     public string a; 
     
+    
+    void GetMeetingMember()
+    {
+        GameObject s = GameObject.Find("HttpUIManager");
+        HttpUIManagerLYD h = s.GetComponent<HttpUIManagerLYD>();
+        List<int> a1 = h.mmmNum;
+        string meme  = "";
+        for(int i = 0; i < a1.Count; i++)
+        {
+            meme += a1[i].ToString();
+
+            if(i < a1.Count -1)
+            {
+                meme += ",";
+            }
+        }
+
+        string url = string.Format("http://43.201.58.81:8088/members/name/"+meme);
+        StartCoroutine(GetMeetingMemberData(url));
+    }
+    IEnumerator GetMeetingMemberData(string url)
+    {
+        UnityWebRequest req = UnityWebRequest.Get(url);
+
+        yield return req.SendWebRequest();
+
+
+        if (req.result == UnityWebRequest.Result.ConnectionError || req.result == UnityWebRequest.Result.ProtocolError)
+        {
+            print($"에러:{req.error}");
+        }
+
+        if (req.result == UnityWebRequest.Result.Success)
+        {
+            string readData = req.downloadHandler.text;
+            print($"wwwwwwwwwwwwwwwwwwwwwww읽은 값: {readData}");
+
+            JObject jObject = JObject.Parse(readData);
+
+            string meme = "";
+
+            print(jObject.ToString());
+            JToken jk = jObject["data"];
+            foreach(JToken j1 in jk)
+            {
+                //              meme += j1.ToString();
+                meme += j1.ToString() + ",";
+               print("11111111111111 : " + meme);
+           }
+
+            mi.transform.GetChild(9).GetComponent<Text>().text = meme.Substring(0, meme.Length - 1);
+            //meme.length -1 로 substring잘라주기
+            //print("111111111" + );
+           
+            if(meme.Length > 18)
+            {
+                string s = meme.Substring(0, 18);
+                meme = s + "...";
+            }
+                
+
+                
+            
+
+        }
+    }
+
     //미팅에 미팅목록 리스트가 나오도록 만든다. 
     void GetMeeting()
     {

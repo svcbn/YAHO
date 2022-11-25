@@ -48,6 +48,7 @@ public class HttpUIManagerLYD : MonoBehaviour
 
     public Sprite frame32;
 
+   // public int memNo = GameObject.Find("UserInfo").GetComponent<UserInformation_BH>().MemberNo;
     public int memNo = 1;
 
     //태그부분
@@ -66,6 +67,8 @@ public class HttpUIManagerLYD : MonoBehaviour
     string _title = "오늘 할 일";
     string _content = "무슨내용입니다.";
     string _checkTitle = "할 일";
+
+    //일간리포트
    // int _tag = 0;
 
    // string _date = "2022-11-20";
@@ -346,13 +349,15 @@ public class HttpUIManagerLYD : MonoBehaviour
 
         }
 
+        d.AddOptions(m_pName);
 
-        foreach (var m in m_pName)
-        {
-            //drop다운 옵션에 추가 - 프로젝트이름 (m이 프로젝트가 담겨 있는 이름 : 첫 프로젝트 , pn)
-            d.options.Add(new Dropdown.OptionData() { text = m.text });
+        //foreach (var m in m_pName)
+        //{
+        //    //drop다운 옵션에 추가 - 프로젝트이름 (m이 프로젝트가 담겨 있는 이름 : 첫 프로젝트 , pn)
+        //    //d.options.Add(new Dropdown.OptionData() { text = m.text });
 
-        }
+
+        //}
         d.value = index;
         DropdwonpNameSelected(index);
 
@@ -570,6 +575,8 @@ public class HttpUIManagerLYD : MonoBehaviour
     }
 
     List<string> MpNum = new List<string>();
+    //멤버 넘버 조회해서 이름 생성
+   public List<int> mmmNum = new List<int>();
     public void OnCompleteGetMeeting(DownloadHandler handler)
     {
         JObject jobject = JObject.Parse(handler.text);
@@ -592,6 +599,16 @@ public class HttpUIManagerLYD : MonoBehaviour
 
             MpNum.Add(j1["projectNo"].ToString());
             print("2222222222222 : " +MpNum);
+
+            var jp = j1["projectMemberLists"];
+            foreach (var j2 in jp)
+            {
+                //print("프로젝트넘버 : " + j2["projectNo"].ToString());
+                print("멤버 넘버 : " + j2["memberNo"].ToString());
+                mmmNum.Add(int.Parse(j2["memberNo"].ToString()));
+            }
+
+
         }
 
         foreach (var m in meetingPName)
@@ -638,6 +655,7 @@ public class HttpUIManagerLYD : MonoBehaviour
         HttpManagerLYD.instance.SendRequestLYD(requesterLYD);
     }
 
+    //http://43.201.58.81:8088/members/name/1,2,3,4
     
     public void OnCompleteGetMeetingData(DownloadHandler handler)
     {
@@ -790,27 +808,7 @@ public class HttpUIManagerLYD : MonoBehaviour
                 transform.SetSiblingIndex(checkContent.childCount);
             }
 
-            //만약 태그 번호가 1번이면 btnImage.sprite = frame32;,  //2. 버튼 인터렉터블 꺼주기 + 카드 
-            //이부분은 체크리스트에서 하기 
-
-            /*if (tagNum == "2")
-            {
-                btnImage.sprite = frame38;
-                t.text = "완료";
-                //inputTitle.interactable = false;
-
-                //btn.interactable = false;
-                //Button s = go.GetComponent<Button>();
-                //s.interactable = false;
-            }
-
-            if (tagNum == "3")
-            {
-                btnImage.sprite = frame39;
-                t.text = "이슈";
-            }
-*/
-            //inputContent.text = j1["content"].ToString();
+            
 
 
             check.Set(btnImage1, btn1, checkint, checkContent);//, btn);
@@ -861,5 +859,41 @@ public class HttpUIManagerLYD : MonoBehaviour
 
     }
 
+    //////////////////////////////////////////////////////////////////////////////////
+    //일간리포트 포스트
+    public void PostDayReport()
+    {
+
+    }
+    
+    //일간리포트 겟하기
+
+    public string todayDate = "20221125";
+
+    public void OnGetDayReportBtn()
+    {
+        GetDayReport(memNo, todayDate);
+    }
+    public void GetDayReport(int memberNum, string todayDate)
+    {
+
+        HttpRequesterLYD requesterLYD = new HttpRequesterLYD();
+
+        //post/1, get, 완료되었을 때 호출되는 함수
+        requesterLYD.url = $@"http://43.201.58.81:8088/checklist/dailyGraph?memberNo={memberNum}&createDate={todayDate}";
+        print("dddddddddddddddddddd : " + requesterLYD.url);
+        requesterLYD.requestTypeLYD = RequestTypeLYD.GET;
+        requesterLYD.onComplete = OnCompleteGetDayReport;
+
+        HttpManagerLYD.instance.SendRequestLYD(requesterLYD);
+
+
+    }
+
+    public void OnCompleteGetDayReport(DownloadHandler handler)
+    {
+        JObject jobject = JObject.Parse(handler.text);
+        print("6666666666666666666666666" + jobject.ToString());
+    }
 
 }
