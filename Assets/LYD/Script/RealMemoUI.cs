@@ -29,6 +29,7 @@ public class RealMemoUI : MonoBehaviour
     public int pjNum;
 
     public Transform TagParent;
+    public Transform cardC;
 
     public GameObject preDoing;
     public GameObject preComplete;
@@ -38,7 +39,7 @@ public class RealMemoUI : MonoBehaviour
 
     public int todo;
 
-    public void Set(string s1, string s2, string s3, string s4, GameObject go ,Image i1, Text t, Button b1, int ii1)
+    public void Set(string s1, string s2, string s3, string s4, GameObject go ,Image i1, Text t, Button b1, int ii1, Transform t1)
     {
         cardTitle = s1;
         content = s2;
@@ -49,6 +50,7 @@ public class RealMemoUI : MonoBehaviour
         cal = t;
         calenderbtn = b1;
         todo = ii1;
+        cardC = t1;
     }
 
 
@@ -124,6 +126,7 @@ public class RealMemoUI : MonoBehaviour
         GameObject gi = GameObject.Find("HttpUIManager");
         HttpUIManagerLYD hui = gi.GetComponent<HttpUIManagerLYD>();
         hui.PutTeamTag(todo);
+        transform.SetSiblingIndex(cardC.childCount);
         //print("77777777777777777777777 : " + transform.GetSiblingIndex());
        // PutCheck();
         /*btn.interactable = false;

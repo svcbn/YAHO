@@ -382,12 +382,9 @@ public class HttpUIManagerLYD : MonoBehaviour
 
         //게시판 날리기 (게시판 안에 있는 카드를 날리기)
         GetTodolist(memNo, int.Parse(pjNum[index]));//int.Parse(pjNum[index]));
-        print("11111111" + int.Parse(pjNum[index]));
         GetCheckList(memNo, int.Parse(pjNum[index]));
-        //이렇게되면 번호가 바뀔때마다 계속 생성이 됨. 그러면 어떻게해야할까?
-        //-> 먼저 index는 0, 1만 나옴 0에는 첫번째 프로젝트 이름이, 1에는 2번째 프로젝트 이름 
-        //->projectNo에 (1,2)는 잘 바뀌지만 2번 프로젝트에 아무런 to do list가 없으면 생성되지 않아햐한다.
-        //버튼을 누를때마다 생성되는 것이 아니라 한번만 
+
+        
 
     }
 
@@ -456,6 +453,7 @@ public class HttpUIManagerLYD : MonoBehaviour
             {
                 btnImage.sprite = frame38;
                 t.text = "완료";
+                transform.SetSiblingIndex(cardContent.childCount);
                 //inputTitle.interactable = false;
 
                 //btn.interactable = false;
@@ -474,7 +472,7 @@ public class HttpUIManagerLYD : MonoBehaviour
             
             calenderT.text = j1["dueDate"].ToString();
 
-            memo.Set(_title, _content, calenderT.text, tagNum, descdisplay, btnImage, t, calender, todoint);//, btn);
+            memo.Set(_title, _content, calenderT.text, tagNum, descdisplay, btnImage, t, calender, todoint, cardContent);//, btn);
 
             //타이틀이 8자리 이상이면 8자리 이후에 ...을 더해준다. 
             if (_title.Length > 8)
@@ -738,7 +736,7 @@ public class HttpUIManagerLYD : MonoBehaviour
     public Image btnImage1;
     public Button btn1;
     public int checkint;
-
+    public string chCheked;
     public void GetCheckList(int memberNum, int projectNum)
     {
 
@@ -763,7 +761,7 @@ public class HttpUIManagerLYD : MonoBehaviour
         var jsonkey = jobject["data"];
 
         //RemoveCard();
-        RemoveCheck();
+       RemoveCheck();
 
        foreach (var j1 in jsonkey)
         {
@@ -782,7 +780,15 @@ public class HttpUIManagerLYD : MonoBehaviour
 
             checkint = int.Parse(j1["checklistNo"].ToString());
             CheckUI check = go.GetComponent<CheckUI>();
-
+            chCheked = j1["isChecked"].ToString();
+            print("fffffffffffffffffffffff : " + chCheked);
+            if(chCheked == "Y")
+            {
+                btnImage1.sprite = frame32;
+                btn1.interactable = false;
+                go.GetComponent<Button>().interactable = false;
+                transform.SetSiblingIndex(checkContent.childCount);
+            }
 
             //만약 태그 번호가 1번이면 btnImage.sprite = frame32;,  //2. 버튼 인터렉터블 꺼주기 + 카드 
             //이부분은 체크리스트에서 하기 
