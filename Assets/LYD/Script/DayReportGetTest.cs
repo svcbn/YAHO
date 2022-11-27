@@ -34,34 +34,7 @@ public class DayReportGetTest : MonoBehaviour
 
     //이 버튼을 클릭했을 때 일간리포트가 조회된다.
 
-    public void OnDayReport()
-    {
-        //string url = string.Format();
-        //StartCoroutine(DayReportGetData(url));
-    }
-
-    IEnumerator DayReportGetData(string url)
-    {
-        UnityWebRequest req = UnityWebRequest.Get(url);
-
-        yield return req.SendWebRequest();
-
-        if (req.result == UnityWebRequest.Result.ConnectionError || req.result == UnityWebRequest.Result.ProtocolError)
-        {
-            print($"에러:{req.error}");
-        }
-
-        if (req.result == UnityWebRequest.Result.Success)
-        {
-            string readData = req.downloadHandler.text;
-            print($"읽은 값: {readData}");
-
-            JObject jObject = JObject.Parse(readData);
-            print(jObject.ToString());
-
-        }
-
-    }
+    
 
     // Update is called once per frame
     void Update()

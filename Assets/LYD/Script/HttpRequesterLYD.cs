@@ -21,6 +21,8 @@ public class TodoListData
     public int tagNo;
 
     public int todolistNo;
+
+    //public int 
 }
 
 //재원오빠가 보내주는대로 바꿔야함.
@@ -36,6 +38,17 @@ public class CheckListData
     public int checklistNo;
 
 }
+
+public class CommutingManagementData
+{
+    public int commutingManagementNo;
+}
+
+public class DailyGraphData
+{
+    public int memberNo;
+}
+
 
 public enum RequestTypeLYD
 {
@@ -55,6 +68,18 @@ public class TodolistDataArray
 public class CheckListDatArray
 {
     public List<CheckListData> data;
+}
+
+public class CommutingManagementDataArray
+{
+    public List<CommutingManagementData> data;
+}
+
+[Serializable]
+
+public class DailyGraphDataArray
+{
+    public List<DailyGraphData> data;
 }
 public class HttpRequesterLYD
 {

@@ -11,7 +11,6 @@ public class CustomButton : MonoBehaviour
     public GameObject customBackground;
 
 
-    public GameObject customBtn;
     public GameObject taskBtn;
     public GameObject enterBtn;
     
@@ -70,7 +69,6 @@ public class CustomButton : MonoBehaviour
         enterBtn.SetActive(false);
         meetingHistoryBtn.SetActive(false);
         exitBtn.SetActive(false);
-        customBtn.SetActive(false);
 
         image.SetActive(false);
         menuImage1.SetActive(false);
@@ -93,7 +91,6 @@ public class CustomButton : MonoBehaviour
         //{4
         image.SetActive(true);
         menuImage1.SetActive(true);
-            customBtn.SetActive(true);
             taskBtn.SetActive(true);
             enterBtn.SetActive(true);
             meetingHistoryBtn.SetActive(true);
@@ -116,7 +113,6 @@ public class CustomButton : MonoBehaviour
     {
         image.SetActive(false);
         menuImage1.SetActive(false);
-        customBtn.SetActive(false);
         taskBtn.SetActive(false);
         enterBtn.SetActive(false);
         meetingHistoryBtn.SetActive(false);
@@ -132,7 +128,6 @@ public class CustomButton : MonoBehaviour
 
         image.SetActive(false);
         menuImage1.SetActive(false);
-        customBtn.SetActive(false);
         taskBtn.SetActive(false);
         enterBtn.SetActive(false);
         meetingHistoryBtn.SetActive(false);
@@ -149,7 +144,6 @@ public class CustomButton : MonoBehaviour
 
         image.SetActive(false);
         menuImage1.SetActive(false);
-        customBtn.SetActive(false);
         taskBtn.SetActive(false);
         enterBtn.SetActive(false);
         meetingHistoryBtn.SetActive(false);
@@ -176,7 +170,6 @@ public class CustomButton : MonoBehaviour
 
         image.SetActive(false);
         menuImage1.SetActive(false);
-        customBtn.SetActive(false);
         taskBtn.SetActive(false);
         enterBtn.SetActive(false);
         meetingHistoryBtn.SetActive(false);

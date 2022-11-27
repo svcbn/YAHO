@@ -5,6 +5,7 @@ using UnityEngine.Networking;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using UnityEngine.UI;
+using System;
 
 public class HttpUIManagerLYD : MonoBehaviour
 {
@@ -30,9 +31,14 @@ public class HttpUIManagerLYD : MonoBehaviour
     public GameObject meetingObject;
     public Transform meetingContent;
 
+    public GameObject dayReportMeetingText; //텍스트 프리팹
+    public Transform dayReportMeetingContent;
+
     public Dropdown dropdown_project;
     public Dropdown dropdown_meetingPro;
+    public Dropdown dropdown_dayreport;
     public int idx;
+    public int idx1;
 
     public Text _period1;
     public Text _period2;
@@ -43,6 +49,9 @@ public class HttpUIManagerLYD : MonoBehaviour
 
     public Dropdown.OptionData meetingPNamedata;
     public List<Dropdown.OptionData> meetingPName = new List<Dropdown.OptionData>();
+
+    public Dropdown.OptionData dayreportData;
+    public List<Dropdown.OptionData> dayreportName = new List<Dropdown.OptionData>();
 
     public RealMemoUI memo;
 
@@ -62,16 +71,31 @@ public class HttpUIManagerLYD : MonoBehaviour
     public Sprite frame38;
     public Sprite frame39;
 
+    public GameObject preDI;
     
 
     string _title = "오늘 할 일";
     string _content = "무슨내용입니다.";
     string _checkTitle = "할 일";
 
-    //일간리포트
-   // int _tag = 0;
 
-   // string _date = "2022-11-20";
+    //일간리포트
+    public Image todoImage;
+    public Text t_date;
+    public Text t_loginTime;
+    public Text t_logoutTime;
+
+    string yy = System.DateTime.Now.ToString("yyyy");
+    string mm = System.DateTime.Now.ToString("MM");
+    string dd = System.DateTime.Now.ToString("dd");
+
+    public GameObject remindPre;
+    public Transform remindContent;
+
+    //일간리포트
+    // int _tag = 0;
+
+    // string _date = "2022-11-20";
     // Start is called before the first frame update
     void Start()
     {
@@ -89,6 +113,10 @@ public class HttpUIManagerLYD : MonoBehaviour
         btnCancel.onClick.AddListener(OnBtnCancel);
         //병한오빠 스크립트.Find("UserInfo").getcomponent<스크립트>.memberNo(); ->멤버넘버찾기
         #endregion
+
+        /*System.DateTime sDate = new System.DateTime(2022, 11, 30);
+        TimeSpan resultTime = sDate - DateTime.Now;
+        print("result Time 띠용~ : " + resultTime.Days);*/
     }
 
     /* public void tags(int i)
@@ -217,13 +245,13 @@ public class HttpUIManagerLYD : MonoBehaviour
     {
         if (inputTitle.text.Length < 1 || inputContent.text.Length < 1)
         {
-            GameObject go = empty_tag.transform.GetChild(0).gameObject;
+            /*GameObject go = empty_tag.transform.GetChild(0).gameObject;
             print("5555555555555555 : " + go);
             if (go != null)
             {
                 Destroy(go);
                 num = 0;
-            }
+            }*/
         }
         else
         {
@@ -435,6 +463,7 @@ public class HttpUIManagerLYD : MonoBehaviour
             
             //1. 스크롤뷰 content안에 title button이 (cardObject)생성되야함. 
             GameObject go = Instantiate(cardObject, cardContent);
+            //이걸로 인해 맨 위로 생성됨.
             go.transform.SetSiblingIndex(0);
             HttpManagerLYD.instance.Set(cardContent);
             go.GetComponentInChildren<Text>().text = j1["title"].ToString();
@@ -740,10 +769,10 @@ public class HttpUIManagerLYD : MonoBehaviour
         print(s);
 
         //data를 list<TodoListdata>에 넣기
-        TodolistDataArray array = JsonUtility.FromJson<TodolistDataArray>(s);
+        CheckListDatArray array = JsonUtility.FromJson<CheckListDatArray>(s);
         for (int i = 0; i < array.data.Count; i++)
         {
-            print(array.data[i].memberNo + "\n" + array.data[i].projectNo + "\n" + array.data[i].dueDate + "\n" + array.data[i].title + "\n" + array.data[i].content + "\n" + array.data[i].tagNo);
+            print(array.data[i].memberNo + "\n" + array.data[i].projectNo + "\n" + array.data[i].title);
 
 
         }
@@ -860,27 +889,307 @@ public class HttpUIManagerLYD : MonoBehaviour
     }
 
     //////////////////////////////////////////////////////////////////////////////////
-    //일간리포트 포스트
-    public void PostDayReport()
-    {
-
-    }
     
-    //일간리포트 겟하기
 
     public string todayDate = "20221125";
 
-    public void OnGetDayReportBtn()
+    //일간리포트 겟하는 버튼 여기서
+    //1..출퇴근 조회함수, -> post는 됨. 
+    //1.회의록 함수, 아마 겟을해도 날짜때문에 뜨지는 않을것이다...???
+    //3.TO DO 달성률 이미지 함수(체크리스트에 값이 담겨야함),
+    //4.업무집중 함수,
+    //5.팀업무리스트(posttodo)함수,
+    //6. 오늘의 날짜
+    public string tDdate;
+    public void OnDayReportBtn()
     {
-        GetDayReport(memNo, todayDate);
+        //GetDayReport(memNo, todayDate);
+        tDdate = yy + "-" + mm + "-" + dd;
+        t_date.text = tDdate;
+        //to do 달성률 이미지 포스트
+       // PostDayReportImage();
+
+        //이버튼을 누르면 퇴근이 되야함.
+        PostLeave();
+        //1. 멤버넘버로 프로젝트 조회하기 -> 2. 회의록, TO do 달성률 이미지, 리마인더 
+        GetDayReportProject(memNo);
     }
-    public void GetDayReport(int memberNum, string todayDate)
+
+    public void GetDayReportProject(int memberNum)
     {
 
         HttpRequesterLYD requesterLYD = new HttpRequesterLYD();
 
         //post/1, get, 완료되었을 때 호출되는 함수
-        requesterLYD.url = $@"http://43.201.58.81:8088/checklist/dailyGraph?memberNo={memberNum}&createDate={todayDate}";
+        requesterLYD.url = $@"http://43.201.58.81:8088/projects?memberNo={memberNum}&isProcess=Y";
+        requesterLYD.requestTypeLYD = RequestTypeLYD.GET;
+        requesterLYD.onComplete = OnCompleteGetDayReportProject;
+
+        HttpManagerLYD.instance.SendRequestLYD(requesterLYD);
+
+
+    }
+
+    List<string> dpNum = new List<string>();
+   
+    public void OnCompleteGetDayReportProject(DownloadHandler handler)
+    {
+        JObject jobject = JObject.Parse(handler.text);
+        print(jobject.ToString());
+
+        //옵션을 클리어해주는게 맞나??? < 이부분은 물어보기>
+        var d = dropdown_dayreport.GetComponent<Dropdown>();
+        //d.ClearOptions();
+        //d.value = 1;
+        var jsonP = jobject["data"];
+        print("1111111" + jsonP);
+        foreach (var j1 in jsonP)
+        {
+            //프로젝트의 이름을 dropdown options에 담아준다. 
+            dayreportData = new Dropdown.OptionData();
+
+            dayreportData.text = j1["projectName"].ToString();
+            // print("111111111111" + m_pNamedata.text);
+            dayreportName.Add(dayreportData);
+
+            dpNum.Add(j1["projectNo"].ToString());
+            print("2222222222222 : " + dpNum);
+
+           
+
+        }
+
+        foreach (var m in dayreportName)
+        {
+            //drop다운 옵션에 추가 - 프로젝트이름 (m이 프로젝트가 담겨 있는 이름 : 첫 프로젝트 , pn)
+            d.options.Add(new Dropdown.OptionData() { text = m.text });
+
+
+        }
+        d.value = idx1;
+        DropdwondayReportSelected(idx1);
+
+        d.onValueChanged.RemoveAllListeners();
+        d.onValueChanged.AddListener(ChangeDropDown2);
+    }
+
+    void ChangeDropDown2(int idx)
+    {
+        DropdwondayReportSelected(idx);
+    }
+
+
+    void DropdwondayReportSelected(int value)
+    {
+
+        idx1 = value;
+
+        //TODO달성률
+        //프로젝트의 번호에 따라 이미지가 떠야함 
+        //PostDayReportImage();
+        //
+        //리마인더
+        GetRemind(memNo, int.Parse(dpNum[idx1]));
+        //회의기록 
+        GetMeetingDayReportData(int.Parse(dpNum[idx1]));
+
+    }
+
+    //회의기록 함수
+    public void GetMeetingDayReportData(int proNum)
+    {
+        HttpRequesterLYD requesterLYD = new HttpRequesterLYD();
+
+        //post/1, get, 완료되었을 때 호출되는 함수
+        requesterLYD.url = $@"http://43.201.58.81:8088/meetings?projectNo={proNum}";
+        requesterLYD.requestTypeLYD = RequestTypeLYD.GET;
+        requesterLYD.onComplete = OnCompleteGetMeetingDayReportData;
+
+        HttpManagerLYD.instance.SendRequestLYD(requesterLYD);
+    }
+
+
+    public void OnCompleteGetMeetingDayReportData(DownloadHandler handler)
+    {
+        JObject jobject = JObject.Parse(handler.text);
+        print(jobject.ToString());
+
+        RemoveMeetingDayReportCard();
+
+        var Jm = jobject["data"];
+        foreach (var j1 in Jm)
+        {
+            GameObject startTime = Instantiate(dayReportMeetingText, dayReportMeetingContent);
+            if(j1["meetingStartTime"].ToString().Substring(0, 10) == tDdate)
+            {
+                string st = j1["meetingStartTime"].ToString().Substring(11, 7);
+                startTime.GetComponent<Text>().text = st;
+
+            }
+            //print(st);
+
+        }
+    }
+
+    public void RemoveMeetingDayReportCard()
+    {
+
+        Transform[] projectParent = dayReportMeetingContent.GetComponentsInChildren<Transform>();
+        if (projectParent != null)
+        {
+            for (int i = 1; i < projectParent.Length; i++)
+            {
+                if (projectParent[i] != transform)
+                    Destroy(projectParent[i].gameObject);
+            }
+        }
+    }
+
+    //출퇴근 조회함수
+    /*public void PostCome()
+    {
+        HttpRequesterLYD requesterLYD = new HttpRequesterLYD();
+
+        requesterLYD.url = "http://43.201.58.81:8088/commutingManagement";
+        requesterLYD.requestTypeLYD = RequestTypeLYD.POST;
+
+
+        CommutingManagementData data = new CommutingManagementData();
+        data.commutingManagementNo = memNo; //이부분은 (자기번호) 저장되어있는 부분을 보내야하는것이 아닌가?
+        requesterLYD.todoList = JsonUtility.ToJson(data, true);
+        print(requesterLYD.todoList);
+
+        requesterLYD.onComplete = OnCompletePostLeave;
+        print("11111111111111");
+        HttpManagerLYD.instance.SendRequestLYD(requesterLYD);
+    }*/
+    public void PostLeave()
+    {
+        HttpRequesterLYD requesterLYD = new HttpRequesterLYD();
+
+        requesterLYD.url = "http://43.201.58.81:8088/commutingManagement/leave";
+        requesterLYD.requestTypeLYD = RequestTypeLYD.POST;
+
+
+        CommutingManagementData data = new CommutingManagementData();
+        data.commutingManagementNo = memNo; //이부분은 (자기번호) 저장되어있는 부분을 보내야하는것이 아닌가?
+        requesterLYD.todoList = JsonUtility.ToJson(data, true);
+        print(requesterLYD.todoList);
+
+        requesterLYD.onComplete = OnCompletePostLeave;
+        print("11111111111111");
+        HttpManagerLYD.instance.SendRequestLYD(requesterLYD);
+
+    }
+    public void OnCompletePostLeave(DownloadHandler handler)
+    {
+        string s = "{\"data\":" + handler.text + "}";
+        print(s);
+
+        //data를 list<TodoListdata>에 넣기
+        //CommutingManagementDataArray array = JsonUtility.FromJson<CommutingManagementDataArray>(s);
+       /*for (int i = 0; i < array.data.Count; i++)
+       {
+            print(array.data[i].commutingManagementNo);
+
+
+       }*/
+        print("조회완료");
+        GetCommute();
+    }
+
+   /* public void Btn()
+    {
+        //GetCommute(memNo);
+        PostCome();
+    }*/
+   /* public void TestBtn1()
+    {
+         GetCommute();
+
+    }*/
+
+
+    //여기 되는지 확인!!
+    public string memeNum;
+    public void GetCommute()
+    {
+        memeNum = memNo.ToString();
+        HttpRequesterLYD requesterLYD = new HttpRequesterLYD();
+
+        //post/1, get, 완료되었을 때 호출되는 함수
+        requesterLYD.url = $@"http://43.201.58.81:8088/commutingManagement?memberNo=" + memeNum; //만약 안되면 
+        requesterLYD.requestTypeLYD = RequestTypeLYD.GET;
+        requesterLYD.onComplete = OnCompleteGetCommute;
+
+        HttpManagerLYD.instance.SendRequestLYD(requesterLYD);
+    }
+
+    public void OnCompleteGetCommute(DownloadHandler handler)
+    {
+        JObject jobject = JObject.Parse(handler.text);
+        print("6666666666666666666666666" + jobject.ToString());
+
+        JToken jk = jobject["data"];
+        foreach(JToken j1 in jk)
+        {
+            t_loginTime.text =j1["attendanceTime"].ToString().Substring(11,7);
+            t_logoutTime.text = j1["leaveTime"].ToString().Substring(11,7);
+        }
+
+
+    }
+
+
+    // TO DO 달성률 이미지 함수(체크리스트에 값이 담겨야함)
+    public void PostDayReportImage()
+    {
+        HttpRequesterLYD requesterLYD = new HttpRequesterLYD();
+
+        requesterLYD.url = "http://43.201.58.81:8088/checklist/dailyGraph";
+        requesterLYD.requestTypeLYD = RequestTypeLYD.POST;
+
+
+        DailyGraphData data = new DailyGraphData();
+        data.memberNo = memNo; //이부분은 (자기번호) 저장되어있는 부분을 보내야하는것이 아닌가?
+        requesterLYD.todoList = JsonUtility.ToJson(data, true);
+        print(requesterLYD.todoList);
+
+        requesterLYD.onComplete = OnCompletePostDayReportImage;
+        print("11111111111111");
+        HttpManagerLYD.instance.SendRequestLYD(requesterLYD);
+
+    }
+    public void OnCompletePostDayReportImage(DownloadHandler handler)
+    {
+        string s = "{\"data\":" + handler.text + "}";
+        print(s);
+
+        //data를 list<TodoListdata>에 넣기
+        //DailyGraphDataArray array = JsonUtility.FromJson<DailyGraphDataArray>(s);
+        //print("55555555555555555" + array.data.Count);
+
+        /* for (int i = 0; i < array.data.Count; i++)
+         {
+             print(array.data[i].memberNo);
+
+
+         }*/
+        //print("조회완료");
+        //이미지
+        GetDayReport(memNo, todayDate, int.Parse(dpNum[idx1]));
+
+    }
+
+
+
+    public void GetDayReport(int memberNum, string todayDate, int projectNum)
+    {
+
+        HttpRequesterLYD requesterLYD = new HttpRequesterLYD();
+
+        //post/1, get, 완료되었을 때 호출되는 함수
+        requesterLYD.url = $@"http://43.201.58.81:8088/checklist/dailyGraph?memberNo={memberNum}&createDate={todayDate}&projectNo={projectNum}";
         print("dddddddddddddddddddd : " + requesterLYD.url);
         requesterLYD.requestTypeLYD = RequestTypeLYD.GET;
         requesterLYD.onComplete = OnCompleteGetDayReport;
@@ -894,6 +1203,135 @@ public class HttpUIManagerLYD : MonoBehaviour
     {
         JObject jobject = JObject.Parse(handler.text);
         print("6666666666666666666666666" + jobject.ToString());
+
+        JToken jk = jobject["data"];
+        string ww = jk.ToString();
+        print("333333333333333333" + ww);
+        StartCoroutine(GetImage(ww));
+
     }
+
+    IEnumerator GetImage(string url)
+    {
+        UnityWebRequest ww = UnityWebRequestTexture.GetTexture(url);
+        yield return ww.SendWebRequest();
+
+        if (ww.result != UnityWebRequest.Result.Success)
+        {
+            Debug.Log(ww.error);
+        }
+        else
+        {
+            Texture2D texture = ((DownloadHandlerTexture)ww.downloadHandler).texture;
+            Sprite sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
+           todoImage.sprite = sprite;
+        }
+    }
+
+    
+    //리마인더 
+    public void GetRemind(int memberNum, int projectNum)
+    {
+        HttpRequesterLYD requesterLYD = new HttpRequesterLYD();
+
+        //post/1, get, 완료되었을 때 호출되는 함수
+        requesterLYD.url = $@"http://43.201.58.81:8088/todolist?memberNo={memberNum}&projectNo={projectNum}";
+        requesterLYD.requestTypeLYD = RequestTypeLYD.GET;
+        requesterLYD.onComplete = OnCompleteGetRemind;
+
+        HttpManagerLYD.instance.SendRequestLYD(requesterLYD);
+    }
+
+    public void OnCompleteGetRemind(DownloadHandler handler)
+    {
+        //제이슨 배열 안에 제이슨이 있을 때 원하는 값만 가져올 수 있도록
+        JObject jobject = JObject.Parse(handler.text);
+        print(jobject.ToString());
+
+        var jsonkey = jobject["data"];
+        /*for (int i = 0; i < ; i++)
+        {
+        
+        }*/
+
+        RemoveRemind();
+
+        foreach (var j1 in jsonkey)
+        {
+
+            //1. 스크롤뷰 content안에 title button이 (cardObject)생성되야함. 
+            GameObject go = Instantiate(remindPre, remindContent);
+            //Title
+            go.transform.GetChild(0).GetComponent<Text>().text = j1["title"].ToString();
+
+            //마감기한
+            
+            go.transform.GetChild(2).GetComponent<Text>().text = j1["dueDate"].ToString();
+            string[] dateTime = go.transform.GetChild(2).GetComponent<Text>().text.Split("-");
+            int yyyy = int.Parse(dateTime[0]);
+            int mm = int.Parse(dateTime[1]);
+            int dd = int.Parse(dateTime[2]);
+            //특정날짜에서 현재날짜 뺴기
+            System.DateTime sDate = new System.DateTime(yyyy, mm, dd);
+            TimeSpan resultTime = sDate - DateTime.Now;
+            int resultDay = resultTime.Days;
+           // print("result Time 띠용~ : "+resultTime.Days);
+            //TimeSpan r = 3;
+            go.transform.GetChild(4).GetComponent<Text>().text = j1["content"].ToString();
+
+
+            //string으로 태그 번호를 받아서 
+            tagNum = j1["tagNo"]["tagNo"].ToString();
+
+
+            //1번 진행중 + 3일이 남았으면 마감 임박 태그가 뜬다. 
+            if(tagNum == "1" &&resultDay >= 1 && resultDay <= 3)
+            {
+                GameObject g1 = Instantiate(preDI, go.transform.GetChild(5));
+
+            }
+            if(tagNum == "1" && resultDay < 1)
+            {
+                Destroy(go);
+            }
+            //2번 완료
+            if (tagNum == "2")
+            {
+                Destroy(go);
+                //inputTitle.interactable = false;
+
+                //btn.interactable = false;
+                //Button s = go.GetComponent<Button>();
+                //s.interactable = false;
+            }
+
+            //3번 이슈
+            if (tagNum == "3")
+            {
+                GameObject g1 = Instantiate(preIssues, go.transform.GetChild(5));
+            }
+
+            //inputContent.text = j1["content"].ToString();
+
+
+
+            
+
+        }
+    }
+
+   public void RemoveRemind()
+    {
+        Transform[] projectParent = remindContent.GetComponentsInChildren<Transform>();
+        if (projectParent != null)
+        {
+            for (int i = 1; i < projectParent.Length; i++)
+            {
+                if (projectParent[i] != transform)
+                    Destroy(projectParent[i].gameObject);
+            }
+        }
+    }
+
 
 }
