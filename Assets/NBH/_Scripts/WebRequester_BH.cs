@@ -86,4 +86,25 @@ public class WebRequester_BH : MonoBehaviour
 
     }
 
+    public IEnumerator UploadPNG(byte[] image, string type)
+    {
+        yield return new WaitForEndOfFrame();
+
+        WWWForm form = new WWWForm();
+        form.AddField("faceType", type);
+        form.AddBinaryData("image", image, type+".png", "image/png");
+
+        WWW w = new WWW("http://43.201.58.81:8088/members/detectFace/checkFace", form);
+        yield return w;
+        if (!string.IsNullOrEmpty(w.error))
+        {
+            print(w.error);
+        }
+        else
+        {
+            print("전송완료");
+        }
+        Debug.Log(w.text);
+        w.Dispose();
+    }
 }

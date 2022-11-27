@@ -293,6 +293,8 @@ public class RoomManager_BH : MonoBehaviourPunCallbacks
         conversation.time = System.DateTime.Now.ToString("HH:mm:ss");
         conversation.text = stt.temp;
         conversationList.Add(conversation);
+        Debug.Log( "변환결과 : " + conversation.text);
+        
 
     }
 

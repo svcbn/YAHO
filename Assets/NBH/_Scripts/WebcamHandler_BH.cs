@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class WebcamHandler_BH : MonoBehaviour
 {
-    public GameObject objectTarget;
+    //public GameObject objectTarget;
+    public RawImage display;
 
-    WebCamTexture textureWebCam;
+    WebCamTexture camTexture;
 
     WebCamDevice[] devices;
 
@@ -20,40 +22,26 @@ public class WebcamHandler_BH : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
+    public void StartWebCam()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha9))
+        if (camTexture != null)
         {
-            StartWebCam(); 
+            display.GetComponent<RawImage>().material.mainTexture = null;
+            camTexture.Stop();
+            camTexture = null;
         }
-        if (Input.GetKeyDown(KeyCode.Alpha8))
-        {
-            StopWebCam();
-        }
+        camTexture = new WebCamTexture(devices[0].name);
+        display.texture = camTexture;
+        camTexture.Play();
     }
 
-    void StartWebCam()
+    public void StopWebCam()
     {
-        textureWebCam = new WebCamTexture(devices[0].name);
-        if(textureWebCam != null)
+        if (camTexture != null)
         {
-            textureWebCam.requestedFPS = 60;
-            Renderer renderer = objectTarget.GetComponent<Renderer>();
-            renderer.material.mainTexture = textureWebCam;
-            textureWebCam.Play();
+            display.GetComponent<RawImage>().material.mainTexture = null;
+            camTexture.Stop();
+            //camTexture = null;
         }
-    }
-
-    void StopWebCam()
-    {
-        if(textureWebCam != null)
-        {
-            textureWebCam.Stop();
-            //WebCamTexture.Destroy(textureWebCam);
-            //textureWebCam = null;
-        }
-
-
     }
 }
