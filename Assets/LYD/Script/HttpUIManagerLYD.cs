@@ -487,8 +487,12 @@ public class HttpUIManagerLYD : MonoBehaviour
             {
                 btnImage.sprite = frame38;
                 t.text = "완료";
+                tag2.Add(go);
                 //tag2 list가 밑으로 내려가도록
-                //tag2.transform.SetSiblingIndex(cardContent.childCount);
+                for(int i = 0; i < tag2.Count; i++)
+                {
+                   tag2[i].transform.SetSiblingIndex(cardContent.childCount);
+                }
                 //inputTitle.interactable = false;
 
                 //btn.interactable = false;
@@ -800,6 +804,7 @@ public class HttpUIManagerLYD : MonoBehaviour
 
     }
 
+    public List<GameObject> g3 = new List<GameObject>();
     public void OnCompleteGetCheckList(DownloadHandler handler)
     {
         //제이슨 배열 안에 제이슨이 있을 때 원하는 값만 가져올 수 있도록
@@ -835,7 +840,12 @@ public class HttpUIManagerLYD : MonoBehaviour
                 btnImage1.sprite = frame32;
                 btn1.interactable = false;
                 go.GetComponent<Button>().interactable = false;
-                transform.SetSiblingIndex(checkContent.childCount);
+                g3.Add(go);
+                for(int i = 0; i < g3.Count; i++)
+                {
+                    g3[i].transform.SetSiblingIndex(checkContent.childCount);
+
+                }
             }
 
             
@@ -908,10 +918,11 @@ public class HttpUIManagerLYD : MonoBehaviour
         tDdate = yy + "-" + mm + "-" + dd;
         t_date.text = tDdate;
         //to do 달성률 이미지 포스트
-       // PostDayReportImage();
+        // PostDayReportImage();
 
         //이버튼을 누르면 퇴근이 되야함.
         PostLeave();
+       // GetMemberCommute();
         //1. 멤버넘버로 프로젝트 조회하기 -> 2. 회의록, TO do 달성률 이미지, 리마인더 
         GetDayReportProject(memNo);
     }
@@ -993,9 +1004,9 @@ public class HttpUIManagerLYD : MonoBehaviour
         GetRemind(memNo, int.Parse(dpNum[idx1]));
         //회의기록 
         GetMeetingDayReportData(int.Parse(dpNum[idx1]));
+        PostDayReportImage(int.Parse(dpNum[idx1]));
 
     }
-
     //회의기록 함수
     public void GetMeetingDayReportData(int proNum)
     {
@@ -1045,7 +1056,14 @@ public class HttpUIManagerLYD : MonoBehaviour
             }
         }
     }
-
+    /*public void BtnTest()
+    {
+        PostCome();
+    }*/
+    public void BtnTest1()
+    {
+    }
+   
     //출퇴근 조회함수
     /*public void PostCome()
     {
@@ -1056,13 +1074,48 @@ public class HttpUIManagerLYD : MonoBehaviour
 
 
         CommutingManagementData data = new CommutingManagementData();
-        data.commutingManagementNo = memNo; //이부분은 (자기번호) 저장되어있는 부분을 보내야하는것이 아닌가?
+        data.memberNo = memNo; //이부분은 (자기번호) 저장되어있는 부분을 보내야하는것이 아닌가?
         requesterLYD.todoList = JsonUtility.ToJson(data, true);
         print(requesterLYD.todoList);
 
-        requesterLYD.onComplete = OnCompletePostLeave;
+        requesterLYD.onComplete = OnCompletePostCome;
         print("11111111111111");
         HttpManagerLYD.instance.SendRequestLYD(requesterLYD);
+    }
+    public void OnCompletePostCome(DownloadHandler handler)
+    {
+        string s = "{\"data\":" + handler.text + "}";
+        print(s);
+       *//* CommutingManagementDataArray array = JsonUtility.FromJson<CommutingManagementDataArray>(s);
+        for (int i = 0; i < array.data.Count; i++)
+        {
+             print(array.data[i].commutingManagementNo);
+
+
+        }*//*
+    }*/
+    /*public void GetMemberCommute()
+    {
+        memeNum = memNo.ToString();
+
+        HttpRequesterLYD requesterLYD = new HttpRequesterLYD();
+
+        //post/1, get, 완료되었을 때 호출되는 함수
+        requesterLYD.url = $@"http://43.201.58.81:8088/commutingManagement/number?memberNo=" + memeNum; //만약 안되면 
+        requesterLYD.requestTypeLYD = RequestTypeLYD.GET;
+        requesterLYD.onComplete = OnCompleteGetMemberCommute;
+
+        HttpManagerLYD.instance.SendRequestLYD(requesterLYD);
+    }*/
+    public string commuteNum;
+    /*public void OnCompleteGetMemberCommute(DownloadHandler handler)
+    {
+        JObject jobject = JObject.Parse(handler.text);
+        print("6666666666666666666666666" + jobject.ToString());
+        JToken JK = jobject["data"];
+        commuteNum = JK.ToString();
+        PostLeave();
+
     }*/
     public void PostLeave()
     {
@@ -1073,7 +1126,9 @@ public class HttpUIManagerLYD : MonoBehaviour
 
 
         CommutingManagementData data = new CommutingManagementData();
-        data.commutingManagementNo = memNo; //이부분은 (자기번호) 저장되어있는 부분을 보내야하는것이 아닌가?
+        data.commutingManagementNo = commuteNum;
+
+        //이부분은 (자기번호) 저장되어있는 부분을 보내야하는것이 아닌가?
         requesterLYD.todoList = JsonUtility.ToJson(data, true);
         print(requesterLYD.todoList);
 
@@ -1099,16 +1154,12 @@ public class HttpUIManagerLYD : MonoBehaviour
         GetCommute();
     }
 
-   /* public void Btn()
+   /*public void Btn()
     {
-        //GetCommute(memNo);
-        PostCome();
-    }*/
-   /* public void TestBtn1()
-    {
-         GetCommute();
+        GetDayReport(memNo, todayDate, 1);
 
     }*/
+    
 
 
     //여기 되는지 확인!!
@@ -1134,16 +1185,16 @@ public class HttpUIManagerLYD : MonoBehaviour
         JToken jk = jobject["data"];
         foreach(JToken j1 in jk)
         {
-            t_loginTime.text =j1["attendanceTime"].ToString().Substring(11,7);
-            t_logoutTime.text = j1["leaveTime"].ToString().Substring(11,7);
+            t_loginTime.text =j1["attendanceTime"].ToString().Substring(11,8);
+            t_logoutTime.text = j1["leaveTime"].ToString().Substring(11,8);
         }
 
 
     }
 
-
+    
     // TO DO 달성률 이미지 함수(체크리스트에 값이 담겨야함)
-    public void PostDayReportImage()
+    public void PostDayReportImage(int x)
     {
         HttpRequesterLYD requesterLYD = new HttpRequesterLYD();
 
@@ -1153,6 +1204,8 @@ public class HttpUIManagerLYD : MonoBehaviour
 
         DailyGraphData data = new DailyGraphData();
         data.memberNo = memNo; //이부분은 (자기번호) 저장되어있는 부분을 보내야하는것이 아닌가?
+        data.projectNo = x;
+        projNum = x;
         requesterLYD.todoList = JsonUtility.ToJson(data, true);
         print(requesterLYD.todoList);
 
@@ -1161,6 +1214,9 @@ public class HttpUIManagerLYD : MonoBehaviour
         HttpManagerLYD.instance.SendRequestLYD(requesterLYD);
 
     }
+
+    int projNum;
+
     public void OnCompletePostDayReportImage(DownloadHandler handler)
     {
         string s = "{\"data\":" + handler.text + "}";
@@ -1178,7 +1234,7 @@ public class HttpUIManagerLYD : MonoBehaviour
          }*/
         //print("조회완료");
         //이미지
-        GetDayReport(memNo, todayDate, int.Parse(dpNum[idx1]));
+        GetDayReport(memNo, todayDate, projNum);
 
     }
 

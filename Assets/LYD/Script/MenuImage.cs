@@ -25,6 +25,6 @@ public class MenuImage : MonoBehaviour
             transform.position = transform.position + dir;
 
         }*/
-       transform.position = Vector3.Lerp(transform.position, endImage.transform.position, 1);
+       transform.position = Vector3.Lerp(transform.position, endImage.transform.position, Time.deltaTime * 2);
     }
 }

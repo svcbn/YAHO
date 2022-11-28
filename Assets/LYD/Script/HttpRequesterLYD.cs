@@ -41,12 +41,14 @@ public class CheckListData
 
 public class CommutingManagementData
 {
-    public int commutingManagementNo;
+    public int memberNo;
+    public string commutingManagementNo;
 }
 
 public class DailyGraphData
 {
     public int memberNo;
+    public int projectNo;
 }
 
 
