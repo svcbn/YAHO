@@ -42,7 +42,7 @@ public class CheckListData
 public class CommutingManagementData
 {
     public int memberNo;
-    public string commutingManagementNo;
+    public int commutingManagementNo;
 }
 
 public class DailyGraphData

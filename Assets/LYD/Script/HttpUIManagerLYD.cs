@@ -57,8 +57,9 @@ public class HttpUIManagerLYD : MonoBehaviour
 
     public Sprite frame32;
 
-   // public int memNo = GameObject.Find("UserInfo").GetComponent<UserInformation_BH>().MemberNo;
-    public int memNo = 1;
+    public GameObject completeImage;
+   
+   // public int memNo = 1;
 
     //태그부분
     public GameObject btnDoing;
@@ -70,6 +71,13 @@ public class HttpUIManagerLYD : MonoBehaviour
     public Transform empty_tag;
     public Sprite frame38;
     public Sprite frame39;
+
+
+    public Sprite doingImage;
+    public Sprite issuesImage;
+    public Image oriImage; //원래진행중
+    public Image oriIssuesImage; //원래 이슈
+    public Sprite ori;
 
     public GameObject preDI;
     
@@ -94,6 +102,8 @@ public class HttpUIManagerLYD : MonoBehaviour
 
     //일간리포트
     // int _tag = 0;
+    public int commuteNum = 0;
+    public int memNo = 0;
 
     // string _date = "2022-11-20";
     // Start is called before the first frame update
@@ -113,10 +123,16 @@ public class HttpUIManagerLYD : MonoBehaviour
         btnCancel.onClick.AddListener(OnBtnCancel);
         //병한오빠 스크립트.Find("UserInfo").getcomponent<스크립트>.memberNo(); ->멤버넘버찾기
         #endregion
+        memNo = GameObject.Find("UserInfo").GetComponent<UserInformation_BH>().MemberNo;
+     commuteNum = GameObject.Find("UserInfo").GetComponent<UserInformation_BH>().CommutingManagementNo;
 
+    print("제바라라라라라랄라라라라  " + memNo);
         /*System.DateTime sDate = new System.DateTime(2022, 11, 30);
         TimeSpan resultTime = sDate - DateTime.Now;
         print("result Time 띠용~ : " + resultTime.Days);*/
+        //GetWorkTime();
+        print("mmmmmmmmmmmmmmmmmmmmmmmmmmmm" + GameObject.Find("UserInfo").GetComponent<UserInformation_BH>().MemberNo);
+
     }
 
     /* public void tags(int i)
@@ -146,25 +162,26 @@ public class HttpUIManagerLYD : MonoBehaviour
     }*/
     public void Doing()
     {
-        GameObject go = Instantiate(preDoing, empty_tag);
+      //  GameObject go = Instantiate(preDoing, empty_tag);
         num = 1;
-        image_tag.SetActive(false);
-
+        //image_tag.SetActive(false);
+        oriImage.sprite = doingImage;
     }
 
     public void Complete()
     {
-        GameObject go = Instantiate(preComplete, empty_tag);
+        //GameObject go = Instantiate(preComplete, empty_tag);
         num = 2;
-        image_tag.SetActive(false);
+        //image_tag.SetActive(false);
 
     }
-
+    
     public void Issues()
     {
-        GameObject go = Instantiate(preIssues, empty_tag);
+        //GameObject go = Instantiate(preIssues, empty_tag);
         num = 3;
-        image_tag.SetActive(false);
+        //image_tag.SetActive(false);
+        oriIssuesImage.sprite = issuesImage;
     }
 
     public void TagBtnX()
@@ -256,14 +273,16 @@ public class HttpUIManagerLYD : MonoBehaviour
         else
         {
             GetProject(memNo, "Y");
-            GameObject go = empty_tag.transform.GetChild(0).gameObject;
+            /*GameObject go = empty_tag.transform.GetChild(0).gameObject;
             print("5555555555555555 : " + go);
             if (go != null)
             {
                 Destroy(go);
                 num = 0;
-            }
-
+            }*/
+            oriImage.sprite = ori;
+            oriIssuesImage.sprite = ori;
+            completeImage.SetActive(false);
         }
         descdisplay.SetActive(false);
 
@@ -487,12 +506,12 @@ public class HttpUIManagerLYD : MonoBehaviour
             {
                 btnImage.sprite = frame38;
                 t.text = "완료";
-                tag2.Add(go);
+                /*tag2.Add(go);
                 //tag2 list가 밑으로 내려가도록
                 for(int i = 0; i < tag2.Count; i++)
                 {
                    tag2[i].transform.SetSiblingIndex(cardContent.childCount);
-                }
+                }*/
                 //inputTitle.interactable = false;
 
                 //btn.interactable = false;
@@ -511,7 +530,7 @@ public class HttpUIManagerLYD : MonoBehaviour
             
             calenderT.text = j1["dueDate"].ToString();
 
-            memo.Set(_title, _content, calenderT.text, tagNum, descdisplay, btnImage, t, calender, todoint, cardContent);//, btn);
+            memo.Set(_title, _content, calenderT.text, tagNum, descdisplay, completeImage, btnImage, oriImage, oriIssuesImage, t, calender, todoint, cardContent);//, btn);
 
             //타이틀이 8자리 이상이면 8자리 이후에 ...을 더해준다. 
             if (_title.Length > 8)
@@ -841,11 +860,11 @@ public class HttpUIManagerLYD : MonoBehaviour
                 btn1.interactable = false;
                 go.GetComponent<Button>().interactable = false;
                 g3.Add(go);
-                for(int i = 0; i < g3.Count; i++)
+               /* for(int i = 0; i < g3.Count; i++)
                 {
                     g3[i].transform.SetSiblingIndex(checkContent.childCount);
 
-                }
+                }*/
             }
 
             
@@ -925,6 +944,7 @@ public class HttpUIManagerLYD : MonoBehaviour
        // GetMemberCommute();
         //1. 멤버넘버로 프로젝트 조회하기 -> 2. 회의록, TO do 달성률 이미지, 리마인더 
         GetDayReportProject(memNo);
+        GetWorkTime();
     }
 
     public void GetDayReportProject(int memberNum)
@@ -1063,7 +1083,7 @@ public class HttpUIManagerLYD : MonoBehaviour
     public void BtnTest1()
     {
     }
-   
+
     //출퇴근 조회함수
     /*public void PostCome()
     {
@@ -1107,7 +1127,7 @@ public class HttpUIManagerLYD : MonoBehaviour
 
         HttpManagerLYD.instance.SendRequestLYD(requesterLYD);
     }*/
-    public string commuteNum;
+    //public int commuteNum = 1;
     /*public void OnCompleteGetMemberCommute(DownloadHandler handler)
     {
         JObject jobject = JObject.Parse(handler.text);
@@ -1176,6 +1196,8 @@ public class HttpUIManagerLYD : MonoBehaviour
 
         HttpManagerLYD.instance.SendRequestLYD(requesterLYD);
     }
+    //List<string> login = new List<string>();
+    //List<string> logout = new List<string>();
 
     public void OnCompleteGetCommute(DownloadHandler handler)
     {
@@ -1183,11 +1205,18 @@ public class HttpUIManagerLYD : MonoBehaviour
         print("6666666666666666666666666" + jobject.ToString());
 
         JToken jk = jobject["data"];
-        foreach(JToken j1 in jk)
-        {
-            t_loginTime.text =j1["attendanceTime"].ToString().Substring(11,8);
-            t_logoutTime.text = j1["leaveTime"].ToString().Substring(11,8);
-        }
+        print("8888888888888888888888888" + jk);
+
+        print("gggggggggggggggggggg " + jk.Last);
+
+        
+       // JToken j1 = jk[jk.Count()];
+            t_loginTime.text = jk.Last["attendanceTime"].ToString().Substring(11,7);
+
+
+            t_logoutTime.text = jk.Last["leaveTime"].ToString().Substring(11, 7);
+        
+        //DateTime startDate = Convert.ToDateTime()
 
 
     }
@@ -1389,6 +1418,28 @@ public class HttpUIManagerLYD : MonoBehaviour
             }
         }
     }
+
+    public void GetWorkTime( )
+    {
+        memeNum = memNo.ToString();
+        HttpRequesterLYD requesterLYD = new HttpRequesterLYD();
+
+        //post/1, get, 완료되었을 때 호출되는 함수
+        requesterLYD.url = $@"http://43.201.58.81:8088/workTime?memberNo=" + memeNum;
+        requesterLYD.requestTypeLYD = RequestTypeLYD.GET;
+        requesterLYD.onComplete = OnCompleteGetWorkTime;
+
+        HttpManagerLYD.instance.SendRequestLYD(requesterLYD);
+
+
+    }
+
+    public void OnCompleteGetWorkTime(DownloadHandler handler)
+    {
+        JObject jobject = JObject.Parse(handler.text);
+        print("ㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑㅑ " + jobject.ToString());
+    }
+
 
 
 }

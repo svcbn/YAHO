@@ -20,6 +20,12 @@ public class RealMemoUI : MonoBehaviour
 
     public Sprite frame38;
 
+    public Sprite doingIma;
+    public Sprite issueima;
+
+    public Image do_i;
+    public Image i_i;
+
 
     InputField cardTitleText;
     InputField contentText;
@@ -39,14 +45,19 @@ public class RealMemoUI : MonoBehaviour
 
     public int todo;
 
-    public void Set(string s1, string s2, string s3, string s4, GameObject go ,Image i1, Text t, Button b1, int ii1, Transform t1)
+    public GameObject comI;
+
+    public void Set(string s1, string s2, string s3, string s4, GameObject go ,GameObject go1, Image i1, Image i2, Image i3, Text t, Button b1, int ii1, Transform t1)
     {
         cardTitle = s1;
         content = s2;
         date = s3;
         descDis = go;
+        comI = go1;
         tagNum = s4;
         frame = i1;
+        do_i = i2;
+        i_i = i3;
         cal = t;
         calenderbtn = b1;
         todo = ii1;
@@ -71,29 +82,34 @@ public class RealMemoUI : MonoBehaviour
         //번이 진행중
         if(tagNum == "1")
         {
-            GameObject taggo = Instantiate(preDoing, TagParent);
+           // GameObject taggo = Instantiate(preDoing, TagParent);
             cardTitleText.interactable = true;
             contentText.interactable = true;
-            calenderbtn.interactable = true;
-            
+           // calenderbtn.interactable = true;
+            do_i.sprite = doingIma;
+            comI.SetActive(false);
 
         }
         //2번이 완료
         else if(tagNum == "2")
         {
-            GameObject taggo1 = Instantiate(preComplete, TagParent);
-            cardTitleText.interactable = false;
-            contentText.interactable = false;
-            calenderbtn.interactable = false;
+            //GameObject taggo1 = Instantiate(preComplete, TagParent);
+            cardTitleText.interactable = true;
+            contentText.interactable = true;
+            // calenderbtn.interactable = false;
+            comI.SetActive(true);
 
         }
 
         else if (tagNum == "3")
         {
-            GameObject taggo2 = Instantiate(preIssues, TagParent);
+           // GameObject taggo2 = Instantiate(preIssues, TagParent);
             cardTitleText.interactable = true;
             contentText.interactable = true;
-            calenderbtn.interactable = true;
+            //calenderbtn.interactable = true;
+            i_i.sprite = issueima;
+            comI.SetActive(false);
+
 
         }
         //태그 0번이면 진행중 프리팹 empty tag에 생성되고
@@ -107,7 +123,7 @@ public class RealMemoUI : MonoBehaviour
         cardTitleText = descDis.transform.GetChild(0).GetComponent<InputField>();
        // contentText = descDis.transform.GetChild(1).GetChild(0).GetChild(0).GetChild(0).GetComponent<InputField>();
         contentText = descDis.transform.GetChild(1).GetComponent<InputField>();
-        dateText = descDis.transform.GetChild(2).GetChild(1).GetComponent<Text>();
+        dateText = descDis.transform.GetChild(13).GetChild(1).GetComponent<Text>();
         TagParent = descDis.transform.GetChild(8);
         calenderbtn = descDis.transform.GetChild(2).GetChild(0).GetComponent<Button>();
         
