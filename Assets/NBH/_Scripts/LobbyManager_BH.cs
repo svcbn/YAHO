@@ -47,7 +47,7 @@ public class LobbyManager_BH : MonoBehaviourPunCallbacks
 
         //최대인원
         //where '0' means "no limit"
-        roomOptions.MaxPlayers = 2; //byte.Parse(totalNum.text);
+        roomOptions.MaxPlayers = 4; //byte.Parse(totalNum.text);
 
         //룸 목록에 모이나? 보이지 않느냐?
         roomOptions.IsVisible = true;
@@ -96,7 +96,7 @@ public class LobbyManager_BH : MonoBehaviourPunCallbacks
     {
         base.OnJoinedRoom();
         print("방 참가");
-        PhotonNetwork.LoadLevel("03_MeetingRoom_BH");
+        PhotonNetwork.LoadLevel(2);
 
     }
     public override void OnJoinRoomFailed(short returnCode, string message)

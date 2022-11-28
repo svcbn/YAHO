@@ -44,4 +44,16 @@ public class WebcamHandler_BH : MonoBehaviour
             //camTexture = null;
         }
     }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha9))
+        {
+            StartWebCam();
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha8))
+        {
+            StopWebCam();
+        }
+    }
 }

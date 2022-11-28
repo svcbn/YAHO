@@ -21,6 +21,7 @@ public class MemberData
     public string phone;
     public string email;
     public string address;
+    public UserFace face;
 }
 
 [System.Serializable]
@@ -29,6 +30,29 @@ public class GetJsonData
     public int status;
     public string message;
     public string data;
+}
+
+public class GetFaceData
+{
+    public int status;
+    public string message;
+    public FaceData data;
+}
+
+[System.Serializable]
+public class FaceData
+{
+    public string faceType;
+    public string embd;
+    public bool checkFace;
+}
+
+[System.Serializable]
+public class UserFace
+{
+    public string front;
+    public string left;
+    public string right;
 }
 
 [System.Serializable]
@@ -182,8 +206,8 @@ public class LogInManager_BH : MonoBehaviourPunCallbacks
     public GameObject panelFace;
     public Text txtFaceType;
     public WebcamHandler_BH webcam;
-    public Button btnTakePicture;
-    public Button btnRetake;
+    //public Button btnTakePicture;
+    //public Button btnRetake;
     public Button btnSendPicture;
     public Button btnTakePictureReturn;
 
@@ -223,6 +247,9 @@ public class LogInManager_BH : MonoBehaviourPunCallbacks
     string _phone;
     string _email;
     string _address;
+    string _faceFront;
+    string _faceLeft;
+    string _faceRight;
 
     #endregion
 
@@ -293,8 +320,8 @@ public class LogInManager_BH : MonoBehaviourPunCallbacks
         btnFaceFront.onClick.AddListener(OnBtnFaceFrontClicked);
         btnFaceLeft.onClick.AddListener(OnBtnFaceLeftClicked);
         btnFaceRight.onClick.AddListener(OnBtnFaceRightClicked);
-        btnTakePicture.onClick.AddListener(OnBtnTakePictureClicked);
-        btnRetake.onClick.AddListener(OnBtnRetakeClicked);
+        //btnTakePicture.onClick.AddListener(OnBtnTakePictureClicked);
+        //btnRetake.onClick.AddListener(OnBtnRetakeClicked);
         btnSendPicture.onClick.AddListener(OnBtnSendPictureClicked);
         btnTakePictureReturn.onClick.AddListener(OnBtnTakePictureReturnClicked);
 
@@ -321,6 +348,21 @@ public class LogInManager_BH : MonoBehaviourPunCallbacks
         #endregion
     }
 
+    private void Update()
+    {
+        if (panelFace.activeSelf)
+        {
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                webcam.StopWebCam();
+                CaptureImg();
+                if (sendTexture != null)
+                {
+                    btnSendPicture.interactable = true;
+                }
+            }
+        }
+    }
 
     #region 버튼들
 
@@ -384,7 +426,7 @@ public class LogInManager_BH : MonoBehaviourPunCallbacks
 
     void OnbtnSignUpSubmitClicked()
     {
-        if (_memberId != null && signUpIdCheck && _memberPw != null && signUpPwCheck && _name != null && _email != null && _phone != null && _address != null)
+        if (_memberId != null && signUpIdCheck && _memberPw != null && signUpPwCheck && _name != null && _email != null && _phone != null && _address != null && isFaceFrontDone && isFaceLeftDone && isFaceRightDone)
         {
             SignUp();
         }
@@ -415,8 +457,8 @@ public class LogInManager_BH : MonoBehaviourPunCallbacks
             btnSendPicture.interactable = false;
             faceType = FaceType.FRONT;
             sendTexture = null;
-            txtFaceType.text = "정면 사진을 촬영해주세요";
-            StartCoroutine(WindowPopUp(panelFace));
+            txtFaceType.text = "스페이스바를 눌러 정면 사진을 촬영해주세요";
+            panelFace.SetActive(true);
             webcam.StartWebCam();
         }
     }
@@ -429,8 +471,8 @@ public class LogInManager_BH : MonoBehaviourPunCallbacks
             btnSendPicture.interactable = false;
             faceType = FaceType.LEFT;
             sendTexture = null;
-            txtFaceType.text = "좌측면 사진을 촬영해주세요";
-            StartCoroutine(WindowPopUp(panelFace));
+            txtFaceType.text = "스페이스바를 눌러 좌측면 사진을 촬영해주세요";
+            panelFace.SetActive(true);
             webcam.StartWebCam();
         }
     }
@@ -443,26 +485,26 @@ public class LogInManager_BH : MonoBehaviourPunCallbacks
             btnSendPicture.interactable = false;
             faceType = FaceType.RIGHT;
             sendTexture = null;
-            txtFaceType.text = "우측면 사진을 촬영해주세요";
-            StartCoroutine(WindowPopUp(panelFace));
+            txtFaceType.text = "스페이스바를 눌러 우측면 사진을 촬영해주세요";
+            panelFace.SetActive(true);
             webcam.StartWebCam();
         }
     }
 
-    void OnBtnTakePictureClicked()
-    {
-        webcam.StopWebCam();
-        CaptureImg();
-        if(sendTexture != null)
-        {
-            btnSendPicture.interactable = true;
-        }
-    }
+    //void OnBtnTakePictureClicked()
+    //{
+    //    webcam.StopWebCam();
+    //    CaptureImg();
+    //    if(sendTexture != null)
+    //    {
+    //        btnSendPicture.interactable = true;
+    //    }
+    //}
 
-    void OnBtnRetakeClicked()
-    {
-        webcam.StartWebCam();
-    }
+    //void OnBtnRetakeClicked()
+    //{
+    //    webcam.StartWebCam();
+    //}
 
     void OnBtnSendPictureClicked()
     {
@@ -472,7 +514,7 @@ public class LogInManager_BH : MonoBehaviourPunCallbacks
     void OnBtnTakePictureReturnClicked()
     {
         webcam.StopWebCam();
-        StartCoroutine(WindowClose(panelFace));
+        panelFace.SetActive(false);
     }
 
     #endregion
@@ -672,6 +714,13 @@ public class LogInManager_BH : MonoBehaviourPunCallbacks
 
     void SignUp()
     {
+        UserFace userFace = new UserFace
+        {
+            front = _faceFront,
+            left = _faceLeft,
+            right = _faceRight
+        };
+
         MemberData data = new MemberData
         {
             memberId = _memberId,
@@ -679,7 +728,8 @@ public class LogInManager_BH : MonoBehaviourPunCallbacks
             name = _name,
             phone = _phone,
             email = _email,
-            address = _address
+            address = _address,
+            face = userFace
         };
 
         HttpRequester requester = new HttpRequester
@@ -731,10 +781,12 @@ public class LogInManager_BH : MonoBehaviourPunCallbacks
         {
             url = "http://43.201.58.81:8088/commutingManagement",
             requestType = RequestType.POST,
-            postData = JsonUtility.ToJson(data)
+            postData = JsonUtility.ToJson(data),
+            onComplete = OnCompleteClockIn
         };
 
         WebRequester_BH.instance.SendRequest(requester);
+        
     }
 
     #endregion
@@ -838,7 +890,64 @@ public class LogInManager_BH : MonoBehaviourPunCallbacks
         ConnectMasterServer();
     }
 
+    public void OnCompleteFaceCheck(DownloadHandler handler)
+    {
+        imgLoading.SetActive(false);
+        GetFaceData faceData = JsonUtility.FromJson<GetFaceData>(handler.text);
+        Debug.Log(faceData.data.faceType + " : " + faceData.data.embd);
+
+        if(faceData.data.embd == "")
+        {
+            //재촬영
+            panelNotice.GetComponentInChildren<Text>().text = "다시 시도해주세요";
+            StartCoroutine(WindowPopUp(panelNotice));
+            webcam.StartWebCam();
+        }
+        else
+        {
+            switch (faceData.data.faceType)
+            {
+                case "front":
+                    _faceFront = faceData.data.embd;
+                    break;
+                case "left":
+                    _faceLeft = faceData.data.embd;
+                    break;
+                case "right":
+                    _faceRight = faceData.data.embd;
+                    break;
+            }
+
+            panelFace.SetActive(false);
+
+            switch (faceData.data.faceType)
+            {
+                case "front":
+                    FaceCheckBtnDone(btnFaceFront);
+                    isFaceFrontDone = true;
+                    break;
+                case "left":
+                    FaceCheckBtnDone(btnFaceLeft);
+                    isFaceLeftDone = true;
+                    break;
+                case "right":
+                    FaceCheckBtnDone(btnFaceRight);
+                    isFaceRightDone = true;
+                    break;
+            }
+        }
+    }
+
+    void OnCompleteClockIn(DownloadHandler handler)
+    {
+        GetJsonData jsonData = JsonUtility.FromJson<GetJsonData>(handler.text);
+
+        UserInformation_BH.instance.CommutingManagementNo = int.Parse(jsonData.data);
+    }
+
     #endregion
+
+
 
     public void ConnectMasterServer()
     {
@@ -895,10 +1004,11 @@ public class LogInManager_BH : MonoBehaviourPunCallbacks
 
         texture2D.ReadPixels(new Rect(0, 0, renderTexture.width, renderTexture.height), 0, 0);
         texture2D.Apply();
+        
         Color[] pixels = texture2D.GetPixels();
         RenderTexture.active = currentRT;
 
-        byte[] bArray = texture2D.GetRawTextureData();
+        byte[] bArray = texture2D.EncodeToPNG(); //texture2D.GetRawTextureData();
         return bArray;
     }
 
@@ -920,5 +1030,12 @@ public class LogInManager_BH : MonoBehaviourPunCallbacks
 
         StartCoroutine(WebRequester_BH.instance.UploadPNG(sendTexture, type));
         imgLoading.SetActive(true);
+
+    }
+
+    void FaceCheckBtnDone(Button button)
+    {
+        button.interactable = false;
+        button.GetComponentInChildren<Text>().color = new Color(255, 255, 255, 1);
     }
 }

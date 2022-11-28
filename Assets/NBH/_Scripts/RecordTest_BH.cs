@@ -12,6 +12,10 @@ public class RecordTest_BH : MonoBehaviour
     STTTest_BH sTT;
     public GameObject imageRecord;
 
+    public GameObject panelMakeProject;
+    public GameObject panelSelectProject;
+    public GameObject panelProjectInfo;
+    public GameObject panelTeamTask;
 
     void StartRecordMicrophone()
     {
@@ -57,30 +61,26 @@ public class RecordTest_BH : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space))
+        if(panelMakeProject.activeSelf || panelProjectInfo.activeSelf || panelSelectProject.activeSelf || panelTeamTask.activeSelf)
         {
-            StartCoroutine(RecordStartDelay());
-            print("≥Ï¿ΩΩ√¿€");
-            StartRecordMicrophone();
+            
+        }
+        else
+        {
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                StartCoroutine(RecordStartDelay());
+                print("≥Ï¿ΩΩ√¿€");
+                StartRecordMicrophone();
+            }
+
+            if (Input.GetKeyUp(KeyCode.Space))
+            {
+                print("≥Ï¿Ω≥°");
+                StartCoroutine(RecordEndDelay());
+            }
         }
 
-        if (Input.GetKeyUp(KeyCode.Space))
-        {
-            print("≥Ï¿Ω≥°");
-            StartCoroutine(RecordEndDelay());
-        }
-
-        if(Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            sTT.SendWav();
-        }
-
-        //if (Input.GetKeyDown(KeyCode.Alpha3))
-        //{
-        //    byte[] data = File.ReadAllBytes("C:\\Users\\HP\\Desktop\\4¬˜«¡∑Œ¡ß∆Æ\\WAV\\test.wav");
-           
-        //    File.WriteAllBytes(Application.dataPath + "/b.wav", data);
-        //}
     }
 
     IEnumerator RecordStartDelay()
