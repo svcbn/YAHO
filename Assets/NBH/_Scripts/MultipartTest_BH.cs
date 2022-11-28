@@ -22,7 +22,7 @@ public class MultipartImage
 }
 
 
-public class Test_BH : MonoBehaviour
+public class MultipartTest_BH : MonoBehaviour
 {
     public static string PostMultipart(string url, Dictionary<string, object> parameters)
     {
