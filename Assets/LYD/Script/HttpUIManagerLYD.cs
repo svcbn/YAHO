@@ -442,7 +442,7 @@ public class HttpUIManagerLYD : MonoBehaviour
     public Button btn;
     public Text t;
     public string tagNum;
-
+    public List<GameObject> tag2 = new List<GameObject>();
     public int todoint;
     public void OnCompleteGetPost(DownloadHandler handler)
     {
@@ -487,7 +487,8 @@ public class HttpUIManagerLYD : MonoBehaviour
             {
                 btnImage.sprite = frame38;
                 t.text = "완료";
-                transform.SetSiblingIndex(cardContent.childCount);
+                //tag2 list가 밑으로 내려가도록
+                //tag2.transform.SetSiblingIndex(cardContent.childCount);
                 //inputTitle.interactable = false;
 
                 //btn.interactable = false;
