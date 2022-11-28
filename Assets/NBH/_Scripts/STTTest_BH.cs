@@ -50,7 +50,8 @@ public class STTTest_BH : MonoBehaviour
     void Run()
     {
 
-        temp = APIExamSTT.Main("C:\\Users\\HP\\Desktop\\4차프로젝트\\WAV\\test.wav", this);
+        //temp = APIExamSTT.Main("C:\\Users\\HP\\Desktop\\4차프로젝트\\WAV\\test.wav", this);
+        temp = APIExamSTT.Main(Application.streamingAssetsPath + "\\test.wav", this);
         temp = temp.Remove(0, 9);
         temp = temp.Remove(temp.Length - 2, 2);
 

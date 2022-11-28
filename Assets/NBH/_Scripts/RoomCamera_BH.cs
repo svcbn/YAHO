@@ -18,7 +18,9 @@ public class RoomCamera_BH : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        Camera.main.transform.position = seatPos.transform.position;
+        Camera.main.transform.rotation = seatPos.transform.rotation;
+
     }
 
     // Update is called once per frame

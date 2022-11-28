@@ -45,12 +45,17 @@ public class ProjectData
 [System.Serializable]
 public class RoomManager_BH : MonoBehaviourPunCallbacks
 {
+    [Header("Main")]
     public Transform[] spawnPos;
     public Transform projectorPos;
 
     public Button btnCallUI;
     public GameObject btnExitRoom;
-    
+
+    public Transform panelCoWorker;
+    GameObject coWorkerPrefab;
+    public Button btnSubmit;
+
     [Header("MakeProject")]
     #region 프로젝트 생성 component
 
@@ -75,17 +80,14 @@ public class RoomManager_BH : MonoBehaviourPunCallbacks
     public Button btnProjectInfoClose;
     #endregion
 
-    string _projectName; // = "pn";
-    string _projectSubject; // = "ps";
-    int _representativeMemberNo; // = 1;
-    string _startDate; // = "2022-12-12";
-    string _endDate; // = "2022-12-13";
-    List<int> _projectMemberList; // = new List<int>() {1,2,3 };
-
-
+    string _projectName = "테스트프로젝트";
+    string _projectSubject = "연동 확인용 프로젝트";
+    int _representativeMemberNo = 13;
+    string _startDate = "2022-11-25";
+    string _endDate = "2022-11-26";
+    List<int> _projectMemberList = new List<int>() {1, 13, 12 };
 
     STTTest_BH stt;
-
 
     List<ConversationData> conversationList = new List<ConversationData>();
     string mergeText;
@@ -103,6 +105,7 @@ public class RoomManager_BH : MonoBehaviourPunCallbacks
         //PhotonNetwork.InstantiateRoomObject("Projector", projectorPos.position, projectorPos.rotation);
 
         stt = GetComponent<STTTest_BH>();
+        coWorkerPrefab = (GameObject)Resources.Load("BtnCoworker");
 
         #region Listner
         btnCallUI.onClick.AddListener(OnbtnCallUIClicked);
@@ -293,6 +296,8 @@ public class RoomManager_BH : MonoBehaviourPunCallbacks
         conversation.time = System.DateTime.Now.ToString("HH:mm:ss");
         conversation.text = stt.temp;
         conversationList.Add(conversation);
+        Debug.Log( "변환결과 : " + conversation.text);
+        
 
     }
 

@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 using System.IO;
+using UnityEngine.UI;
 
 
 public class RecordTest_BH : MonoBehaviour
 {
     AudioClip recordClip;
     STTTest_BH sTT;
+    public GameObject imageRecord;
+
 
     void StartRecordMicrophone()
     {
@@ -56,6 +59,7 @@ public class RecordTest_BH : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.Space))
         {
+            StartCoroutine(RecordStartDelay());
             print("≥Ï¿ΩΩ√¿€");
             StartRecordMicrophone();
         }
@@ -63,10 +67,7 @@ public class RecordTest_BH : MonoBehaviour
         if (Input.GetKeyUp(KeyCode.Space))
         {
             print("≥Ï¿Ω≥°");
-            StopRecordMicrophone();
-            SavWav.Save("test", recordClip);
-            sTT.SendWav();
-
+            StartCoroutine(RecordEndDelay());
         }
 
         if(Input.GetKeyDown(KeyCode.Alpha3))
@@ -80,5 +81,20 @@ public class RecordTest_BH : MonoBehaviour
            
         //    File.WriteAllBytes(Application.dataPath + "/b.wav", data);
         //}
+    }
+
+    IEnumerator RecordStartDelay()
+    {
+        yield return new WaitForSeconds(1);
+        imageRecord.SetActive(true);
+    }
+
+    IEnumerator RecordEndDelay()
+    {
+        imageRecord.SetActive(false);
+        yield return new WaitForSeconds(1);
+        StopRecordMicrophone();
+        SavWav.Save("test", recordClip);
+        sTT.SendWav();
     }
 }
