@@ -31,6 +31,9 @@ public class UserInformation_BH : MonoBehaviour
     [SerializeField]
     private int _memberNo;
 
+    [SerializeField]
+    private int _commutingManagementNo;
+
     public string MemberId
     {
         get
@@ -76,6 +79,18 @@ public class UserInformation_BH : MonoBehaviour
         set
         {
             _memberNo = value;
+        }
+    }
+
+    public int CommutingManagementNo
+    {
+        get
+        {
+            return _commutingManagementNo;
+        }
+        set
+        {
+            _commutingManagementNo = value;
         }
     }
 

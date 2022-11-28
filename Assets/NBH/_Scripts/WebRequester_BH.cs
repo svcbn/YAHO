@@ -22,6 +22,7 @@ public class HttpRequester
 public class WebRequester_BH : MonoBehaviour
 {
     public static WebRequester_BH instance;
+    public LogInManager_BH logInManager;
 
     private void Awake()
     {
@@ -34,8 +35,9 @@ public class WebRequester_BH : MonoBehaviour
         {
             Destroy(gameObject);
         }
-
     }
+
+    
 
     public void SendRequest(HttpRequester requester)
     {
@@ -92,19 +94,31 @@ public class WebRequester_BH : MonoBehaviour
 
         WWWForm form = new WWWForm();
         form.AddField("faceType", type);
-        form.AddBinaryData("image", image, type+".png", "image/png");
+        form.AddBinaryData("image", image, type + ".png", "image/png");
 
-        WWW w = new WWW("http://43.201.58.81:8088/members/detectFace/checkFace", form);
-        yield return w;
-        if (!string.IsNullOrEmpty(w.error))
+        UnityWebRequest webRequest = UnityWebRequest.Post("http://43.201.58.81:8088/detectFace/checkFace", form);
+
+
+        //WWW w = new WWW("http://43.201.58.81:8088/detectFace/checkFace", form);
+        //WWW w = new WWW("http://192.168.0.25:8001/detectFace/checkFace", form);
+
+        yield return webRequest.SendWebRequest();
+
+        OnUploadPngCompleted(webRequest.downloadHandler);
+        
+        if (!string.IsNullOrEmpty(webRequest.error))
         {
-            print(w.error);
+            print(webRequest.error);
         }
         else
         {
             print("전송완료");
         }
-        Debug.Log(w.text);
-        w.Dispose();
+        webRequest.Dispose();
+    }
+
+    void OnUploadPngCompleted(DownloadHandler handler)
+    {
+        logInManager.OnCompleteFaceCheck(handler);
     }
 }

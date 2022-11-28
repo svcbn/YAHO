@@ -5,6 +5,7 @@ using UnityEngine.Networking;
 using System.Net;
 using System.IO;
 using System;
+using UnityEngine.UI;
 
 public class FormFile
 {
@@ -24,6 +25,8 @@ public class MultipartImage
 
 public class MultipartTest_BH : MonoBehaviour
 {
+    
+
     public static string PostMultipart(string url, Dictionary<string, object> parameters)
     {
         string boundary = "---------------------------" + DateTime.Now.Ticks.ToString("x");
@@ -123,12 +126,12 @@ public class MultipartTest_BH : MonoBehaviour
     {
         List<IMultipartFormSection> data = new List<IMultipartFormSection>();
 
-        data.Add(new MultipartFormDataSection("faceType"));
+        data.Add(new MultipartFormDataSection("faceType", "front"));
         data.Add(new MultipartFormFileSection("image", sendTexture, "front", "image/jpg"));
 
         UnityWebRequest www = new UnityWebRequest();
         www.SetRequestHeader("Content-Type", "multipart/form-data");
-        www.url = "http://43.201.58.81:8088/members/checkFace";
+        www.url = "http://43.201.58.81:8088/detectFace/checkFace";
         
 
         yield return www.SendWebRequest();
@@ -244,7 +247,7 @@ public class MultipartTest_BH : MonoBehaviour
         {
             ScreenShare();
             //UploadMultipart(sendTexture, "faceType", "image/png", "http://43.201.58.81:8088/checkFace");
-            StartCoroutine(UploadPNG());
+            StartCoroutine(UploadTest());
         }
     }
 
@@ -277,7 +280,7 @@ public class MultipartTest_BH : MonoBehaviour
 
     void ScreenShare()
     {
-        originMesh = GameObject.Find("ScreenCapture").GetComponent<MeshRenderer>().material.mainTexture;
+        originMesh = GameObject.Find("RawImage").GetComponent<RawImage>().mainTexture;
         sendTexture2D = TextureToTexture2D(originMesh);
         sendTexture = Texture2DToByte(sendTexture2D);
     }
