@@ -89,6 +89,9 @@ public class RoomManager_BH : MonoBehaviourPunCallbacks
     public Button btnSelectProject;
     public GameObject panelSelectProject;
     public Button btnSelectProjectClose;
+    public Button btnSelected;
+    public GameObject panelSelected;
+    public Button btnSelectedClose;
 
     #endregion
 
@@ -139,6 +142,10 @@ public class RoomManager_BH : MonoBehaviourPunCallbacks
         btnMakeProjectClose.onClick.AddListener(OnbtnMakeProjectCloseClicked);
         btnTeamTaskClose.onClick.AddListener(OnbtnTeamTaskCloseClicked);
         btnFindMember.onClick.AddListener(OnbtnFindMemberClicked);
+        btnSelectProject.onClick.AddListener(OnbtnSelectProjectClicked);
+        btnSelectProjectClose.onClick.AddListener(OnbtnSelectProjectCloseClicked);
+        btnSelected.onClick.AddListener(OnbntSelectdClicked);
+        btnSelectedClose.onClick.AddListener(OnbtnSelectedCloseClicked);
 
         //inputFindMember.onEndEdit.AddListener();
         //inputFindMember.OnSubmit.AddListener();
@@ -160,12 +167,15 @@ public class RoomManager_BH : MonoBehaviourPunCallbacks
         inputProjectGoal.onEndEdit.AddListener(ProjectGoal);
         //inputProjectGoal.onSubmit.AddListener(ProjectGoal);
 
+
         #endregion
 
-        _representativeMemberNo = GameObject.Find("UserInfo").GetComponent<UserInformation_BH>().MemberNo;
+        // ¿©±â _representativeMemberNo = GameObject.Find("UserInfo").GetComponent<UserInformation_BH>().MemberNo;
 
         panelFindMember.SetActive(false);
         panelMakeProject.SetActive(false);
+        panelSelectProject.SetActive(false);
+        panelSelected.SetActive(false);
     }
 
     #region Listener
@@ -213,6 +223,12 @@ public class RoomManager_BH : MonoBehaviourPunCallbacks
     //    btnTeamTask.SetActive(true);
     //    btnExitRoom.SetActive(true);
     //}
+
+    void OnbtnSelectProjectClicked()
+    {
+        panelSelectProject.SetActive(true);
+        StartCoroutine(uiAnim.SlideClose());
+    }
 
     void OnbtnMakeProjectClicked()
     {
@@ -262,6 +278,21 @@ public class RoomManager_BH : MonoBehaviourPunCallbacks
     void OnbtnFindMemberClicked()
     {
         panelFindMember.SetActive(true);
+    }
+
+    void OnbtnSelectProjectCloseClicked()
+    {
+        panelSelectProject.SetActive(false);
+    }
+
+    void OnbntSelectdClicked()
+    {
+        panelSelected.SetActive(true);
+    }
+
+    void OnbtnSelectedCloseClicked()
+    {
+        panelSelected.SetActive(false);
     }
 
     #endregion
