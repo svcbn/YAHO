@@ -122,7 +122,7 @@ public class RoomManager_BH : MonoBehaviourPunCallbacks
         PhotonNetwork.SendRate = 60;
 
         //플레이어를 생성한다.
-        // 이거 돌려놔야됨 PhotonNetwork.Instantiate("Player", spawnPos[PhotonNetwork.CurrentRoom.PlayerCount-1].position, spawnPos[PhotonNetwork.CurrentRoom.PlayerCount-1].rotation);
+        PhotonNetwork.Instantiate("Player", spawnPos[PhotonNetwork.CurrentRoom.PlayerCount-1].position, spawnPos[PhotonNetwork.CurrentRoom.PlayerCount-1].rotation);
 
         //PhotonNetwork.InstantiateRoomObject("Projector", projectorPos.position, projectorPos.rotation);
 
@@ -162,7 +162,7 @@ public class RoomManager_BH : MonoBehaviourPunCallbacks
 
         #endregion
 
-        // 이거 돌려놔야됨 _representativeMemberNo = GameObject.Find("UserInfo").GetComponent<UserInformation_BH>().MemberNo;
+        _representativeMemberNo = GameObject.Find("UserInfo").GetComponent<UserInformation_BH>().MemberNo;
 
         panelFindMember.SetActive(false);
     }
