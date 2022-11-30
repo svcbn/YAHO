@@ -976,6 +976,7 @@ MonoBehaviour:
   _name: 
   _accessToken: 
   _memberNo: 0
+  _commutingManagementNo: 0
 --- !u!114 &286350627
 MonoBehaviour:
   m_ObjectHideFlags: 0
