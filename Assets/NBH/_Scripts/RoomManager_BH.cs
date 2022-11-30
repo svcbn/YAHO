@@ -165,6 +165,7 @@ public class RoomManager_BH : MonoBehaviourPunCallbacks
         _representativeMemberNo = GameObject.Find("UserInfo").GetComponent<UserInformation_BH>().MemberNo;
 
         panelFindMember.SetActive(false);
+        panelMakeProject.SetActive(false);
     }
 
     #region Listener
