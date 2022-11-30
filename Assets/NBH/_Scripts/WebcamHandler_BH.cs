@@ -20,6 +20,8 @@ public class WebcamHandler_BH : MonoBehaviour
         {
             Debug.Log(devices[i].name);
         }
+        //StartWebCam();
+        
     }
 
     public void StartWebCam()
@@ -42,6 +44,14 @@ public class WebcamHandler_BH : MonoBehaviour
             display.GetComponent<RawImage>().material.mainTexture = null;
             camTexture.Stop();
             //camTexture = null;
+        }
+    }
+
+    public void ClearWebCam()
+    {
+        if(camTexture != null)
+        {
+            camTexture = null;
         }
     }
 

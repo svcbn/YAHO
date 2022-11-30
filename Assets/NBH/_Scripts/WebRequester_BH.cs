@@ -117,8 +117,41 @@ public class WebRequester_BH : MonoBehaviour
         webRequest.Dispose();
     }
 
+    public IEnumerator UploadPNG(byte[] image, int memberNo, int commutingManagementNo)
+    {
+        yield return new WaitForEndOfFrame();
+
+        WWWForm form = new WWWForm();
+
+        form.AddField("memberNo", memberNo);
+        form.AddField("commutingManagementNo", commutingManagementNo);
+        form.AddBinaryData("image", image, image + ".jpg", "image/jpg");
+
+        UnityWebRequest webRequest = UnityWebRequest.Post("http://43.201.58.81:8088/detectFace", form);
+
+        yield return webRequest.SendWebRequest();
+
+        OnAFKCheckCompleted(webRequest.downloadHandler);
+        Debug.Log(webRequest.downloadHandler.text);
+
+        if (!string.IsNullOrEmpty(webRequest.error))
+        {
+            print(webRequest.error);
+        }
+        else
+        {
+            print("전송완료");
+        }
+        webRequest.Dispose();
+    }
+
     void OnUploadPngCompleted(DownloadHandler handler)
     {
         logInManager.OnCompleteFaceCheck(handler);
+    }
+
+    public void OnAFKCheckCompleted(DownloadHandler handler)
+    {
+        AFKCheck_BH.instance.OnCompleteAFKCheck(handler);
     }
 }

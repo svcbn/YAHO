@@ -94,8 +94,5 @@ public class UserInformation_BH : MonoBehaviour
         }
     }
 
-    private void Start()
-    {
-        
-    }
+   
 }

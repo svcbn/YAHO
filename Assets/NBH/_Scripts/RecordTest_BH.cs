@@ -14,7 +14,6 @@ public class RecordTest_BH : MonoBehaviour
 
     public GameObject panelMakeProject;
     public GameObject panelSelectProject;
-    public GameObject panelProjectInfo;
     public GameObject panelTeamTask;
 
     void StartRecordMicrophone()
@@ -61,7 +60,7 @@ public class RecordTest_BH : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(panelMakeProject.activeSelf || panelProjectInfo.activeSelf || panelSelectProject.activeSelf || panelTeamTask.activeSelf)
+        if(panelMakeProject.activeSelf || panelSelectProject.activeSelf || panelTeamTask.activeSelf)
         {
             
         }

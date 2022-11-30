@@ -45,12 +45,14 @@ public class ProjectData
 [System.Serializable]
 public class RoomManager_BH : MonoBehaviourPunCallbacks
 {
+    public SlidiingUI_BH uiAnim;
+
     [Header("Main")]
     public Transform[] spawnPos;
     public Transform projectorPos;
 
     public Button btnCallUI;
-    public GameObject btnExitRoom;
+    public Button btnExitRoom;
 
     public Transform panelCoWorker;
     GameObject coWorkerPrefab;
@@ -59,38 +61,58 @@ public class RoomManager_BH : MonoBehaviourPunCallbacks
     [Header("MakeProject")]
     #region 프로젝트 생성 component
 
-    public GameObject btnMakeProject;
+    public Button btnMakeProject;
     public GameObject panelMakeProject;
 
     public Button btnMakeProjectSubmit;
     public Button btnMakeProjectClose;
 
     public InputField inputProjectName;
-    public InputField inputScheduleStart;
-    public InputField inputScheduleEnd;
+    public GameObject DateStart;
+    public GameObject DateEnd;
     public InputField inputProjectGoal;
+
+    public Button btnFindMember;
+    public Transform panelCoWorkers;
+    public GameObject panelFindMember;
+    public InputField inputFindMember;
+    public Transform SearchResultContent;
+    public Button btnFindMemberClose;
+    GameObject findMemberPrefab;
+
     public Button btnPush;
     #endregion
 
-    [Header("ProjectInfo")]
-    #region 프로젝트 정보 Component
+    [Header("SelectProject")]
+    #region 프로젝트 선택 component
 
-    public GameObject btnProjectInfo;
-    public GameObject panelProjectInfo;
-    public Button btnProjectInfoClose;
+    public Button btnSelectProject;
+    public GameObject panelSelectProject;
+    public Button btnSelectProjectClose;
+
     #endregion
 
-    string _projectName = "테스트프로젝트";
-    string _projectSubject = "연동 확인용 프로젝트";
-    int _representativeMemberNo = 13;
-    string _startDate = "2022-11-25";
-    string _endDate = "2022-11-26";
-    List<int> _projectMemberList = new List<int>() {1, 13, 12 };
+    [Header("TeamTask")]
+    #region 팀 업무 Component
+
+    public Button btnTeamTask;
+    public GameObject panelTeamTask;
+    public Button btnTeamTaskClose;
+    #endregion
+
+    string _projectName;
+    string _projectSubject;
+    int _representativeMemberNo;
+    string _startDate;
+    string _endDate;
+    List<int> _projectMemberList;
 
     STTTest_BH stt;
 
     List<ConversationData> conversationList = new List<ConversationData>();
     string mergeText;
+
+    public GameObject imgLoading;
 
     // Start is called before the first frame update
     void Start()
@@ -100,41 +122,49 @@ public class RoomManager_BH : MonoBehaviourPunCallbacks
         PhotonNetwork.SendRate = 60;
 
         //플레이어를 생성한다.
-        PhotonNetwork.Instantiate("Player", spawnPos[PhotonNetwork.CurrentRoom.PlayerCount-1].position, spawnPos[PhotonNetwork.CurrentRoom.PlayerCount-1].rotation);
+        // 이거 돌려놔야됨 PhotonNetwork.Instantiate("Player", spawnPos[PhotonNetwork.CurrentRoom.PlayerCount-1].position, spawnPos[PhotonNetwork.CurrentRoom.PlayerCount-1].rotation);
 
         //PhotonNetwork.InstantiateRoomObject("Projector", projectorPos.position, projectorPos.rotation);
 
         stt = GetComponent<STTTest_BH>();
         coWorkerPrefab = (GameObject)Resources.Load("BtnCoworker");
+        findMemberPrefab = (GameObject)Resources.Load("BtnFindMember");
 
         #region Listner
-        btnCallUI.onClick.AddListener(OnbtnCallUIClicked);
-        btnMakeProject.GetComponent<Button>().onClick.AddListener(OnbtnMakeProjectClicked);
-        btnProjectInfo.GetComponent<Button>().onClick.AddListener(OnbtnProjectInfoClicked);
-        btnExitRoom.GetComponent<Button>().onClick.AddListener(OnbtnExitRoomClicked);
+        //btnCallUI.onClick.AddListener(OnbtnCallUIClicked);
+        btnMakeProject.onClick.AddListener(OnbtnMakeProjectClicked);
+        btnTeamTask.onClick.AddListener(OnbtnTeamTaskClicked);
+        btnExitRoom.onClick.AddListener(OnbtnExitRoomClicked);
         btnMakeProjectSubmit.onClick.AddListener(OnbtnMakeProjectSubmitClicked);
         btnMakeProjectClose.onClick.AddListener(OnbtnMakeProjectCloseClicked);
-        btnProjectInfoClose.onClick.AddListener(OnbtnProjectInfoCloseClicked);
+        btnTeamTaskClose.onClick.AddListener(OnbtnTeamTaskCloseClicked);
+        btnFindMember.onClick.AddListener(OnbtnFindMemberClicked);
+
+        //inputFindMember.onEndEdit.AddListener();
+        //inputFindMember.OnSubmit.AddListener();
+
 
         inputProjectName.onEndEdit.AddListener(ProjectName);
-        inputProjectName.onSubmit.AddListener(ProjectName);
+        //inputProjectName.onSubmit.AddListener(ProjectName);
 
         //inputCoWorkers.onValueChanged.AddListener(CoWorkers);
         //inputCoWorkers.onEndEdit.AddListener(CoWorkers);
         //inputCoWorkers.onSubmit.AddListener(CoWorkers);
 
-        inputScheduleStart.onEndEdit.AddListener(StartDate);
-        inputScheduleStart.onSubmit.AddListener(StartDate);
+        //inputScheduleStart.onEndEdit.AddListener(StartDate);
+        //inputScheduleStart.onSubmit.AddListener(StartDate);
 
-        inputScheduleEnd.onEndEdit.AddListener(EndDate);
-        inputScheduleEnd.onSubmit.AddListener(EndDate);
+        //inputScheduleEnd.onEndEdit.AddListener(EndDate);
+        //inputScheduleEnd.onSubmit.AddListener(EndDate);
 
         inputProjectGoal.onEndEdit.AddListener(ProjectGoal);
-        inputProjectGoal.onSubmit.AddListener(ProjectGoal);
-
-        btnPush.onClick.AddListener(onBtnPushClicked);
+        //inputProjectGoal.onSubmit.AddListener(ProjectGoal);
 
         #endregion
+
+        // 이거 돌려놔야됨 _representativeMemberNo = GameObject.Find("UserInfo").GetComponent<UserInformation_BH>().MemberNo;
+
+        panelFindMember.SetActive(false);
     }
 
     #region Listener
@@ -175,33 +205,33 @@ public class RoomManager_BH : MonoBehaviourPunCallbacks
         Debug.Log(s);
     }
 
-    public void onBtnPushClicked()
-    {
-        OnClickSignInNET();
-    }
 
-    void OnbtnCallUIClicked()
-    {
-        btnMakeProject.SetActive(true);
-        btnProjectInfo.SetActive(true);
-        btnExitRoom.SetActive(true);
-    }
+    //void OnbtnCallUIClicked()
+    //{
+    //    btnMakeProject.SetActive(true);
+    //    btnTeamTask.SetActive(true);
+    //    btnExitRoom.SetActive(true);
+    //}
 
     void OnbtnMakeProjectClicked()
     {
         panelMakeProject.SetActive(true);
-        btnMakeProject.SetActive(false);
-        btnProjectInfo.SetActive(false);
-        btnExitRoom.SetActive(false);
+        StartCoroutine(uiAnim.SlideClose());
+
+        //btnMakeProject.SetActive(false);
+        //btnTeamTask.SetActive(false);
+        //btnExitRoom.SetActive(false);
 
     }
 
-    void OnbtnProjectInfoClicked()
+    void OnbtnTeamTaskClicked()
     {
-        panelProjectInfo.SetActive(true);
-        btnMakeProject.SetActive(false);
-        btnProjectInfo.SetActive(false);
-        btnExitRoom.SetActive(false);
+        panelTeamTask.SetActive(true);
+        StartCoroutine(uiAnim.SlideClose());
+
+        //btnMakeProject.SetActive(false);
+        //btnTeamTask.SetActive(false);
+        //btnExitRoom.SetActive(false);
 
     }
 
@@ -215,16 +245,22 @@ public class RoomManager_BH : MonoBehaviourPunCallbacks
         panelMakeProject.SetActive(false);
     }
 
-    void OnbtnProjectInfoCloseClicked()
+    void OnbtnTeamTaskCloseClicked()
     {
-        panelProjectInfo.SetActive(false);
+        panelTeamTask.SetActive(false);
     }
 
     void OnbtnExitRoomClicked()
     {
+        imgLoading.SetActive(true);
         PhotonNetwork.LeaveRoom();
         PhotonNetwork.JoinLobby();
         PhotonNetwork.LoadLevel(1);
+    }
+
+    void OnbtnFindMemberClicked()
+    {
+        panelFindMember.SetActive(true);
     }
 
     #endregion

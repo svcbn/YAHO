@@ -541,7 +541,7 @@ public class LogInManager_BH : MonoBehaviourPunCallbacks
         if (s.Length > 0)
         {
             _logInMemberPw = s;
-            LogIn();
+            //LogIn();
         }
     }
 
