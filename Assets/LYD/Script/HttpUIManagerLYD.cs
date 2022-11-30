@@ -6,8 +6,10 @@ using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using UnityEngine.UI;
 using System;
+using Photon.Pun;
+using Photon.Realtime;
 
-public class HttpUIManagerLYD : MonoBehaviour
+public class HttpUIManagerLYD : MonoBehaviourPunCallbacks
 {
     //descPlay에 있는 inputField들임.
     public InputField inputTitle;
@@ -92,6 +94,7 @@ public class HttpUIManagerLYD : MonoBehaviour
     public Text t_date;
     public Text t_loginTime;
     public Text t_logoutTime;
+    public Text totalLoginToLogout;
 
     string yy = System.DateTime.Now.ToString("yyyy");
     string mm = System.DateTime.Now.ToString("MM");
@@ -107,8 +110,61 @@ public class HttpUIManagerLYD : MonoBehaviour
 
     // string _date = "2022-11-20";
     // Start is called before the first frame update
+
+    //이미지 띄우게
+    public GameObject meetingEnterImage;
+    public GameObject meetingEnterIcon;
+    public GameObject icon;
+
+    public GameObject imagePrefab;
+    
+    public void OnImage()
+    {
+       if(PhotonNetwork.CountOfPlayersInRooms > 0)
+        {
+            meetingEnterImage.SetActive(true);
+            meetingEnterIcon.SetActive(true);
+            Invoke("OffImage", 2f);
+        }
+    }
+
+    public override void OnRoomListUpdate(List<RoomInfo> roomList)
+    {
+        base.OnRoomListUpdate(roomList);
+
+        foreach (RoomInfo room in roomList)
+        {
+            if (room.PlayerCount > 0)
+            {
+                meetingEnterImage.SetActive(true);
+                meetingEnterIcon.SetActive(true);
+                icon.SetActive(true);
+
+                Invoke("OffImage", 2f);
+                break;
+            }
+        }
+    }
+
+    //menu버튼 누를때
+    public void OffEnterIcon()
+    {
+        meetingEnterIcon.SetActive(false);
+
+    }
+
+    public void btnEnter()
+    {
+        icon.SetActive(false);
+    }
+
+    public void OffImage()
+    {
+        meetingEnterImage.SetActive(false);
+    }
     void Start()
     {
+        //memNo = 45;
         #region Listener
         inputTitle.onEndEdit.AddListener(Title);
         inputTitle.onSubmit.AddListener(Title);
@@ -124,7 +180,7 @@ public class HttpUIManagerLYD : MonoBehaviour
         //병한오빠 스크립트.Find("UserInfo").getcomponent<스크립트>.memberNo(); ->멤버넘버찾기
         #endregion
         memNo = GameObject.Find("UserInfo").GetComponent<UserInformation_BH>().MemberNo;
-     commuteNum = GameObject.Find("UserInfo").GetComponent<UserInformation_BH>().CommutingManagementNo;
+    commuteNum = GameObject.Find("UserInfo").GetComponent<UserInformation_BH>().CommutingManagementNo;
 
     print("제바라라라라라랄라라라라  " + memNo);
         /*System.DateTime sDate = new System.DateTime(2022, 11, 30);
@@ -222,7 +278,10 @@ public class HttpUIManagerLYD : MonoBehaviour
             inputContent.text = "";
         }
         calenderT.text = "0000-00-00";
-        
+        oriImage.sprite = ori;
+        oriIssuesImage.sprite = ori;
+        completeImage.SetActive(false);
+
     }
 
     //checkDis - 확인 버튼
@@ -243,36 +302,38 @@ public class HttpUIManagerLYD : MonoBehaviour
     //겟버튼 
     public void OnCheckXBtn()
     {
-        if(InputcheckTitle.text.Length < 1)
+        /*if(InputcheckTitle.text.Length < 1)
         {
 
         }
         else
-        {
-            GetCheckList(memNo, int.Parse(pjNum[index]));
+        {*/
             //함수발동
-        }
+        //}
         checkdis.SetActive(false);
     }
     public void OnTaskStart()
     {
         GetProject(memNo, "Y");
+
     }
+
+    //드롭다운 프로젝트 삭제 후 . 안에 내용물들 다 삭제
+    
     public void OnBtnCancel()
     {
-        if (inputTitle.text.Length < 1 || inputContent.text.Length < 1)
+       /* if (inputTitle.text.Length < 1 || inputContent.text.Length < 1)
         {
-            /*GameObject go = empty_tag.transform.GetChild(0).gameObject;
+            *//*GameObject go = empty_tag.transform.GetChild(0).gameObject;
             print("5555555555555555 : " + go);
             if (go != null)
             {
                 Destroy(go);
                 num = 0;
-            }*/
-        }
-        else
-        {
-            GetProject(memNo, "Y");
+            }*//*
+        }*/
+       // else
+       // {
             /*GameObject go = empty_tag.transform.GetChild(0).gameObject;
             print("5555555555555555 : " + go);
             if (go != null)
@@ -283,7 +344,7 @@ public class HttpUIManagerLYD : MonoBehaviour
             oriImage.sprite = ori;
             oriIssuesImage.sprite = ori;
             completeImage.SetActive(false);
-        }
+       // }
         descdisplay.SetActive(false);
 
         //->안적을때는 그냥 함수가 실행되지 않도록 
@@ -337,6 +398,10 @@ public class HttpUIManagerLYD : MonoBehaviour
 
         }
         print("조회완료");
+        GetTodolist(memNo, int.Parse(pjNum[index]));//int.Parse(pjNum[index]));
+
+        descdisplay.SetActive(false);
+
     }
 
     //버튼에 넣을 함수 하나 더 만들기
@@ -363,7 +428,8 @@ public class HttpUIManagerLYD : MonoBehaviour
         
 
         //옵션을 클리어해주는게 맞나??? < 이부분은 물어보기>
-        var d = dropdown_project.GetComponent<Dropdown>(); 
+        var d = dropdown_project.GetComponent<Dropdown>();
+        d.ClearOptions();
         //d.ClearOptions();
         //d.value = 1;
         var jsonP = jobject["data"];
@@ -476,7 +542,7 @@ public class HttpUIManagerLYD : MonoBehaviour
         }*/
 
         RemoveCard();
-
+        tag2.Clear();
         foreach(var j1 in jsonkey)
         {
             
@@ -506,12 +572,12 @@ public class HttpUIManagerLYD : MonoBehaviour
             {
                 btnImage.sprite = frame38;
                 t.text = "완료";
-                /*tag2.Add(go);
+                tag2.Add(go);
                 //tag2 list가 밑으로 내려가도록
                 for(int i = 0; i < tag2.Count; i++)
                 {
-                   tag2[i].transform.SetSiblingIndex(cardContent.childCount);
-                }*/
+                   tag2[i].transform.SetSiblingIndex(cardContent.childCount -1);
+                }
                 //inputTitle.interactable = false;
 
                 //btn.interactable = false;
@@ -637,7 +703,7 @@ public class HttpUIManagerLYD : MonoBehaviour
 
         //옵션을 클리어해주는게 맞나??? < 이부분은 물어보기>
         var d = dropdown_meetingPro.GetComponent<Dropdown>();
-        //d.ClearOptions();
+        d.ClearOptions();
         //d.value = 1;
         var jsonP = jobject["data"];
         print("1111111" + jsonP);
@@ -664,13 +730,14 @@ public class HttpUIManagerLYD : MonoBehaviour
 
         }
 
-        foreach (var m in meetingPName)
-        {
-            //drop다운 옵션에 추가 - 프로젝트이름 (m이 프로젝트가 담겨 있는 이름 : 첫 프로젝트 , pn)
-            d.options.Add(new Dropdown.OptionData() { text = m.text });
-            
+        /* foreach (var m in meetingPName)
+         {
+             //drop다운 옵션에 추가 - 프로젝트이름 (m이 프로젝트가 담겨 있는 이름 : 첫 프로젝트 , pn)
+             d.options.Add(new Dropdown.OptionData() { text = m.text });
 
-        }
+
+         }*/
+        d.AddOptions(meetingPName);
         d.value = idx;
         DropdwonmeetingPNameSelected(idx);
 
@@ -793,14 +860,18 @@ public class HttpUIManagerLYD : MonoBehaviour
         print(s);
 
         //data를 list<TodoListdata>에 넣기
-        CheckListDatArray array = JsonUtility.FromJson<CheckListDatArray>(s);
+        /*CheckListDatArray array = JsonUtility.FromJson<CheckListDatArray>(s);
         for (int i = 0; i < array.data.Count; i++)
         {
             print(array.data[i].memberNo + "\n" + array.data[i].projectNo + "\n" + array.data[i].title);
 
 
-        }
-        print("조회완료");
+        }*/
+       // print("조회완료");
+        GetCheckList(memNo, int.Parse(pjNum[index]));
+        checkdis.SetActive(false);
+
+
     }
 
     //체크 겟
@@ -834,6 +905,7 @@ public class HttpUIManagerLYD : MonoBehaviour
 
         //RemoveCard();
        RemoveCheck();
+        g3.Clear();
 
        foreach (var j1 in jsonkey)
         {
@@ -860,11 +932,11 @@ public class HttpUIManagerLYD : MonoBehaviour
                 btn1.interactable = false;
                 go.GetComponent<Button>().interactable = false;
                 g3.Add(go);
-               /* for(int i = 0; i < g3.Count; i++)
+                for(int i = 0; i < g3.Count; i++)
                 {
-                    g3[i].transform.SetSiblingIndex(checkContent.childCount);
+                    g3[i].transform.SetSiblingIndex(checkContent.childCount -1);
 
-                }*/
+                }
             }
 
             
@@ -921,7 +993,7 @@ public class HttpUIManagerLYD : MonoBehaviour
     //////////////////////////////////////////////////////////////////////////////////
     
 
-    public string todayDate = "20221125";
+   // public string todayDate = "20221125";
 
     //일간리포트 겟하는 버튼 여기서
     //1..출퇴근 조회함수, -> post는 됨. 
@@ -945,6 +1017,7 @@ public class HttpUIManagerLYD : MonoBehaviour
         //1. 멤버넘버로 프로젝트 조회하기 -> 2. 회의록, TO do 달성률 이미지, 리마인더 
         GetDayReportProject(memNo);
         GetWorkTime();
+        imagePrefab.SetActive(true);
     }
 
     public void GetDayReportProject(int memberNum)
@@ -971,7 +1044,7 @@ public class HttpUIManagerLYD : MonoBehaviour
 
         //옵션을 클리어해주는게 맞나??? < 이부분은 물어보기>
         var d = dropdown_dayreport.GetComponent<Dropdown>();
-        //d.ClearOptions();
+        d.ClearOptions();
         //d.value = 1;
         var jsonP = jobject["data"];
         print("1111111" + jsonP);
@@ -991,13 +1064,14 @@ public class HttpUIManagerLYD : MonoBehaviour
 
         }
 
-        foreach (var m in dayreportName)
+        /*foreach (var m in dayreportName)
         {
             //drop다운 옵션에 추가 - 프로젝트이름 (m이 프로젝트가 담겨 있는 이름 : 첫 프로젝트 , pn)
             d.options.Add(new Dropdown.OptionData() { text = m.text });
 
 
-        }
+        }*/
+        d.AddOptions(dayreportName);
         d.value = idx1;
         DropdwondayReportSelected(idx1);
 
@@ -1025,6 +1099,7 @@ public class HttpUIManagerLYD : MonoBehaviour
         //회의기록 
         GetMeetingDayReportData(int.Parse(dpNum[idx1]));
         PostDayReportImage(int.Parse(dpNum[idx1]));
+
 
     }
     //회의기록 함수
@@ -1080,9 +1155,7 @@ public class HttpUIManagerLYD : MonoBehaviour
     {
         PostCome();
     }*/
-    public void BtnTest1()
-    {
-    }
+    
 
     //출퇴근 조회함수
     /*public void PostCome()
@@ -1209,19 +1282,88 @@ public class HttpUIManagerLYD : MonoBehaviour
 
         print("gggggggggggggggggggg " + jk.Last);
 
-        
-       // JToken j1 = jk[jk.Count()];
-            t_loginTime.text = jk.Last["attendanceTime"].ToString().Substring(11,7);
+
+        // JToken j1 = jk[jk.Count()];
+
+       DateTime loginTime = DateTime.Parse(jk["attendanceTime"].ToString());
 
 
-            t_logoutTime.text = jk.Last["leaveTime"].ToString().Substring(11, 7);
-        
+        t_loginTime.text = loginTime.ToString("tth : mm");
+
+
+        DateTime logoutTime = DateTime.Parse(jk["leaveTime"].ToString());
+        t_logoutTime.text = logoutTime.ToString("tth : mm");
+
+
+        //DateTime logoutTime = DateTime.Parse(jk[leaveTime].ToString());
+        /* string[] log = jk["attendanceTime"].ToString().Split(":"); //2022-11-22 오전 10:8 / 오전 10:18
+         if(log[0].Length == 14)
+         {
+             string h1 = log[0].Substring(11, 4);
+             string m1 = log[1];
+
+             t_loginTime.text = h1 + ":" + m1;
+
+         }
+         if(log[0].Length == 15)
+         {
+             string h1 = log[0].Substring(11, 5);
+             string m1 = log[1];
+             t_loginTime.text = h1 + ":" + m1;
+
+
+         }
+
+         string[] logo = jk["leaveTime"].ToString().Split(":");
+         if(logo[0].Length == 14)
+         {
+             string h1 = logo[0].Substring(11, 4);
+             string m1 = logo[1];
+             t_logoutTime.text = h1 + ":" + m1;
+
+
+         }
+         if (logo[0].Length == 15)
+         {
+             string h1 = logo[0].Substring(11, 5);
+             string m1 = logo[1];
+             t_logoutTime.text = h1 + ":" + m1;
+
+
+         }*/
+
+        //string h2 = logo[0].Substring(11, 5);
+        //string m2 = logo[1];
+
+
+        //t_logoutTime.text = h2 + ":" + m2;
+
+      /*  string[] loginTotalTime = jk["attendanceTime"].ToString().Split(":"); //TotalTime 1번값이 분
+        string[] loginHours = loginTotalTime[0].Split("오"); //hour[1] 시간
+        string loginHour = loginHours[1].Substring(1).Trim();
+
+        string[] logoutTotalTime = jk["leaveTime"].ToString().Split(":");
+        string[] logoutHours = logoutTotalTime[0].Split("오");
+        string logoutHour = logoutHours[1].Substring(1).Trim();
+
+         DateTime login = new DateTime(1111, 11, 11, int.Parse(loginHour), int.Parse(loginTotalTime[1]), 0);
+        DateTime logout = new DateTime(1111, 11, 11, int.Parse(logoutHour), int.Parse(logoutTotalTime[1]), 0);
+*/
+
+
+        TimeSpan myTime = logoutTime - loginTime;
+        totalLoginToLogout.text = myTime.Hours.ToString() + "h" + myTime.Hours.ToString() + "m";
+
+       
+     //   totalLoginToLogout.text = t3.Hours.ToString() + "h" + t3.Minutes.ToString() + "m";
+
+
         //DateTime startDate = Convert.ToDateTime()
 
 
     }
 
-    
+
     // TO DO 달성률 이미지 함수(체크리스트에 값이 담겨야함)
     public void PostDayReportImage(int x)
     {
@@ -1263,15 +1405,14 @@ public class HttpUIManagerLYD : MonoBehaviour
          }*/
         //print("조회완료");
         //이미지
-        GetDayReport(memNo, todayDate, projNum);
+        GetDayReport(memNo, tDdate, projNum);
 
     }
 
 
-
+    //public GameObject loading;
     public void GetDayReport(int memberNum, string todayDate, int projectNum)
     {
-
         HttpRequesterLYD requesterLYD = new HttpRequesterLYD();
 
         //post/1, get, 완료되었을 때 호출되는 함수
@@ -1300,7 +1441,10 @@ public class HttpUIManagerLYD : MonoBehaviour
     IEnumerator GetImage(string url)
     {
         UnityWebRequest ww = UnityWebRequestTexture.GetTexture(url);
+
         yield return ww.SendWebRequest();
+        //Destroy(loading);
+        imagePrefab.SetActive(false);
 
         if (ww.result != UnityWebRequest.Result.Success)
         {
@@ -1308,6 +1452,7 @@ public class HttpUIManagerLYD : MonoBehaviour
         }
         else
         {
+            
             Texture2D texture = ((DownloadHandlerTexture)ww.downloadHandler).texture;
             Sprite sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
            todoImage.sprite = sprite;

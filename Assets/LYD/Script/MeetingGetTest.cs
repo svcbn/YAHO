@@ -56,7 +56,7 @@ public class MeetingGetTest : MonoBehaviour
     //프로젝트별 리스트가 뜰 수 있도록 조회한다. 
     public void OnMeeting()
     {
-        mi = GameObject.Find("MonitorCanvas").transform.GetChild(8).gameObject;
+        mi = GameObject.Find("MonitorCanvas").transform.GetChild(9).gameObject;
         mi.SetActive(true);
 
         //meeting.SetActive(true);

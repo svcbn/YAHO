@@ -90,6 +90,7 @@ public class LobbyManager_BH : MonoBehaviourPunCallbacks
     public void JoinRoom()
     {
         PhotonNetwork.JoinRoom("test");
+        
     }
 
     public override void OnJoinedRoom()
