@@ -41,10 +41,14 @@ public class AFKCheck_BH : MonoBehaviour
 
     }
 
+    public bool isfinished = false;
+
     IEnumerator AFKforSec(int seconds)
     {
         while (true)
         {
+            isfinished = false;
+
             yield return new WaitForSeconds(seconds);
 
             webcam.StartWebCam();
@@ -55,6 +59,8 @@ public class AFKCheck_BH : MonoBehaviour
             CaptureImg();
 
             StartCoroutine(WebRequester_BH.instance.UploadPNG(sendTexture, UserInformation_BH.instance.MemberNo, 1));
+
+            yield return new WaitUntil(() => isfinished);
         }
     }
     
@@ -99,6 +105,8 @@ public class AFKCheck_BH : MonoBehaviour
         {
             StartCoroutine(SlideClose());
         }
+
+        isfinished = true;
     }
 
     public IEnumerator SlideOpen()

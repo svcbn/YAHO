@@ -150,7 +150,7 @@ public class WebRequester_BH : MonoBehaviour
         logInManager.OnCompleteFaceCheck(handler);
     }
 
-    void OnAFKCheckCompleted(DownloadHandler handler)
+    public void OnAFKCheckCompleted(DownloadHandler handler)
     {
         AFKCheck_BH.instance.OnCompleteAFKCheck(handler);
     }
