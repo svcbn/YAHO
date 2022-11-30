@@ -56,7 +56,7 @@ public class MeetingGetTest : MonoBehaviour
     //프로젝트별 리스트가 뜰 수 있도록 조회한다. 
     public void OnMeeting()
     {
-        mi = GameObject.Find("MonitorCanvas").transform.GetChild(9).gameObject;
+        mi = GameObject.Find("MonitorCanvas").transform.GetChild(10).gameObject;
         mi.SetActive(true);
 
         //meeting.SetActive(true);
@@ -163,13 +163,20 @@ public class MeetingGetTest : MonoBehaviour
             JToken jk = jObject["data"];
             string ww = jk["imageURL"].ToString();
             StartCoroutine(GetImage(ww));
-            
-            mi.transform.GetChild(1).GetComponent<Text>().text = jk["meetingStartTime"].ToString().Substring(0 ,18);
-            mi.transform.GetChild(2).GetComponent<Text>().text = jk["meetingEndTime"].ToString().Substring(11, 8);
-           // string s = mi.transform.GetChild(2).GetComponent<Text>().text.Substring(11, 8);
-           // print(s);
+
+            DateTime meetTime = DateTime.Parse(jk["meetingStartTime"].ToString());
+
+            mi.transform.GetChild(1).GetComponent<Text>().text = meetTime.ToString("tth : mm");
+            DateTime endTime = DateTime.Parse(jk["meetingEndTime"].ToString());
+            mi.transform.GetChild(2).GetComponent<Text>().text = endTime.ToString("tth : mm");
+
+            //mi.transform.GetChild(2).GetComponent<Text>().text = jk["meetingEndTime"].ToString().Substring(11, 8);
+            // string s = mi.transform.GetChild(2).GetComponent<Text>().text.Substring(11, 8);
+            // print(s);
             // print(jk["meetingEndTime"].ToString());
             mi.transform.Find("Scroll View_transcript/Viewport/Content/Text (Legacy)").GetComponent<Text>().text = jk["record"].ToString();
+
+            RemoveKeyword();
 
             JToken js = jk["keyword"];
             foreach(JToken j1 in js)
@@ -181,6 +188,7 @@ public class MeetingGetTest : MonoBehaviour
 
             }
 
+            RemoveSummary();
             JToken su = jk["summary"];
             foreach(JToken j1 in su)
             {
@@ -195,6 +203,32 @@ public class MeetingGetTest : MonoBehaviour
             x.onClick.AddListener(OnBtnX);
         }
 
+    }
+
+    public void RemoveKeyword()
+    {
+        Transform[] projectParent = mi.transform.GetChild(7).GetChild(0).GetChild(0).GetComponentsInChildren<Transform>();
+        if (projectParent != null)
+        {
+            for (int i = 1; i < projectParent.Length; i++)
+            {
+                if (projectParent[i] != transform)
+                    Destroy(projectParent[i].gameObject);
+            }
+        }
+    }
+
+    public void RemoveSummary()
+    {
+        Transform[] projectParent = mi.transform.GetChild(6).GetChild(0).GetChild(0).GetComponentsInChildren<Transform>();
+        if (projectParent != null)
+        {
+            for (int i = 1; i < projectParent.Length; i++)
+            {
+                if (projectParent[i] != transform)
+                    Destroy(projectParent[i].gameObject);
+            }
+        }
     }
 
     IEnumerator GetImage(string url)

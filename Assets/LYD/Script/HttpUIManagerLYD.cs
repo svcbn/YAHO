@@ -791,9 +791,11 @@ public class HttpUIManagerLYD : MonoBehaviourPunCallbacks
            
             string mn = j1["meetingNo"].ToString();
             startTime.GetComponent<MeetingGetTest>().a = mn;
-            string st = j1["meetingStartTime"].ToString().Substring(0, 10);
+            DateTime met = DateTime.Parse(j1["meetingStartTime"].ToString());
+            startTime.GetComponentInChildren<Text>().text = met.ToString("yyyy - mm - dd  tth : mm");
+            /*string st = j1["meetingStartTime"].ToString().Substring(0, 10);
             //print(st);
-            startTime.GetComponentInChildren<Text>().text = st;
+            startTime.GetComponentInChildren<Text>().text = st;*/
 
         }
     }
@@ -1129,8 +1131,9 @@ public class HttpUIManagerLYD : MonoBehaviourPunCallbacks
             GameObject startTime = Instantiate(dayReportMeetingText, dayReportMeetingContent);
             if(j1["meetingStartTime"].ToString().Substring(0, 10) == tDdate)
             {
-                string st = j1["meetingStartTime"].ToString().Substring(11, 7);
-                startTime.GetComponent<Text>().text = st;
+                DateTime mt = DateTime.Parse(j1["meetingStartTime"].ToString());
+                //  string st = j1["meetingStartTime"].ToString().Substring(11, 7);
+                startTime.GetComponent<Text>().text = mt.ToString("tth : mm");
 
             }
             //print(st);

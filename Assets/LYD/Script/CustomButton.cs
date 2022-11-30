@@ -36,6 +36,9 @@ public class CustomButton : MonoBehaviour
 
     public GameObject menu;
 
+
+    public GameObject gara;
+
     int count;
     /*public GameObject Boardid;
     public GameObject trelloManager;
@@ -180,7 +183,17 @@ public class CustomButton : MonoBehaviour
 
     public void OnBtnEnd()
     {
-        BlackImage.SetActive(true);
+       // BlackImage.SetActive(true);
+        Application.Quit();
     }
     
+    public void OnBtnGara()
+    {
+        gara.SetActive(true);
+    }
+
+    public void Garax()
+    {
+        gara.SetActive(false);
+    }
 }
